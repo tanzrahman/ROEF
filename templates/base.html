@@ -1,0 +1,233 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=yes, width=1920px, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="{% static 'css/static.css' %}">
+    <script src="/static/js/SiteScripts/jquery-3.5.1.js"></script>
+    <script src="/static/js/apexcharts/apexcharts.js"></script>
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/SiteScripts/jquery-3.5.1.js' %}"></script>
+    <title>Rooppur Document Management System</title>
+
+    <style>
+        .navbar-nav .nav-item:hover .nav-link:hover{
+            color: #000000 !important;
+            background-color: #ffffff !important;
+        }
+
+        .active { background-color: black; }
+
+        .table-wrapper {
+            max-height: 100%;
+            overflow-y: scroll;
+        }
+
+        body
+        {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 80px;
+        }
+
+        main
+        {
+            flex: 1; /* pushes footer down */
+            padding-bottom: 70px;
+        }
+
+        footer
+        {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1030; /* keep footer above everything */
+            height: 50px;  /* fixed height for padding calculation */
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <main>
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-dark border-bottom py-3" style="background-color: #0b2e13">
+                <div class="collapse navbar-collapse" style="margin-left: 30%">
+                    <ul class="navbar-nav mr-auto">
+                        {% if not request.user.is_anonymous %}
+
+                            {% if request.user.is_superuser %}
+
+                                <div class="dropdown" style="float:left;">
+                                    <li class="nav-item">
+                                        {% if not request.user.is_anonymous %}
+                                        <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" >
+                                            Event Management
+                                        </button>
+                                            <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
+                                                <a class="dropdown-item" href="/event/event_list">Event List</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="/event/add_event">Add Event</a>
+                                            </div>
+                                        {% endif %}
+                                    </li>
+                                </div>
+
+                            {% endif %}
+
+                            {% if request.user.is_superuser %}
+
+                                <div class="dropdown" style="float:left;">
+                                    <li class="nav-item">
+                                        {% if not request.user.is_anonymous %}
+                                        <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" >
+                                            System Log
+                                        </button>
+                                            <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
+                                                <a class="dropdown-item" href="/system_log/login_log">Login Log</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="/system_log/failed_login_log">Failed Login Log</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="/system_log/deactivated_user_log">Deactivated User Log</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="/system_log/password_change_log">Password Change Log</a>
+                                            </div>
+                                        {% endif %}
+                                    </li>
+                                </div>
+
+                            {% endif %}
+
+                            <!-- <li class="nav-item">
+                                <a class="nav-link" href="/ts"><b>Technical Solution</b></a>
+                            </li> -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/manpower/user/all" style="color:#FFFFFF"><b>All Users</b></a>
+                            </li>
+                        {% endif %}
+
+                        {% if request.user.is_superuser %}
+
+                            <!--<li class="nav-item">
+                                <a class="nav-link" href="/system_log" style="color:#FFFFFF"><b>System Log</b></a>
+                            </li>-->
+
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-md-auto">
+                        <div class="dropdown" style="float:left;">
+                            <li class="nav-item">
+                                {% if not request.user.is_anonymous %}
+                                <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" >
+                                    {{ request.user }}
+                                </button>
+                                    <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
+                                        <a class="dropdown-item" href="/manpower/user/profile">User Details</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/manpower/user/change_password">Change Password</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/logout">Logout</a>
+                                    </div>
+                                {% endif %}
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </nav>
+
+        </div>
+
+        <div style="height:100px;">
+            {% if not request.user.is_anonymous %}
+                {% block content %}
+
+                {% endblock %}
+
+                {% block doc_list %}
+
+                {% endblock %}
+
+                {% block upload_document %}
+
+                {% endblock %}
+
+                {% block edit_document %}
+
+                {% endblock %}
+
+                {% block changed_document_log %}
+
+                {% endblock %}
+
+                {%  block archived_document %}
+
+                {%  endblock %}
+
+                {%  block document_change_log %}
+
+                {%  endblock %}
+
+                {%  block document_request %}
+
+                {%  endblock %}
+
+                {% block all_users %}
+
+                {% endblock %}
+
+                {% block user %}
+
+                {% endblock %}
+
+                <br><br>
+
+            {% else %}
+
+                {% block userlogin %}
+
+                {% endblock %}
+
+                {% block signup %}
+
+                {% endblock %}
+
+                {% block homepage %}
+
+                {% endblock %}
+
+                <br><br>
+
+            {% endif %}
+
+
+        </div>
+
+    </main>
+
+    <footer class="text-light d-flex align-items-center justify-content-center py-3" style="background-color: #0b2e13">
+            <p>
+                &copy; {{ now|date:"Y" }} Rooppur Operating Experience Feedback (ROEF). All Rights Reserved.
+            </p>
+    </footer>
+
+</body>
+
+<script type="text/javascript">
+   $('.nav-link').click(function() {
+        $(".active").removeClass("active");
+        $($(this).attr('href')).addClass("active");
+    });
+</script>
+
+</html>
