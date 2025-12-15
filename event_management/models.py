@@ -1,4 +1,5 @@
 import datetime
+import os
 from inspect import Signature
 
 from django.db import models
@@ -11,6 +12,7 @@ UNIT = (
     ("", "-------"),
     ("unit_1", "Unit 1"),
     ("unit_2", "Unit 2"),
+    ("common", "Common Plant"),
 )
 
 INFORMATION_SOURCE = (
@@ -65,6 +67,15 @@ class Facility(models.Model):
     def __str__(self):
         return str(self.kks_code)
 
+# to upload files in specific date
+def file_upload_to_folder(instance, filename):
+    today = datetime.date.today()
+    return os.path.join(
+        str(today.year),
+        str(today.month),
+        str(today.day),
+        filename
+    )
 
 class Event(models.Model):
     id = models.AutoField(primary_key=True)
@@ -76,31 +87,33 @@ class Event(models.Model):
     event_date = models.DateField(blank=True, null=True)
     event_time = models.TimeField(blank=True, null=True)
     event_category = models.CharField(max_length=64, blank=True, null=True)
-    safety_importance = models.BooleanField(blank=True, null=True)
+    safety_importance = models.BooleanField(blank=True, null=True, default=False)
     comment_if_safety_importance = models.CharField(max_length=256, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     direct_cause = models.CharField(max_length=256, blank=True, null=True)
-    action_taken = models.BooleanField(blank=True, null=True)
+    action_taken = models.BooleanField(blank=True, null=True, default=False)
     comment_if_action_taken = models.CharField(max_length=256, blank=True, null=True)
     elimination_suggestion = models.CharField(max_length=256, blank=True, null=True)
     responsible_dept = models.ForeignKey(DepartmentShop, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='responsible_dept')
     plant_status = models.CharField(max_length=256, blank=True, null=True)
-    upload_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='updated_by')
-    upload_date = models.DateField(blank=True, null=True)
+    uploaded_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='uploaded_by')
+    uploaded_date = models.DateField(blank=True, null=True)
     uploader_shop = models.ForeignKey(DepartmentShop, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='reporter_dept')
     uploader_organization = models.CharField(max_length=256, blank=True, null=True)
     uploader_designation = models.CharField(max_length=256, blank=True, null=True)
     uploader_phone = models.CharField(max_length=16, blank=True, null=True)
     uploader_bioID = models.CharField(max_length=16, blank=True, null=True)
     information_source = models.CharField(max_length=16, choices=INFORMATION_SOURCE, blank=True, null=True)
-    keep_identity_confidential = models.BooleanField(blank=True, null=True)
+    keep_identity_confidential = models.BooleanField(blank=True, null=True, default=False)
+    supporting_file_1 = models.FileField(upload_to=file_upload_to_folder, blank=True, null=True)
+    supporting_file_2 = models.FileField(upload_to=file_upload_to_folder, blank=True, null=True)
+    supporting_file_3 = models.FileField(upload_to=file_upload_to_folder, blank=True, null=True)
 
     class Meta:
         db_table = 'event'
 
     def __str__(self):
         return self.description
-
 
 class File(models.Model):
     hash = models.CharField(primary_key=True, max_length=256, null=False, blank=False)

@@ -26,18 +26,18 @@ def homepage(request):
 
     return render(request, 'event_management/event_list.html')
 
-def event_request_handler(request,action="",id=""):
+def event_request_handler(request, action="",id=""):
     if(request.user.is_anonymous):
         return redirect('/')
     else:
         if(action=='event_list'):
             return event_list(request)
-        if(action=='add_event'):
+        elif(action=='add_event'):
             return add_event(request)
         else:
             return HttpResponse("Invalid Access")
 
-def even_list(request):
+def event_list(request):
     page_no = 1
     no_of_items = 100
 
@@ -81,19 +81,19 @@ def even_list(request):
         event_list = Event.objects.filter(reduce(operator.and_, filters))
         total_event_count = event_list.count()
     else:
-        event_list = Event.objects.all().order_by('-upload_date')
+        event_list = Event.objects.all().order_by('-uploaded_date')
         total_event_count = event_list.count()
 
     paginator = Paginator(event_list, no_of_items)
 
     try:
-        doc_list = paginator.page(page_no)
+        event_list = paginator.page(page_no)
 
     except PageNotAnInteger:
-        doc_list = paginator.page(page_no)
+        event_list = paginator.page(page_no)
 
     except EmptyPage:
-        doc_list = paginator.page(paginator.num_pages)
+        event_list = paginator.page(paginator.num_pages)
 
     context = {'event_list': event_list, 'total_event_count': total_event_count}
 
@@ -118,8 +118,8 @@ def add_event(request):
         form = EventForm(request.POST, request.FILES)
         if form.is_valid():
             event_form = form.save(commit=False)
-            event_form.upload_date = datetime.date.today()
-            event_form.upload_by = request.user
+            event_form.uploaded_by = request.user
+            event_form.uploaded_date = datetime.date.today()
             event_form.save()
 
             # notifiyer = threading.Thread(target=send_notification, args=(task_id,))
@@ -128,5 +128,6 @@ def add_event(request):
             context.update({'success': 'Event has been uploaded successfully'})
         else:
             context.update({'error': 'Error! Try again with valid data'})
+            print("error: ", form.errors)
 
     return render(request, 'event_management/add_event.html', context)

@@ -16,23 +16,40 @@
     <title>Rooppur Document Management System</title>
 
     <style>
-        .navbar-nav .nav-item:hover .nav-link:hover{
-            color: #000000 !important;
-            background-color: #ffffff !important;
+        body {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 80px;
+            position: relative;
+            background: transparent;
         }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("{% static 'loginPage_new.jpg' %}");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            opacity: 0.5;   /* 👈 transparency control */
+            z-index: -1;     /* send behind everything */
+            pointer-events: none;
+        }
+
+        .navbar-nav .nav-item:hover .nav-link:hover{
+                color: #ffffff !important;
+                background-color: #000000 !important;
+            }
 
         .active { background-color: black; }
 
         .table-wrapper {
             max-height: 100%;
             overflow-y: scroll;
-        }
-
-        body
-        {
-            display: flex;
-            flex-direction: column;
-            padding-bottom: 80px;
         }
 
         main
@@ -59,7 +76,7 @@
 
     <main>
         <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-dark border-bottom py-3" style="background-color: #0b2e13">
+            <nav class="navbar navbar-expand-lg navbar-dark border-bottom py-3" style="background-color: #000033">
                 <div class="collapse navbar-collapse" style="margin-left: 30%">
                     <ul class="navbar-nav mr-auto">
                         {% if not request.user.is_anonymous %}
@@ -69,7 +86,7 @@
                                 <div class="dropdown" style="float:left;">
                                     <li class="nav-item">
                                         {% if not request.user.is_anonymous %}
-                                        <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" >
+                                        <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                             Event Management
                                         </button>
                                             <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
@@ -88,7 +105,7 @@
                                 <div class="dropdown" style="float:left;">
                                     <li class="nav-item">
                                         {% if not request.user.is_anonymous %}
-                                        <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" >
+                                        <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                             System Log
                                         </button>
                                             <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
@@ -110,7 +127,7 @@
                                 <a class="nav-link" href="/ts"><b>Technical Solution</b></a>
                             </li> -->
                             <li class="nav-item">
-                                <a class="nav-link" href="/manpower/user/all" style="color:#FFFFFF"><b>All Users</b></a>
+                                <a class="nav-link" href="/manpower/user/all" style="color:#ffffff"><b>All Users</b></a>
                             </li>
                         {% endif %}
 
@@ -129,7 +146,7 @@
                         <div class="dropdown" style="float:left;">
                             <li class="nav-item">
                                 {% if not request.user.is_anonymous %}
-                                <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" >
+                                <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                     {{ request.user }}
                                 </button>
                                     <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
@@ -215,7 +232,7 @@
 
     </main>
 
-    <footer class="text-light d-flex align-items-center justify-content-center py-3" style="background-color: #0b2e13">
+    <footer class="text-light d-flex align-items-center justify-content-center py-3" style="background-color: #000033; font-weight: bold">
             <p>
                 &copy; {{ now|date:"Y" }} Rooppur Operating Experience Feedback (ROEF). All Rights Reserved.
             </p>

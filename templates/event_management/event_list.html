@@ -22,7 +22,7 @@
     </style>
 
     <div>
-        <table class="table table-hover table-bordered;" style="width: 50%; margin: 0 auto">
+        <table class="table table-hover table-bordered table-active" style="width: 25%; margin: 0 auto">
 
             <tr style="text-align: center;">
                 <th>Total Event</th>
@@ -38,7 +38,7 @@
     <div>
         <div style="padding-top: 2%">
             <form action="" method="get" id="document_search_form">
-                <table class="table table-hover table-bordered table-sm" style="width: 50%; margin: 0 auto;">
+                <table class="table table-hover table-bordered table-sm table-active" style="width: 50%; margin: 0 auto;">
                     <tr style="text-align: center;" class="table-info">
                         <th style="width: 5%"></th>
                         <th style="width: 5%">Event Category</th>
@@ -67,7 +67,7 @@
         {% if event_list %}
          <div>
              <div style="padding: 2%">
-                <table class="table table-hover table-bordered" style="table-layout: fixed; width: 100%">
+                <table class="table table-hover table-bordered table-active" style="table-layout: fixed; width: 100%">
                     <tr class="table-success" style="text-align: center;">
                         <th style="width:3%">Sl. No</th>
                         <th>Unit</th>
@@ -109,24 +109,25 @@
                         <td>{{ event.event_date }}</td>
                         <td>{{ event.event_time }}</td>
                         <td>{{ event.event_category }}</td>
-                        <td>{{ event.safety_importance }}</td>
+                        <td>{% if event.safety_importance %} Yes {% else %} No {% endif %}</td>
                         <td>{{ event.comment_if_safety_importance }}</td>
                         <td>{{ event.description }}</td>
                         <td>{{ event.direct_cause }}</td>
-                        <td>{{ event.action_taken }}</td>
+                        <td>{% if event.action_taken %} Yes {% else %} No {% endif %}
+                        </td>
                         <td>{{ event.comment_if_action_taken }}</td>
                         <td>{{ event.elimination_suggestion }}</td>
                         <td>{{ event.responsible_dept }}</td>
                         <td>{{ event.plant_status }}</td>
-                        <td>{{ event.upload_by }}</td>
-                        <td>{{ event.upload_date }}</td>
+                        <td>{{ event.uploaded_by }}</td>
+                        <td>{{ event.uploaded_date }}</td>
                         <td>{{ event.uploader_shop }}</td>
                         <td>{{ event.uploader_organization }}</td>
                         <td>{{ event.uploader_designation }}</td>
                         <td>{{ event.uploader_phone }}</td>
                         <td>{{ event.uploader_bioID }}</td>
                         <td>{{ event.information_source }}</td>
-                        <td>{{ event.keep_identity_confidential }}</td>
+                        <td>{% if event.keep_identity_confidential %} Yes {% else %} No {% endif %}</td>
                     </tr>
                     {% endfor %}
                 </table>
