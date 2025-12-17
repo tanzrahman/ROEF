@@ -70,64 +70,50 @@
                 <table class="table table-hover table-bordered table-active" style="table-layout: fixed; width: 100%">
                     <tr class="table-success" style="text-align: center;">
                         <th style="width:3%">Sl. No</th>
-                        <th>Unit</th>
-                        <th>Facility</th>
-                        <th>Elavation</th>
-                        <th>Room No</th>
-                        <th>Additional Location Info</th>
-                        <th>Event Date</th>
-                        <th>Event Time</th>
-                        <th>Event Category</th>
-                        <th>Safety Importance</th>
-                        <th>Comment for Safety</th>
+                        <th>Event No</th>
                         <th>Description</th>
-                        <th>Direct Cause</th>
-                        <th>Action Taken</th>
-                        <th>Action Details</th>
-                        <th>Elimination Suggestion</th>
+                        <th>Event Date</th>
                         <th>Responsible Department</th>
-                        <th>Plant Status</th>
                         <th>Reporter</th>
-                        <th>Report Date</th>
+                        <th>Registration Date</th>
                         <th>Reporter Shop</th>
                         <th>Reporter Organization</th>
                         <th>Reporter Designation</th>
                         <th>Reporter Phone</th>
-                        <th>Reporter Bio ID</th>
-                        <th>Information Source</th>
-                        <th>Identity Confidentiality</th>
+                        <th>Documents</th>
+                        <th>Approval Status</th>
+                        <th>Approved/Rejected by</th>
+                        <th>Approval Date</th>
                     </tr>
 
                     {% for event in event_list %}
                     <tr style="text-align: center">
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ event.unit }}</td>
-                        <td>{{ event.facility }}</td>
-                        <td>{{ event.elevation }}</td>
-                        <td>{{ event.room_no }}</td>
-                        <td>{{ event.additional_location_info }}</td>
-                        <td>{{ event.event_date }}</td>
-                        <td>{{ event.event_time }}</td>
-                        <td>{{ event.event_category }}</td>
-                        <td>{% if event.safety_importance %} Yes {% else %} No {% endif %}</td>
-                        <td>{{ event.comment_if_safety_importance }}</td>
+                        <td><a href="/event/event_details/{{ event.id }}" class="btn btn-sm btn-outline-primary" target="_blank">E00000{{ event.id }}</a></td>
                         <td>{{ event.description }}</td>
-                        <td>{{ event.direct_cause }}</td>
-                        <td>{% if event.action_taken %} Yes {% else %} No {% endif %}
-                        </td>
-                        <td>{{ event.comment_if_action_taken }}</td>
-                        <td>{{ event.elimination_suggestion }}</td>
+                        <td>{{ event.event_date }}</td>
                         <td>{{ event.responsible_dept }}</td>
-                        <td>{{ event.plant_status }}</td>
                         <td>{{ event.uploaded_by }}</td>
                         <td>{{ event.uploaded_date }}</td>
                         <td>{{ event.uploader_shop }}</td>
                         <td>{{ event.uploader_organization }}</td>
                         <td>{{ event.uploader_designation }}</td>
                         <td>{{ event.uploader_phone }}</td>
-                        <td>{{ event.uploader_bioID }}</td>
-                        <td>{{ event.information_source }}</td>
-                        <td>{% if event.keep_identity_confidential %} Yes {% else %} No {% endif %}</td>
+                        <td>Documents</td>
+                        {% if event.approval_status == 0 %}
+                        <td style="font-weight: bold">Pending</td>
+                        {% elif event.approval_status == 1 %}
+                        <td style="color: green; font-weight: bold">Approved</td>
+                        {% else %}
+                        <td  style="color: darkred; font-weight: bold">Rejected</td>
+                        {% endif %}
+                        {% if event.approved_by %}
+                        <td>{{ event.approved_by }}</td>
+                        <td>{{ event.approval_date }}</td>
+                        {% else %}
+                        <td>Not yet approved</td>
+                        <td>Not yet approved</td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </table>

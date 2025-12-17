@@ -23,10 +23,10 @@ def homepage(request):
 
     if(request.user.is_anonymous):
         return redirect('/login')
+    else:
+        return redirect('/event/event_list')
 
-    return render(request, 'event_management/event_list.html')
-
-def event_request_handler(request, action="",id=""):
+def event_request_handler(request, action="", event_id=""):
     if(request.user.is_anonymous):
         return redirect('/')
     else:
@@ -34,6 +34,10 @@ def event_request_handler(request, action="",id=""):
             return event_list(request)
         elif(action=='add_event'):
             return add_event(request)
+        elif(action=='event_details'):
+            return event_details(request, event_id)
+        elif(action=='approval'):
+            return event_approval(request, event_id)
         else:
             return HttpResponse("Invalid Access")
 
@@ -131,3 +135,27 @@ def add_event(request):
             print("error: ", form.errors)
 
     return render(request, 'event_management/add_event.html', context)
+
+def event_details(request, event_id):
+    event = Event.objects.get(id=event_id)
+
+    context = {'event': event}
+
+    return render(request, 'event_management/event_details.html', context)
+
+def event_approval(request, event_id):
+    action = request.get.GET('action')
+    event = Event.objects.get(id=event_id)
+
+    if(action == 'approve'):
+        event.approval_status = 1
+        event.approved_by = request.user
+        event.approval_date = datetime.datetime.now()
+    elif(action == 'reject'):
+        event.approval_status = -1
+        event.approved_by = request.user
+        event.approval_date = datetime.datetime.now()
+    else:
+        event.approval_status = 0
+
+    return redirect('/event/event_list')

@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load document_templatetags %}
+{% block content %}
+
+    <script src="{% static 'js/SiteScripts/search_results.js' %}"></script>
+    <script src="/static/js/task_manager.js"></script>
+
+    <style>
+        th {
+            white-space: normal !important;
+            word-wrap: break-word !important;
+            font-size: 12px;
+            vertical-align: middle;
+            text-align: center;
+        }
+        td {
+            word-wrap: break-word;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+    </style>
+
+    <div>
+
+        {% if event %}
+            <h3 style="text-align: center; padding-top: 1%">Event Details</h3>
+         <div>
+             <div style="padding: 1%">
+                <table class="table table-hover table-bordered table-secondary" style="table-layout: fixed; width: 50%; margin: 0 auto; text-align: center">
+                    <tr>
+                        <th style="width: 40%">Sl. No</th>
+                        <td>{{ forloop.counter }}</td>
+                    </tr>
+                    <tr>
+                        <th>Event No</th>
+                        <td>E00000{{ event.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Unit</th>
+                        <td>{{ event.unit }}</td>
+                    </tr>
+                    <tr>
+                        <th>Facility</th>
+                        <td>{{ event.facility }}</td>
+                    </tr>
+                    <tr>
+                        <th>Elavation</th>
+                        <td>{{ event.elevation }}</td>
+                    </tr>
+                    <tr>
+                        <th>Room No</th></th>
+                        <td>{{ event.room_no }}</td>
+                    </tr>
+                    <tr>
+                        <th>Additional Location Info</th>
+                        <td>{{ event.additional_location_info }}</td>
+                    </tr>
+                    <tr>
+                        <th>Event Date</th>
+                        <td>{{ event.event_date }}</td>
+                    </tr>
+                    <tr><th>Event Time</th>
+                        <td>{{ event.event_time }}</td>
+                    </tr>
+                    <tr>
+                        <th>Event Category</th>
+                        <td>{{ event.event_category }}</td>
+                    </tr>
+                    <tr>
+                        <th>Regulatory Norms Violation</th>
+                        <td>{{ event.regulatory_norms_violation }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ event.description }}</td>
+                    </tr>
+                    <tr>
+                        <th>Direct Cause</th>
+                        <td>{{ event.direct_cause }}</td>
+                    </tr>
+                    <tr>
+                        <th>Taken Action</th>
+                        <td>{{ event.action_taken }}</td>
+                    </tr>
+                    <tr>
+                        <th>Action to Prevent Recurrence Event</th>
+                        <td>{{ event.action_to_prevent_recurrence_event }}</td>
+                    </tr>
+                    <tr>
+                        <th>Elimination Suggestion</th>
+                        <td>{{ event.elimination_suggestion }}</td>
+                    </tr>
+                    <tr>
+                        <th>Rersponsible Department</th>
+                        <td>{{ event.responsible_dept }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Plant Status</th>
+                        <td>{{ event.plant_status }}</td>
+                    </tr>
+                    <tr>
+                        <th>Reporter</th>
+                        <td>{{ event.uploaded_by }}</td>
+                    </tr>
+                    <tr>
+                        <th>Registration Date</th>
+                        <td>{{ event.uploaded_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Reporter Shop</th>
+                        <td>{{ event.uploader_shop }}</td>
+                    </tr>
+                    <tr>
+                        <th>Reporter Organization</th>
+                        <td>{{ event.uploader_organization }}</td>
+                    </tr>
+                    <tr>
+                        <th>Reporter Designation</th>
+                        <td>{{ event.uploader_designation }}</td>
+                    </tr>
+                    <tr>
+                        <th>Reporter Phone</th>
+                        <td>{{ event.uploader_phone }}</td>
+                    </tr>
+                    <tr>
+                        <th>Reporter Bio ID</th>
+                        <td>{{ event.uploader_bioID }}</td>
+                    </tr>
+                    <tr>
+                        <th>Information Source</th>
+                        <td>{{ event.information_source }}</td>
+                    </tr>
+                    <tr>
+                        <th>Identity Confidentiality</th>
+                        <td>{% if event.keep_identity_confidential %} Yes {% else %} No {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Documents</th>
+                        <td>{% if event.keep_identity_confidential %} Yes {% else %} No {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Approve/Reject</th>
+                        <td><a style="margin-right: 50%" href="/event/approval/{{ event.id }}?action=reject" class="btn btn-outline-danger" target="_blank">Reject</a>
+                            <a href="/event/approval/{{ event.id }}?action=approve" class="btn btn-outline-success" target="_blank">Approve</a>
+                        </td>
+                    </tr>
+
+                </table>
+
+             <div id="pagination_div">
+                            {% if event_list.has_other_pages %}
+                                <ul class="paginator">
+
+                                    <span>Page: </span>
+                                    {% for i in event_list.paginator.page_range %}
+                                        {% if doc_list.number == i %}
+                                            <span class="this-page">{{ i }} <span
+                                                    class="sr-only">(current)</span></span>
+                                        {% else %}
+                                            <a href="javascript:next_page_report('{{ i }}')">{{ i }}</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                 </div>
+             </div>
+         </div>
+
+        {% else %}
+            <h2 style="text-align:center; color:red">No Event Available</h2>
+        {% endif %}
+
+        <br> <br>
+    </div>
+
+{% endblock %}

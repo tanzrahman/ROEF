@@ -21,6 +21,14 @@ INFORMATION_SOURCE = (
     ("external", "External"),
 )
 
+PLANT_STATUS = (
+    ("", "-------"),
+    ("commissioning", "Commissioning"),
+    ("operation", "Operation"),
+    ("refuelling", "Refuelling"),
+    ("power_outage", "Power Outage"),
+)
+
 # Create your models here.
 
 class SystemParameter(models.Model):
@@ -87,15 +95,14 @@ class Event(models.Model):
     event_date = models.DateField(blank=True, null=True)
     event_time = models.TimeField(blank=True, null=True)
     event_category = models.CharField(max_length=64, blank=True, null=True)
-    safety_importance = models.BooleanField(blank=True, null=True, default=False)
-    comment_if_safety_importance = models.CharField(max_length=256, blank=True, null=True)
+    regulatory_norms_violation = models.BooleanField(blank=True, null=True, default=False)
     description = models.TextField(blank=True, null=True)
     direct_cause = models.CharField(max_length=256, blank=True, null=True)
-    action_taken = models.BooleanField(blank=True, null=True, default=False)
-    comment_if_action_taken = models.CharField(max_length=256, blank=True, null=True)
-    elimination_suggestion = models.CharField(max_length=256, blank=True, null=True)
+    action_taken = models.CharField(max_length=512, blank=True, null=True)
+    action_to_prevent_recurrence_event = models.CharField(max_length=512, blank=True, null=True)
+    elimination_suggestion = models.CharField(max_length=512, blank=True, null=True)
     responsible_dept = models.ForeignKey(DepartmentShop, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='responsible_dept')
-    plant_status = models.CharField(max_length=256, blank=True, null=True)
+    plant_status = models.CharField(max_length=32, choices=PLANT_STATUS, blank=True, null=True)
     uploaded_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='uploaded_by')
     uploaded_date = models.DateField(blank=True, null=True)
     uploader_shop = models.ForeignKey(DepartmentShop, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='reporter_dept')
@@ -108,6 +115,9 @@ class Event(models.Model):
     supporting_file_1 = models.FileField(upload_to=file_upload_to_folder, blank=True, null=True)
     supporting_file_2 = models.FileField(upload_to=file_upload_to_folder, blank=True, null=True)
     supporting_file_3 = models.FileField(upload_to=file_upload_to_folder, blank=True, null=True)
+    approval_status = models.IntegerField(blank=True, null=True, default=0)
+    approved_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='approved_by')
+    approval_date = models.DateField(blank=True, null=True)
 
     class Meta:
         db_table = 'event'
