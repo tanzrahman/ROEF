@@ -81,24 +81,35 @@
                     <ul class="navbar-nav mr-auto">
                         {% if not request.user.is_anonymous %}
 
-                            {% if request.user.is_superuser %}
+                            <div class="dropdown" style="float:left;">
+                                <li class="nav-item">
+                                    {% if not request.user.is_anonymous %}
+                                    <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                        Event Management
+                                    </button>
+                                        <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
+                                            <a class="dropdown-item" href="/event/event_list">Event List</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="/event/add_event">Add Event</a>
+                                        </div>
+                                    {% endif %}
+                                </li>
+                            </div>
 
-                                <div class="dropdown" style="float:left;">
-                                    <li class="nav-item">
-                                        {% if not request.user.is_anonymous %}
-                                        <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
-                                            Event Management
-                                        </button>
-                                            <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
-                                                <a class="dropdown-item" href="/event/event_list">Event List</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="/event/add_event">Add Event</a>
-                                            </div>
-                                        {% endif %}
-                                    </li>
-                                </div>
-
-                            {% endif %}
+                            <div class="dropdown" style="float:left;">
+                                <li class="nav-item">
+                                    {% if not request.user.is_anonymous %}
+                                    <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                        Assigned Event
+                                    </button>
+                                        <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
+                                            <a class="dropdown-item" href="/event/assigned?role=supervisor">As Supervisor</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="/event/assigned?role=executor">As Executor</a>
+                                        </div>
+                                    {% endif %}
+                                </li>
+                            </div>
 
                             {% if request.user.is_superuser %}
 

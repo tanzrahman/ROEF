@@ -29,6 +29,14 @@ PLANT_STATUS = (
     ("power_outage", "Power Outage"),
 )
 
+RESOLUTION_STATUS = (
+    ("", "-------"),
+    ("resolved", "Resolved"),
+    ("working", "Working"),
+    ("test", "Test"),
+    ("demo", "Demo"),
+)
+
 # Create your models here.
 
 class SystemParameter(models.Model):
@@ -120,12 +128,21 @@ class Event(models.Model):
     approval_date = models.DateField(blank=True, null=True)
     updated_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='updated_by')
     updated_date = models.DateField(blank=True, null=True)
+    supervisor = models.ManyToManyField(User, related_name='supervisors')
+    executor = models.ManyToManyField(User, related_name='executors')
+    resolution_status = models.CharField(max_length=32, choices=RESOLUTION_STATUS, blank=True, null=True)
+    resolved_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='resolved_by')
+    resolver_remarks = models.CharField(max_length=512, blank=True, null=True)
 
     class Meta:
         db_table = 'event'
 
     def __str__(self):
         return self.description
+    def supervisor_list(self):
+        return list(self.supervisor.all())
+    def executor_list(self):
+        return list(self.executor.all())
 
 class File(models.Model):
     hash = models.CharField(primary_key=True, max_length=256, null=False, blank=False)

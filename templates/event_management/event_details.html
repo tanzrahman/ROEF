@@ -45,10 +45,6 @@
              <div style="padding: 1%">
                 <table class="table table-hover table-bordered table-secondary" style="table-layout: fixed; width: 60%; margin: 0 auto; text-align: center">
                     <tr>
-                        <th style="width: 40%">Sl. No</th>
-                        <td>{{ forloop.counter }}</td>
-                    </tr>
-                    <tr>
                         <th>Event No</th>
                         <td>E00000{{ event.id }}</td>
                     </tr>
@@ -96,7 +92,7 @@
                         <td>{{ event.direct_cause }}</td>
                     </tr>
                     <tr>
-                        <th>Taken Action</th>
+                        <th>Steps to Resolve</th>
                         <td>{{ event.action_taken }}</td>
                     </tr>
                     <tr>
@@ -167,10 +163,35 @@
                         </td>
                     </tr>
                     <tr>
-                        <th></th>
-                        <td><a style="margin-right: 20%" href="/event/approval/{{ event.id }}?action=reject" class="btn btn-outline-danger" target="_blank">Reject</a>
-                            <a style="margin-right: 20%" href="/event/edit/{{ event.id }}" class="btn btn-outline-primary" target="_blank">Edit Event</a>
+                        <th>Supervisors</th>
+                        <td>
+                            {% for each in event.supervisor_list %}
+                                {{ each.first_name }} {{ each.last_name }}
+                                ({{ each.username }})<br>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Executors</th>
+                        <td>
+                            {% for each in event.executor_list %}
+                                {{ each.first_name }} {{ each.last_name }}
+                                ({{ each.username }})<br>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Event Approval</th>
+                        <td>
+                            <a style="margin-right: 50%" href="/event/approval/{{ event.id }}?action=reject" class="btn btn-outline-danger" target="_blank">Reject</a>
                             <a href="/event/approval/{{ event.id }}?action=approve" class="btn btn-outline-success" target="_blank">Approve</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Event Action</th>
+                        <td>
+                            <a style="margin-right: 40%" href="/event/edit/{{ event.id }}" class="btn btn-primary" target="_blank">Edit Event</a>
+                            <a href="/event/approval/{{ event.id }}?action=approve" class="btn btn-info" target="_blank">Event Resolution</a>
                         </td>
                     </tr>
 

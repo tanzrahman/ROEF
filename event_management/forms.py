@@ -70,10 +70,24 @@ class EventForm(ModelForm):
     supporting_file_1 = forms.FileField(label='Select file 1', required=False)
     supporting_file_2 = forms.FileField(label='Select file 2', required=False)
     supporting_file_3 = forms.FileField(label='Select file 3', required=False)
+    supervisor = forms.ModelMultipleChoiceField(queryset=User.objects.filter(profile__is_supervisor=True),
+                                                label="Select Supervisor")
+    executor = forms.ModelMultipleChoiceField(queryset=User.objects.filter(profile__is_executor=True),
+                                                   label="Select Executor", required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(EventForm, self).__init__(*args, **kwargs)
+
+        if(kwargs.get('instance')):
+            instance = kwargs.get('instance')
+            self.fields['supervisor'].initial = instance.supervisor.all()
+            self.fields['executor'].initial = instance.executor.all()
+            # self.fields['milestone_id'].widget.attrs['readonly'] = True
+            # self.fields['milestone_id'].widget.attrs['class'] = 'readonly_field'
 
     class Meta:
         model = Event
-        exclude = ('uploaded_by', 'uploaded_date', 'approval_status', 'approved_by', 'approval_date', 'updated_by', 'updated_date')
+        exclude = ('uploaded_by', 'uploaded_date', 'approval_status', 'approved_by', 'approval_date', 'updated_by', 'updated_date', 'resolution_status', 'resolved_by', 'resolver_remarks')
 
 class EventSearchForm(ModelForm):
     event_category = forms.CharField(label='Event Category',required=True, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
