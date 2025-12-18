@@ -118,6 +118,8 @@ class Event(models.Model):
     approval_status = models.IntegerField(blank=True, null=True, default=0)
     approved_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='approved_by')
     approval_date = models.DateField(blank=True, null=True)
+    updated_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='updated_by')
+    updated_date = models.DateField(blank=True, null=True)
 
     class Meta:
         db_table = 'event'
@@ -168,3 +170,14 @@ class MsgInstructionAction(models.Model):
 
     class Meta:
         db_table = 'msg_instruction_action'
+
+class EventEditLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    event = models.ForeignKey(Event, on_delete=models.DO_NOTHING, blank=True, null=True)
+    edited_fields = models.TextField(blank=True, null=True, default='')
+    edited_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    edited_at = models.DateTimeField(blank=True, null=True, default=datetime.datetime.now())
+    ip = models.CharField(max_length=32, blank=True, null=True)
+
+    class Meta:
+        db_table = 'event_edit_log'

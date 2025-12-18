@@ -50,7 +50,7 @@ class EventForm(ModelForm):
     room_no = forms.CharField(label='Room No',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     additional_location_info = forms.CharField(label='Additional Information of location',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     event_date = forms.DateField(label='Even Date', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
-    event_time = forms.TimeField(label='Event Time', required= False,  widget=forms.TimeInput(attrs={'type': 'time'}), input_formats=['%H:%M'])
+    event_time = forms.TimeField(label='Event Time', required= False,  widget=forms.TimeInput(attrs={'type': 'time'}))
     event_category = forms.CharField(label='Event Category',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     regulatory_norms_violation = forms.BooleanField(label='Violation of regulatory norms and regulations',required=False)
     description = forms.CharField(label='Event Description',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
@@ -73,7 +73,7 @@ class EventForm(ModelForm):
 
     class Meta:
         model = Event
-        exclude = ('uploaded_by', 'uploaded_date')
+        exclude = ('uploaded_by', 'uploaded_date', 'approval_status', 'approved_by', 'approval_date', 'updated_by', 'updated_date')
 
 class EventSearchForm(ModelForm):
     event_category = forms.CharField(label='Event Category',required=True, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))

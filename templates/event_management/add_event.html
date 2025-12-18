@@ -8,21 +8,21 @@
         <script src="/static/js/task_manager.js"></script>
         <script src="/static/js/selectize.js"></script>
 
-    {% if success %}
-        <script>
-            alert("{{ success }}");
-            window.opener.location.reload();
-            window.close();
-        </script>
-    {% endif %}
+        {% if success %}
+            <script>
+                alert("{{ success }}");
+                window.opener.location.reload();
+                window.close();
+            </script>
+        {% endif %}
 
-    {% if error %}
-        <script>
-            alert("{{ error }}");
-            window.opener.location.reload();
-            window.close();
-        </script>
-    {% endif %}
+        {% if error %}
+            <script>
+                alert("{{ error }}");
+                window.opener.location.reload();
+                window.close();
+            </script>
+        {% endif %}
 
         <form action="" method="post" id="document_form" enctype="multipart/form-data">
             {% csrf_token %}

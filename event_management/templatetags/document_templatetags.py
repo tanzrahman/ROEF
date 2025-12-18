@@ -4,6 +4,10 @@ from django import template
 
 register = template.Library()
 
+@register.filter(name='file_basename')
+def file_basename(value):
+    return os.path.basename(value)
+
 
 @register.filter(name='has_no_document_request')
 def has_no_document_request(task, user):

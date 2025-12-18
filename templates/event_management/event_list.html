@@ -99,7 +99,17 @@
                         <td>{{ event.uploader_organization }}</td>
                         <td>{{ event.uploader_designation }}</td>
                         <td>{{ event.uploader_phone }}</td>
-                        <td>Documents</td>
+                        <td>
+                            {% if event.supporting_file_1 %}
+                                <a href="{% url 'event_view' 'view' event.id 1 %}" target="_blank">{{ event.supporting_file_1.name|file_basename }}</a><br>
+                            {% endif %}
+                            {% if event.supporting_file_2 %}
+                                <a href="{% url 'event_view' 'view' event.id 2 %}" target="_blank">{{ event.supporting_file_2.name|file_basename }}</a><br>
+                            {% endif %}
+                            {% if event.supporting_file_3 %}
+                                <a href="{% url 'event_view' 'view' event.id 3 %}" target="_blank">{{ event.supporting_file_3.name|file_basename }}</a><br>
+                            {% endif %}
+                        </td>
                         {% if event.approval_status == 0 %}
                         <td style="font-weight: bold">Pending</td>
                         {% elif event.approval_status == 1 %}
