@@ -51,12 +51,10 @@ class EventForm(ModelForm):
     additional_location_info = forms.CharField(label='Additional Information of location',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     event_date = forms.DateField(label='Even Date', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
     event_time = forms.TimeField(label='Event Time', required= False,  widget=forms.TimeInput(attrs={'type': 'time'}))
-    event_category = forms.CharField(label='Event Category',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
+    event_category = forms.ChoiceField(choices=EVENT_CATEGORY, label="Event Category", required=False)
     regulatory_norms_violation = forms.BooleanField(label='Violation of regulatory norms and regulations',required=False)
     description = forms.CharField(label='Event Description',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     direct_cause = forms.CharField(label='Direct Cause',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
-    action_taken = forms.BooleanField(label='Action Taken',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
-    action_to_prevent_recurrence_event = forms.CharField(label='Actions to prevent recurrence event',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     elimination_suggestion = forms.CharField(label='Elimination Suggestion',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     responsible_dept = forms.ModelChoiceField(queryset=Division.objects.all(), label='Responsible Department', required=False)
     plant_status = forms.ChoiceField(choices=PLANT_STATUS, label="Plant Status", required=False)
@@ -87,12 +85,12 @@ class EventForm(ModelForm):
 
     class Meta:
         model = Event
-        exclude = ('uploaded_by', 'uploaded_date', 'approval_status', 'approved_by', 'approval_date', 'updated_by', 'updated_date', 'resolution_status', 'resolved_by', 'resolver_remarks')
+        exclude = ('uploaded_by', 'uploaded_date', 'action_taken', 'action_to_prevent_recurrence_event', 'approval_status', 'approved_by', 'approval_date', 'updated_by', 'updated_date', 'resolution_status', 'resolved_by', 'resolved_date', 'resolver_remarks',)
 
 class EventSearchForm(ModelForm):
-    event_category = forms.CharField(label='Event Category',required=True, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
+    event_category = forms.ChoiceField(choices=EVENT_CATEGORY, label="Event Category", required=False)
     facility = forms.ModelChoiceField(queryset=Division.objects.all(), required=False)
-    description = forms.CharField(label='Event Description', required=True,
+    description = forms.CharField(label='Event Description', required=False,
                                   widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
 
     class Meta:
@@ -100,10 +98,14 @@ class EventSearchForm(ModelForm):
         fields = ('event_category', 'facility', 'description')
 
 class EventResolutionForm(ModelForm):
+    action_taken = forms.CharField(label='Action Taken', required=False,
+                                      widget=forms.Textarea(attrs={'rows': 3, 'cols': 50}))
+    action_to_prevent_recurrence_event = forms.CharField(label='Actions to prevent recurrence event', required=False,
+                                                         widget=forms.Textarea(attrs={'rows': 3, 'cols': 50}))
     resolution_status = forms.ChoiceField(choices=RESOLUTION_STATUS, label='Resolution Status', required=True)
     resolver_remarks = forms.CharField(label='Remarks', required=True,
                                   widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
 
     class Meta:
         model = Event
-        fields = ('resolution_status', 'resolver_remarks')
+        fields = ('action_taken', 'action_to_prevent_recurrence_event', 'resolution_status', 'resolver_remarks')

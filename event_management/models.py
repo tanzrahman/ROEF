@@ -15,6 +15,13 @@ UNIT = (
     ("common", "Common Plant"),
 )
 
+EVENT_CATEGORY = (
+    ("", "-------"),
+    ("a", "A"),
+    ("b", "B"),
+    ("c", "C"),
+)
+
 INFORMATION_SOURCE = (
     ("", "-------"),
     ("internal", "Internal"),
@@ -102,7 +109,7 @@ class Event(models.Model):
     additional_location_info = models.CharField(max_length=128, blank=True, null=True)
     event_date = models.DateField(blank=True, null=True)
     event_time = models.TimeField(blank=True, null=True)
-    event_category = models.CharField(max_length=64, blank=True, null=True)
+    event_category = models.CharField(max_length=16, choices=EVENT_CATEGORY, blank=True, null=True)
     regulatory_norms_violation = models.BooleanField(blank=True, null=True, default=False)
     description = models.TextField(blank=True, null=True)
     direct_cause = models.CharField(max_length=256, blank=True, null=True)

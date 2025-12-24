@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from system_log.models import *
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from event_management.models import SystemParameter
+from event_management.models import SystemParameter, EventEditLog
 
 
 def login_log(request, page_no=None):
@@ -162,3 +162,28 @@ def deactivated_user_log(request, page_no=None):
         log_list = paginator.page(paginator.num_pages)
 
     return render(request, 'system_log/deactivated_user_log.html', {'deactivated_user_log': log_list})
+
+def event_edit_log(request, page_no=None):
+    log_list = EventEditLog.objects.all().order_by('-edited_at')
+
+    if(request.GET.get('page_no')):
+        page_no = int(request.GET.get('page_no'))
+
+    # pagination number comes from system parameter model
+    paginator_object = SystemParameter.objects.filter(name='pagination_number')
+    no_of_items = 10
+    if (paginator_object.count() != 0):
+        no_of_items = paginator_object[0].value
+
+    paginator = Paginator(log_list, no_of_items)
+
+    if (not page_no):
+        page_no = 1
+    try:
+        log_list = paginator.page(page_no)
+    except PageNotAnInteger:
+        log_list = paginator.page(page_no)
+    except EmptyPage:
+        log_list = paginator.page(paginator.num_pages)
+
+    return render(request, 'system_log/event_edit_log.html', {'event_edit_log': log_list})

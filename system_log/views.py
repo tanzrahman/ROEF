@@ -36,6 +36,8 @@ def log_handler(request,action="",id=""):
         return failed_login_log(request)
     if(action == 'deactivated_user_log'):
         return deactivated_user_log(request)
+    if(action == 'event_edit_log'):
+        return event_edit_log(request)
     else:
         return HttpResponse("Invalid Access")
 
