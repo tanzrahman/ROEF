@@ -127,11 +127,11 @@
                             <td>Not yet approved</td>
                         {% endif %}
                         {% if event.resolution_status %}
-                            <td>{{ event.resolution_status }}</td>
+                            <td style="color: green; font-weight: bold">{{ event.get_resolution_status_display }}</td>
                             <td>{{ event.resolved_by }}</td>
                         {% else %}
-                            <td>Not yet resolved</td>
-                            <td>Not yet resolved</td>
+                            <td>Not yet Resolved</td>
+                            <td>Not yet Resolved</td>
                         {% endif %}
                     </tr>
                     {% endfor %}

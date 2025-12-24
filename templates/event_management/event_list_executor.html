@@ -84,6 +84,8 @@
                         <th>Approval Status</th>
                         <th>Approved/Rejected by</th>
                         <th>Approval Date</th>
+                        <th>Resolve Status</th>
+                        <th>Resolved by</th>
                     </tr>
 
                     {% for event in event_list %}
@@ -123,6 +125,13 @@
                         {% else %}
                         <td>Not yet approved</td>
                         <td>Not yet approved</td>
+                        {% endif %}
+                        {% if event.resolution_status %}
+                            <td style="color: green; font-weight: bold">{{ event.get_resolution_status_display }}</td>
+                            <td>{{ event.resolved_by }}</td>
+                        {% else %}
+                            <td>Not yet Resolved</td>
+                            <td>Not yet Resolved</td>
                         {% endif %}
                     </tr>
                     {% endfor %}
