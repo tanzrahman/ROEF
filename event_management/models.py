@@ -132,6 +132,7 @@ class Event(models.Model):
     executor = models.ManyToManyField(User, related_name='executors')
     resolution_status = models.CharField(max_length=32, choices=RESOLUTION_STATUS, blank=True, null=True)
     resolved_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='resolved_by')
+    resolved_date = models.DateField(blank=True, null=True)
     resolver_remarks = models.CharField(max_length=512, blank=True, null=True)
 
     class Meta:

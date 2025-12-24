@@ -98,3 +98,12 @@ class EventSearchForm(ModelForm):
     class Meta:
         model = Event
         fields = ('event_category', 'facility', 'description')
+
+class EventResolutionForm(ModelForm):
+    resolution_status = forms.ChoiceField(choices=RESOLUTION_STATUS, label='Resolution Status', required=True)
+    resolver_remarks = forms.CharField(label='Remarks', required=True,
+                                  widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
+
+    class Meta:
+        model = Event
+        fields = ('resolution_status', 'resolver_remarks')

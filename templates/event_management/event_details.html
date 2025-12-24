@@ -50,7 +50,7 @@
                     </tr>
                     <tr>
                         <th>Unit</th>
-                        <td>{{ event.unit }}</td>
+                        <td>{{ event.get_unit_display }}</td>
                     </tr>
                     <tr>
                         <th>Facility</th>
@@ -180,6 +180,31 @@
                             {% endfor %}
                         </td>
                     </tr>
+
+                    {% if event.resolution_status %}
+                        <tr>
+                            <th>Resolve Status</th>
+                            <td>{{ event.get_resolution_status_display }}</td>
+                        </tr>
+                        <tr>
+                            <th>Resolved by</th>
+                            <td>{{ event.resolved_by }}</td>
+                        </tr>
+                        <tr>
+                            <th>Resolved Date</th>
+                            <td>{{ event.resolved_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>Resolver Remarks</th>
+                            <td>{{ event.resolver_remarks }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <th>Resolve Status</th>
+                            <td>Not yet Approved</td>
+                        </tr>
+                    {% endif %}
+
                     <tr>
                         <th>Event Approval</th>
                         <td>
@@ -191,7 +216,7 @@
                         <th>Event Action</th>
                         <td>
                             <a style="margin-right: 40%" href="/event/edit/{{ event.id }}" class="btn btn-primary" target="_blank">Edit Event</a>
-                            <a href="/event/approval/{{ event.id }}?action=approve" class="btn btn-info" target="_blank">Event Resolution</a>
+                            <a href="/event/resolution/{{ event.id }}" class="btn btn-info" target="_blank">Event Resolution</a>
                         </td>
                     </tr>
 

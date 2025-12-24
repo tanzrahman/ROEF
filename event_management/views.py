@@ -44,6 +44,8 @@ def event_request_handler(request, action="", event_id="", file_no=None):
             return event_edit(request, event_id)
         elif(action == 'assigned'):
             return event_assigned(request)
+        elif(action == 'resolution'):
+            return event_resolution(request, event_id)
         else:
             return HttpResponse("Invalid Access")
 
@@ -431,3 +433,25 @@ def event_assigned(request):
 
     else:
         return redirect('/event/event_list')
+
+def event_resolution(request, event_id):
+    event = Event.objects.get(id=event_id)
+    form = EventResolutionForm(initial={'event_id': event_id})
+
+    context = {'form': form, 'event': event}
+
+    if (request.method == 'POST'):
+        form = EventResolutionForm(request.POST, instance=event)
+        if (form.is_valid()):
+            event_resolution = form.save(commit=False)
+            event_resolution.resolved_date = datetime.datetime.now()
+            event_resolution.resolved_by = request.user
+            event_resolution.save()
+            context.update({'success': 'Event Status Successfully Updated'})
+
+            # to send mail for document view request
+            # notifiyer = threading.Thread(target=send_notification, args=(doc_id,))
+            # notifiyer.start()
+
+    return render(request, 'event_management/event_resolution.html', context)
+

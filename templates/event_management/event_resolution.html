@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load document_templatetags %}
+{% block content %}
+
+    <div>
+        <script src="/static/js/jquery-3.5.1.min.js"></script>
+        <script src="/static/js/task_manager.js"></script>
+
+        <div style="margin: 0 auto; width: 50%; margin-top: 1%">
+            <table class="table table-active table-hover table-bordered" style="margin-top: 1%">
+                <tr>
+                    <th style="vertical-align: middle; text-align: center">Event Details</th>
+                    <td style="text-align: center">
+                        <span>  <b>Event No:</b> {{ event.id }} <br>
+                                <b>Description:</b> {{ event.description }}<br>
+                                <b>Direct Cause:</b> {{ event.direct_cause }}<br>
+                                <b>Event Category:</b> {{ event.event_category }}<br>
+                                <b>Event Date-Time:</b> {{ event.event_date }} {{ event.event_time }}<br>
+                        </span>
+                        <br>
+                        <br>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div>
+            {% if success %}
+                <script>
+                    alert("{{ success }}");
+                    window.opener.location.reload();
+                    window.close();
+                </script>
+            {% endif %}
+
+            <div>
+                <form action="" method="post" id="event_resolution">
+                    {% csrf_token %}
+
+                    <fieldset>
+
+                        <div>
+                            <h3 style="text-align: center; padding-bottom: 1%">Update Event Resolution Status</h3>
+
+                            <div class="outer-wrapper">
+                                <div style="width: 80%; margin-left: 20%">
+                                    <table class="table table-sm table-bordered" style="width: 70%; row-gap: 0px">
+
+                                        {% for field in form %}
+                                            <tr class="table-info table-sm" style="text-align: center; width: 40%">
+
+                                                <td><b> {{ field.label_tag }} </b></td>
+                                                <td> {{ field }} </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+
+                            <input style="margin-left: 50%" class="btn btn-outline-info" type="submit" value="Update Status">
+
+
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
