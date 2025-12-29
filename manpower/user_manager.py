@@ -18,7 +18,7 @@ from django.http import  HttpResponse, HttpResponseForbidden
 from manpower.models import User, Profile, SubDepartment, DepartmentShop, Section, Division, Committee, SafetyAnalysisReportCommittee, \
     UserConsentDocReviewRemarks, ApprovalSignature
 from .forms import GroupPermissionForm, UserActivationForm, AdminResetPasswordForm, UserChangePasswordForm, SignUpForm, \
-    UserSearchForm, CommitteeForm, SARCommitteeForm
+    UserSearchForm, CommitteeForm, SARCommitteeForm, SignUpForm_Visitor
 from operating_experience_feedback.settings import PYTZ_TIME_ZONE
 from system_log.models import UserLog, UserNotificationLog, UserDeactivateLog, FailedLoginLog, PasswordChangeLog
 from event_management.ftp_handler import upload_to_ftp, FILETYPE, fetch_file
@@ -139,7 +139,7 @@ def user_profile(request,query_string):
     else:
         user = request.user
         user = User.objects.get(username=user)
-        return render(request,'user.html',{'user':user})
+        return render(request,'manpower/user.html',{'user':user})
 
 
 def signup(request):
@@ -150,18 +150,44 @@ def signup(request):
         user_form = SignUpForm(request.POST)
         if (user_form.is_valid()):
             # send an email token for the user to confirm account
-            user = user_form.save()
+            user = user_form.save(commit=False)
 
             user.profile.email_validation_token = random_string_using_bias(user.email)
             user.profile.validation_expire_date_time = datetime.now() + timedelta(hours=12)
             user.profile.employee_id = user_form.cleaned_data['employee_id']
-            user.is_active=False
+            user.is_active=True
             user.profile.department = user_form.cleaned_data['department']
+            user.profile.phone = user_form.cleaned_data['phone']
+            user.profile.access_level = 8
             user.save()
             form = SignUpForm()
             return render(request, 'signup.html', {'form': form, "submission_success": "success"})
         else:
             return render(request, 'signup.html', {'form': user_form})
+
+
+def visitor_signup(request):
+    if (request.method == "GET"):
+        form = SignUpForm_Visitor()
+        return render(request, 'visitor_signup.html', {'form': form})
+    else:
+        user_form = SignUpForm_Visitor(request.POST)
+        if (user_form.is_valid()):
+            # send an email token for the user to confirm account
+            user = user_form.save()
+
+            user.profile.email_validation_token = random_string_using_bias(user.email)
+            user.profile.validation_expire_date_time = datetime.now() + timedelta(hours=12)
+            user.profile.employee_id = user_form.cleaned_data['employee_id']
+            user.is_active=True
+            user.profile.department = user_form.cleaned_data['department']
+            user.profile.phone = user_form.cleaned_data['phone']
+            user.profile.access_level = 50 # for visitor account
+            user.save()
+            form = SignUpForm_Visitor()
+            return render(request, 'visitor_signup.html', {'form': form, "submission_success": "success"})
+        else:
+            return render(request, 'visitor_signup.html', {'form': user_form})
 
 
 def random_string_using_bias(user_email):

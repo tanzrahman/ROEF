@@ -80,12 +80,16 @@
                         <td>{{ event.event_category }}</td>
                     </tr>
                     <tr>
-                        <th>Regulatory Norms Violation</th>
-                        <td>{{ event.regulatory_norms_violation }}</td>
-                    </tr>
-                    <tr>
                         <th>Description</th>
                         <td>{{ event.description }}</td>
+                    </tr>
+                    <tr>
+                        <th>Registration Date</th>
+                        <td>{{ event.uploaded_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Regulatory Norms Violation</th>
+                        <td>{{ event.regulatory_norms_violation }}</td>
                     </tr>
                     <tr>
                         <th>Direct Cause</th>
@@ -107,46 +111,68 @@
                         <th>Rersponsible Department</th>
                         <td>{{ event.responsible_dept }}</td>
                     </tr>
-
                     <tr>
                         <th>Plant Status</th>
                         <td>{{ event.plant_status }}</td>
                     </tr>
-                    <tr>
-                        <th>Reporter</th>
-                        <td>{{ event.uploaded_by }}</td>
-                    </tr>
-                    <tr>
-                        <th>Registration Date</th>
-                        <td>{{ event.uploaded_date }}</td>
-                    </tr>
-                    <tr>
-                        <th>Reporter Shop</th>
-                        <td>{{ event.uploader_shop }}</td>
-                    </tr>
-                    <tr>
-                        <th>Reporter Organization</th>
-                        <td>{{ event.uploader_organization }}</td>
-                    </tr>
-                    <tr>
-                        <th>Reporter Designation</th>
-                        <td>{{ event.uploader_designation }}</td>
-                    </tr>
-                    <tr>
-                        <th>Reporter Phone</th>
-                        <td>{{ event.uploader_phone }}</td>
-                    </tr>
-                    <tr>
-                        <th>Reporter Bio ID</th>
-                        <td>{{ event.uploader_bioID }}</td>
-                    </tr>
+                    {% if event.keep_identity_confidential %}
+                        <tr>
+                            <th>Reporter</th>
+                            <td>NA</td>
+                        </tr>
+                        <tr>
+                            <th>Reporter Shop</th>
+                            <td>NA</td>
+                        </tr>
+                        <tr>
+                            <th>Reporter Organization</th>
+                            <td>NA</td>
+                        </tr>
+                        <tr>
+                            <th>Reporter Designation</th>
+                            <td>NA</td>
+                        </tr>
+                        <tr>
+                            <th>Reporter Phone</th>
+                            <td>NA</td>
+                        </tr>
+                        <tr>
+                            <th>Reporter Bio ID</th>
+                            <td>NA</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <th>Reporter</th>
+                            <td>{{ event.uploaded_by }}</td>
+                        </tr>
+                        <tr>
+                            <th>Reporter Shop</th>
+                            <td>{{ event.uploader_shop }}</td>
+                        </tr>
+                        <tr>
+                            <th>Reporter Organization</th>
+                            <td>{{ event.uploader_organization }}</td>
+                        </tr>
+                        <tr>
+                            <th>Reporter Designation</th>
+                            <td>{{ event.uploader_designation }}</td>
+                        </tr>
+                        <tr>
+                            <th>Reporter Phone</th>
+                            <td>{{ event.uploader_phone }}</td>
+                        </tr>
+                        <tr>
+                            <th>Reporter Bio ID</th>
+                            <td>{{ event.uploader_bioID }}</td>
+                        </tr>
+                    {% endif %}
                     <tr>
                         <th>Information Source</th>
                         <td>{{ event.information_source }}</td>
                     </tr>
                     <tr>
                         <th>Identity Confidentiality</th>
-                        <td>{% if event.keep_identity_confidential %} Yes {% else %} No {% endif %}</td>
+                        <td>{% if event.keep_identity_confidential %} <span style="color:red">Yes</span> {% else %} No {% endif %}</td>
                     </tr>
                     <tr>
                         <th>Documents</th>

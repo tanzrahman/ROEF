@@ -1,8 +1,10 @@
+import calendar
 import threading
 import datetime
 import json
 from django.core import paginator
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models.functions import TruncMonth
 from django.http import HttpResponse, JsonResponse, FileResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from event_management.models import *
@@ -24,7 +26,60 @@ def homepage(request):
     if(request.user.is_anonymous):
         return redirect('/login')
     else:
-        return redirect('/event/event_list')
+        # for category wise event chart
+        total_event = Event.objects.all().count()
+
+        a_type_event = Event.objects.filter(event_category='a').count()
+        b_type_event = Event.objects.filter(event_category='b').count()
+        c_type_event = Event.objects.filter(event_category='c').count()
+
+        total_categorized_event = a_type_event + b_type_event + c_type_event
+
+        context = {
+            'total_categorized_event': total_categorized_event,
+            'a_type_event': a_type_event,
+            'b_type_event': b_type_event,
+            'c_type_event': c_type_event,
+        }
+
+        # for year wise event chart
+        if(request.method == 'GET'):
+            form = YearFilterForm()
+
+            selected_year = datetime.datetime.now().year
+            data = []
+            labels = []
+
+        if(request.method == 'POST'):
+            form = YearFilterForm(request.POST)
+            if form.is_valid():
+                selected_year = int(form.cleaned_data['year'])
+
+        # Aggregate events per month
+        monthly_data = (
+            Event.objects
+            .filter(uploaded_date__year=selected_year)
+            .annotate(month=TruncMonth('uploaded_date'))
+            .values('month')
+            .annotate(count=Count('id'))
+            .order_by('month')
+        )
+
+        # Create a dict: month_number -> count
+        month_count_dict = {d['month'].month: d['count'] for d in monthly_data}
+
+        # Prepare chart data
+        labels = [calendar.month_name[m] for m in range(1, 13)]  # Jan to Dec
+        data = [month_count_dict.get(m, 0) for m in range(1, 13)]  # fill 0 if no events
+
+        context.update({
+            'form': form,
+            'labels': labels,
+            'data': data,
+            'selected_year': selected_year,
+        })
+
+        return render(request, 'base.html', context)
 
 def event_request_handler(request, action="", event_id="", file_no=None):
     if(request.user.is_anonymous):
@@ -32,6 +87,8 @@ def event_request_handler(request, action="", event_id="", file_no=None):
     else:
         if(action == 'event_list'):
             return event_list(request)
+        elif(action == 'my_event'):
+            return my_event_list(request)
         elif(action == 'add_event'):
             return add_event(request)
         elif(action == 'view'):
@@ -120,9 +177,79 @@ def event_list(request):
 
     return render(request, 'event_management/event_list.html', context)
 
+def my_event_list(request):
+    page_no = 1
+    no_of_items = 100
+
+    if (request.GET.get('page_no')):
+        page_no = int(request.GET.get('page_no'))
+
+    search_form = EventSearchForm(initial={'user': request.user})
+    filters = []
+    if (request.GET):
+        search_form = EventSearchForm(request.GET, initial={'user': request.user})
+        if (search_form.is_valid()):
+            for each in search_form.changed_data:
+                # if ('date' in each):
+                #     if ('upload_date_from' in each):
+                #         field_name = each.rsplit('_', 1)[0]
+                #         date_filter = field_name + "__gte"
+                #         filters.append(Q(**{date_filter: search_form.cleaned_data[each]}))
+                #         continue
+                #     if ('upload_date_to' in each):
+                #         field_name = each.rsplit('_', 1)[0]
+                #         date_filter = field_name + "__lte"
+                #         filters.append(Q(**{date_filter: search_form.cleaned_data[each]}))
+                #         continue
+                # if (each == 'division'):
+                #     filters.append(Q(**{each: search_form.cleaned_data[each]}))
+                #     continue
+                if (each == 'facility'):
+                    filters.append(Q(**{each: search_form.cleaned_data[each]}))
+                    continue
+                if (each == 'event_category'):
+                    filters.append(Q(**{'event_category__icontains': search_form.cleaned_data[each].upper()}))
+                    continue
+                if ('description' in each):
+                    filters.append(Q(**{'description__icontains': search_form.cleaned_data[each].upper()}))
+                    continue
+                else:
+                    filters.append(Q(**{each: search_form.cleaned_data[each]}))
+
+    searched_doc = 0
+
+    if (len(filters) > 0):
+        event_list = Event.objects.filter(reduce(operator.and_, filters)).filter(uploaded_by=request.user)
+        total_event_count = event_list.count()
+    else:
+        event_list = Event.objects.filter(uploaded_by=request.user).order_by('-uploaded_date')
+        total_event_count = event_list.count()
+
+    paginator = Paginator(event_list, no_of_items)
+
+    try:
+        event_list = paginator.page(page_no)
+
+    except PageNotAnInteger:
+        event_list = paginator.page(page_no)
+
+    except EmptyPage:
+        event_list = paginator.page(paginator.num_pages)
+
+    context = {'event_list': event_list, 'total_event_count': total_event_count}
+
+    if (len(filters) > 0):
+        context.update({
+            'event_list': event_list,
+        })
+    context.update({
+        'form': search_form
+    })
+
+    return render(request, 'event_management/my_event_list.html', context)
+
+
 def add_event(request):
-    if (request.user.profile.access_level > 6):
-        return HttpResponse("You Dont Have to Upload a new Event")
     initial = {}
     form = EventForm()
     context = {'form': form}

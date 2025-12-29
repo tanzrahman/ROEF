@@ -4,107 +4,105 @@
 
 {% block userlogin %}
 
-        <style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background-image: url("{% static 'loginPage_new.jpg' %}");
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-size: cover;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url("{% static 'loginPage_new.jpg' %}");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    .page-container {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-        text-align: center;
-    }
+        .page-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
 
-    .logo-row {
-        margin-bottom: 20px;
-    }
+        .logo-row {
+            margin-bottom: 20px;
+        }
 
-    .logo-row img {
-        width: 60px;
-        height: auto;
-        margin: 0 10px;
-    }
+        .logo-row img {
+            width: 60px;
+            height: auto;
+            margin: 0 10px;
+        }
 
-    h1 {
-        font-size: 40px;
-        color: #000000;
-        text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
-        margin-bottom: 30px;
-    }
-
-    .loginDiv {
-        background-color: #000000;
-        padding: 25px 30px;
-        border-radius: 10px;
-        max-width: 400px;
-        width: 100%;
-        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
-        text-align: left;
-        color: #ffffff;
-    }
-
-    .loginDiv a:link, .loginDiv a:visited {
-        background-color: #26734d;
-        color: #FFF;
-        padding: 6px 12px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        border: 2px solid black;
-        margin-top: 10px;
-    }
-
-    .loginDiv a:hover, .loginDiv a:active {
-        background-color: #FFF;
-        color: #000;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    .submit-row input[type="submit"] {
-        width: 100%;
-        padding: 10px;
-        background-color: #26734d;
-        color: white;
-        border: none;
-        border-radius: 5px;
-    }
-
-    .submit-row input[type="submit"]:hover {
-        background-color: #1e5a3d;
-    }
-
-    .info-note {
-        font-size: 12px;
-        margin-top: 10px;
-        display: block;
-        color: #ffffff;
-    }
-
-    @media (max-width: 480px) {
         h1 {
-            font-size: 28px;
+            font-size: 40px;
+            color: #000000;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            margin-bottom: 30px;
         }
 
         .loginDiv {
-            padding: 20px;
+            background-color: #000000;
+            padding: 25px 30px;
+            border-radius: 10px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            text-align: left;
+            color: #ffffff;
         }
-    }
-</style>
+
+        .loginDiv a:link, .loginDiv a:visited {
+            padding: 6px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border: 2px solid black;
+            margin-top: 10px;
+        }
+
+        .loginDiv a:hover, .loginDiv a:active {
+            background-color: #FFF;
+            color: #000;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .submit-row input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #26734d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .submit-row input[type="submit"]:hover {
+            background-color: #1e5a3d;
+        }
+
+        .info-note {
+            font-size: 12px;
+            margin-top: 10px;
+            display: block;
+            color: #ffffff;
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 28px;
+            }
+
+            .loginDiv {
+                padding: 20px;
+            }
+        }
+    </style>
 
 
     <link rel="stylesheet" type="text/css" href="/static/admin/css/login.css"/>
@@ -152,9 +150,11 @@
                     <input type="submit" value="Log in" class="btn btn-success" />
                 </div>
 
-            </form>
+                <div class="submit-row">
+                    <a href="/visitor_signup" class="btn btn-info" style="width: 340px"> Sign Up as Visitor </a>
+                </div>
 
-            <span class="info-note"><i><b>If you don't have any account, please contact your Division Head</b></i></span>
+            </form>
 
         </div>
 

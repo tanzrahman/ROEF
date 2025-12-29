@@ -35,6 +35,7 @@ urlpatterns = [
     path('login/',manpower.user_manager.user_login,name='userlogin'),
     path('logout/',manpower.user_manager.logout_user,name='userlogout'),
     path('signup/',manpower.user_manager.signup,name='signup'),
+    path('visitor_signup/',manpower.user_manager.visitor_signup,name='visitor_signup'),
     path('api/login',user_login_api,name='login_api'),
     path('api/<action>',handle_api_request,name='api'),
     path('group_sms/',handle_sms_request,name='group_sms'),

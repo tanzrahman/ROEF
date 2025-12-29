@@ -1,31 +1,12 @@
-{% extends 'manpower/user_base.html' %}
+{% extends 'base.html' %}
+{% load static %}
+{% load document_templatetags %}
 
-{% block default %}
-    <link href="/static/css/static.css" rel="stylesheet">
-    <link href="/static/css/bootstrap.css" rel="stylesheet">
-    <script src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/SiteScripts/FileHandler.js"></script>
-    <script src="/static/js/SiteScripts/FormHandler.js"></script>
-    <script src="/static/js/SiteScripts/jquery-3.5.1.js"></script>
-    <script src="/static/js/SiteScripts/crypto-js/sha1.js"></script>
-    <script src="/static/js/SiteScripts/crypto-js/crypto-js.js"></script>
-    <script src="/static/js/SiteScripts/crypto-js/sha1.min.js"></script>
-    <script src="/static/js/SiteScripts/crypto-js/lib-typedarrays-min.js"></script>
-    <script src="/static/js/SiteScripts/crypto-js/aes.js"></script>
-
-    <style>
-        .navbar-nav .nav-item.active .nav-link,
-        .navbar-nav .nav-item:hover .nav-link{
-            color: #fff;
-            background-color: green;
-        }
-    </style>
+{% block content %}
 
     <div>
         {% if user %}
-            <h2 style="text-align: center">User Details</h2>
+            <h3 style="text-align: center; padding-top: 1%">User Details</h3>
             <table class="table table-hover table-bordered table-lg" style=" margin-left:25%; border-collapse: separate; border-spacing: 0 15px; width: 50%; text-align: center">
                 <tr>
                     <th><label>Username</label></th>
@@ -59,7 +40,7 @@
                     <td>{{ user.profile.is_executor }}</td>
                 </tr>
 
-                <tr>
+                <!--<tr>
                     <th><label>Signature</label></th>
                     <td>
                         {% if not user.profile.signature %}
@@ -69,7 +50,7 @@
                             <img id="my_signature" height="100" width="200" src="/manpower/user/load_signature?hash={{user.profile.signature}}">
                         {% endif %}
                     </td>
-                </tr>
+                </tr>-->
             </table>
         {% endif %}
     </div>

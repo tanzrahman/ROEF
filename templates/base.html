@@ -83,22 +83,26 @@
 
                             <div class="dropdown" style="float:left;">
                                 <li class="nav-item">
-                                    {% if not request.user.is_anonymous %}
                                     <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                         Event Management
                                     </button>
-                                        <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
+                                    <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
+                                        <a class="dropdown-item" href=" ">Dashboard</a>
+                                        <div class="dropdown-divider"></div>
+                                        {% if request.user.profile.access_level < 7 %}
                                             <a class="dropdown-item" href="/event/event_list">Event List</a>
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="/event/add_event">Add Event</a>
-                                        </div>
-                                    {% endif %}
+                                        {% endif %}
+                                        <a class="dropdown-item" href="/event/my_event">My Uploaded Event</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/event/add_event">Add Event</a>
+                                    </div>
                                 </li>
                             </div>
 
                             <div class="dropdown" style="float:left;">
                                 <li class="nav-item">
-                                    {% if not request.user.is_anonymous %}
+                                    {% if request.user.profile.access_level != 50 %}
                                     <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                         Assigned Event
                                     </button>
@@ -134,23 +138,13 @@
                                     </li>
                                 </div>
 
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/manpower/user/all" style="color:#ffffff"><b>All Users</b></a>
+                                </li>
                             {% endif %}
 
-                            <!-- <li class="nav-item">
-                                <a class="nav-link" href="/ts"><b>Technical Solution</b></a>
-                            </li> -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manpower/user/all" style="color:#ffffff"><b>All Users</b></a>
-                            </li>
                         {% endif %}
 
-                        {% if request.user.is_superuser %}
-
-                            <!--<li class="nav-item">
-                                <a class="nav-link" href="/system_log" style="color:#FFFFFF"><b>System Log</b></a>
-                            </li>-->
-
-                        {% endif %}
                     </ul>
                 </div>
 
@@ -180,6 +174,117 @@
 
         <div style="height:100px;">
             {% if not request.user.is_anonymous %}
+                {% block chart %}
+                    {% if request.path == '/' %}
+                        <div class="row">
+
+                        <!-- for category wise event chart -->
+                            <div class="col-6">
+                                <h4 style="margin-left: 5%; padding-top: 1%">Category wise Event</h4><br>
+                                <div id="pie_chart" style="width: 80%">
+                                </div>
+
+                                <script>
+                                  var options = {
+                                    series: [
+                                      {{ a_type_event|default:0 }},
+                                      {{ b_type_event|default:0 }},
+                                      {{ c_type_event|default:0 }}
+                                    ],
+                                    labels: ['A Category', 'B Category', 'C Category'],
+                                    chart: {
+                                      height: 350,
+                                      type: 'donut'
+                                    },
+                                    responsive: [{
+                                      breakpoint: 480,
+                                      options: {
+                                        chart: {
+                                          width: 200
+                                        },
+                                        legend: {
+                                          position: 'bottom'
+                                        }
+                                      }
+                                    }]
+                                    };
+
+                                  var chart = new ApexCharts(
+                                    document.querySelector("#pie_chart"),
+                                    options
+                                  );
+                                  chart.render();
+                                </script>
+
+                            </div>
+
+                        <!-- for year-month wise event chart -->
+                            <div class="col-6">
+                                <h4 style="margin-left: 5%; padding-top: 1%">Month wise Event</h4><br>
+
+                                <div style="padding-top: 2%">
+                                    <form action="" method="post" id="year_filter_form">
+                                        <table class="table table-hover table-borderless table-sm table-active" style="width: 50%; margin-left: 5%;">
+
+                                            <tr style="text-align: center">
+                                                {% csrf_token %}
+                                                {% for field in form %}
+                                                    <td>
+                                                        {{ field.label_tag }}
+                                                    </td>
+                                                    <td>
+                                                        {{ field }}
+                                                    </td>
+                                                    <td>
+                                                        <input class="btn btn-info" type="submit" value="Search">
+                                                    </td>
+                                                {% endfor %}
+                                            </tr>
+                                        </table>
+                                    </form>
+
+                                </div>
+
+                                <div id="line_chart" style="width: 80%">
+                                </div>
+
+                                <script>
+
+                                  var options = {
+                                    chart: {
+                                      type: 'line',
+                                      height: 350
+                                    },
+                                    series: [{
+                                      name: 'Events',
+                                      data: {{ data|safe }}  // e.g., [5, 10, 3, ...]
+                                    }],
+                                    xaxis: {
+                                      categories: {{ labels|safe }}  // e.g., ['Jan', 'Feb', 'Mar', ...]
+                                    },
+                                    stroke: {
+                                      curve: 'smooth'
+                                    },
+                                    markers: {
+                                      size: 5
+                                    },
+                                    tooltip: {
+                                      enabled: true
+                                    },
+                                  };
+
+                                  var chart = new ApexCharts(document.querySelector("#line_chart"), options);
+                                  chart.render();
+
+                                </script>
+
+                            </div>
+                        </div>
+
+                    {% endif %}
+
+                {% endblock %}
+
                 {% block content %}
 
                 {% endblock %}

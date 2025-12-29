@@ -141,6 +141,7 @@ class Event(models.Model):
     resolved_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='resolved_by')
     resolved_date = models.DateField(blank=True, null=True)
     resolver_remarks = models.CharField(max_length=512, blank=True, null=True)
+    is_guest = models.BooleanField(blank=True, null=True, default=False)
 
     class Meta:
         db_table = 'event'

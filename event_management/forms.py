@@ -43,6 +43,12 @@ recommendation = (
 class DateInput(forms.DateInput):
     input_type = 'date'
 
+class YearFilterForm(forms.Form):
+    CURRENT_YEAR = datetime.datetime.now().year
+    YEAR_CHOICES = [(y, y) for y in range(CURRENT_YEAR, 2014, -1)]
+
+    year = forms.ChoiceField(choices=YEAR_CHOICES, label="Select Year")
+
 class EventForm(ModelForm):
     unit = forms.ChoiceField(choices=UNIT, label="Unit", required=False)
     facility = forms.ModelChoiceField(queryset=Division.objects.all(), required=False)
@@ -58,7 +64,7 @@ class EventForm(ModelForm):
     elimination_suggestion = forms.CharField(label='Elimination Suggestion',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     responsible_dept = forms.ModelChoiceField(queryset=Division.objects.all(), label='Responsible Department', required=False)
     plant_status = forms.ChoiceField(choices=PLANT_STATUS, label="Plant Status", required=False)
-    uploader_shop = forms.ModelChoiceField(queryset=Division.objects.all(), label='Reporter Shop/Department', required=False)
+    uploader_shop = forms.ModelChoiceField(queryset=DepartmentShop.objects.all(), label='Reporter Shop/Department', required=False)
     uploader_organization = forms.CharField(label='Reporter Organization',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     uploader_designation = forms.CharField(label='Reporter Designation',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     uploader_phone = forms.CharField(label='Reporter Phone',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
@@ -69,7 +75,7 @@ class EventForm(ModelForm):
     supporting_file_2 = forms.FileField(label='Select file 2', required=False)
     supporting_file_3 = forms.FileField(label='Select file 3', required=False)
     supervisor = forms.ModelMultipleChoiceField(queryset=User.objects.filter(profile__is_supervisor=True),
-                                                label="Select Supervisor")
+                                                label="Select Supervisor", required=False)
     executor = forms.ModelMultipleChoiceField(queryset=User.objects.filter(profile__is_executor=True),
                                                    label="Select Executor", required=False)
 

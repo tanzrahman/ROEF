@@ -74,26 +74,54 @@ class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
     last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
     email = forms.EmailField(max_length=254, help_text='Required.  email address of rooppurnpp.gov.bd domain.')
-    phone = forms.CharField(max_length=11, label='Mobile No')
+    phone = forms.CharField(max_length=11, label='Mobile No', help_text='Start with 0 (ex. 01#########)', widget=forms.TextInput(attrs={
+                'placeholder': '01#########'
+            }))
     department = forms.ModelChoiceField(required=True, label="Department", queryset=DepartmentShop.objects.all())
     npcbl_designation = forms.CharField(required=False, label='NPCBL Designation')
     section = forms.ModelChoiceField(required=False, queryset=Section.objects.all())
     subsection = forms.ModelChoiceField(required=False, queryset=SubDepartment.objects.all())
-    designation = forms.CharField(required=False, label="Designation")
+    designation = forms.CharField(required=False, label='Plant Designation')
     employee_id = forms.CharField(required=False, max_length=11, label="Employee ID")
     grade = forms.IntegerField(required=False, label="Grade")
-    is_supervisor = forms.BooleanField(required=True, label= 'Supervisor')
-    is_executor = forms.BooleanField(required=True, label='Executor')
+    is_supervisor = forms.BooleanField(required=False, label='Supervisor')
+    is_executor = forms.BooleanField(required=False, label='Executor')
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email','phone', 'is_supervisor','is_executor', 'department',
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'is_supervisor','is_executor', 'department',
                   'npcbl_designation','designation','section','subsection', 'employee_id', 'password1', 'password2')
 
     def clean_email(self):
         data = self.cleaned_data['email']
-        if "@rooppurnpp.gov.bd" not in data:  # any check you need
-            raise forms.ValidationError("Must be a rooppurnpp.gov.bd address")
+        # if "@rooppurnpp.gov.bd" not in data:  # any check you need
+        #     raise forms.ValidationError("Must be a rooppurnpp.gov.bd address")
+        if User.objects.filter(email=data).count() != 0:
+            raise forms.ValidationError(
+                _("This email address is already in use. Please use a different email address."))
+        return data
+
+class SignUpForm_Visitor(UserCreationForm):
+    first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+    last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+    email = forms.EmailField(max_length=254, help_text='Required.')
+    phone = forms.CharField(max_length=11, label='Mobile No', help_text='Required. Start with 0 (ex. 01#########)',
+                            widget=forms.TextInput(attrs={
+                                'placeholder': '01#########'
+                            }))
+    department = forms.ModelChoiceField(required=True, label="Department", queryset=DepartmentShop.objects.all(), help_text="Select 'Other' for visitor")
+    designation = forms.CharField(required=False, label='Designation')
+    employee_id = forms.CharField(required=False, max_length=11, label="Employee ID")
+    grade = forms.IntegerField(required=False, label="Grade")
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'department', 'designation', 'employee_id', 'grade', 'password1', 'password2')
+
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        # if "@rooppurnpp.gov.bd" not in data:  # any check you need
+        #     raise forms.ValidationError("Must be a rooppurnpp.gov.bd address")
         if User.objects.filter(email=data).count() != 0:
             raise forms.ValidationError(
                 _("This email address is already in use. Please use a different email address."))

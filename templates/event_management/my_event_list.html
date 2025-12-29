@@ -76,11 +76,6 @@
                         <th>Event Date</th>
                         <th>Registration Date</th>
                         <th>Responsible Department</th>
-                        <th>Reporter</th>
-                        <th>Reporter Shop</th>
-                        <th>Reporter Organization</th>
-                        <th>Reporter Designation</th>
-                        <th>Reporter Phone</th>
                         <th>Documents</th>
                         <th>Approval Status</th>
                         <th>Approved/Rejected by</th>
@@ -98,19 +93,6 @@
                         <td>{{ event.event_date }}</td>
                         <td>{{ event.uploaded_date }}</td>
                         <td>{{ event.responsible_dept }}</td>
-                        {% if event.keep_identity_confidential %}
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                        {% else %}
-                            <td>{{ event.uploaded_by }}</td>
-                            <td>{{ event.uploader_shop }}</td>
-                            <td>{{ event.uploader_organization }}</td>
-                            <td>{{ event.uploader_designation }}</td>
-                            <td>{{ event.uploader_phone }}</td>
-                        {% endif %}
                         <td>
                             {% if event.supporting_file_1 %}
                                 <a href="{% url 'event_view' 'view' event.id 1 %}" target="_blank">{{ event.supporting_file_1.name|file_basename }}</a><br>
