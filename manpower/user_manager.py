@@ -150,15 +150,21 @@ def signup(request):
         user_form = SignUpForm(request.POST)
         if (user_form.is_valid()):
             # send an email token for the user to confirm account
-            user = user_form.save(commit=False)
+            user = user_form.save()
 
             user.profile.email_validation_token = random_string_using_bias(user.email)
             user.profile.validation_expire_date_time = datetime.now() + timedelta(hours=12)
             user.profile.employee_id = user_form.cleaned_data['employee_id']
             user.is_active=True
             user.profile.department = user_form.cleaned_data['department']
+            user.profile.npcbl_designation = user_form.cleaned_data['npcbl_designation']
+            user.profile.designation = user_form.cleaned_data['designation']
             user.profile.phone = user_form.cleaned_data['phone']
-            user.profile.access_level = 8
+            user.profile.grade = user_form.cleaned_data['grade']
+            user.profile.section = user_form.cleaned_data['section']
+            user.profile.is_supervisor = False
+            user.profile.is_executor = True
+            user.profile.access_level = user_form.cleaned_data['grade']
             user.save()
             form = SignUpForm()
             return render(request, 'signup.html', {'form': form, "submission_success": "success"})
@@ -179,9 +185,11 @@ def visitor_signup(request):
             user.profile.email_validation_token = random_string_using_bias(user.email)
             user.profile.validation_expire_date_time = datetime.now() + timedelta(hours=12)
             user.profile.employee_id = user_form.cleaned_data['employee_id']
-            user.is_active=True
-            user.profile.department = user_form.cleaned_data['department']
+            user.is_active = True
+            user.profile.department = 'Other'
+            user.profile.designation = user_form.cleaned_data['designation']
             user.profile.phone = user_form.cleaned_data['phone']
+            user.profile.grade = user_form.cleaned_data['grade']
             user.profile.access_level = 50 # for visitor account
             user.save()
             form = SignUpForm_Visitor()

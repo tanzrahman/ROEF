@@ -5,7 +5,9 @@
     {% if submission_success %}
         <h2 style="text-align: center; color: green"> Visitor Account Creation Successful. <a href="/login" class="btn btn-primary">Login</a> to upload event</h2>
     {% endif %}
+
     <h1 style="text-align: center">Create Visitor Account</h1>
+
     <div class="form-group">
         <form method="post">
             {% csrf_token %}

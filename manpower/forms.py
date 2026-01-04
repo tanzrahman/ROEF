@@ -71,26 +71,24 @@ class UserGroupForm(forms.Form):
         print("UserGroup form init")
 
 class SignUpForm(UserCreationForm):
+    username = forms.CharField(max_length=30, help_text='Required. Use your full email address with domain (ex. abc@rooppurnpp.gov.bd)')
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
     last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-    email = forms.EmailField(max_length=254, help_text='Required.  email address of rooppurnpp.gov.bd domain.')
+    email = forms.EmailField(max_length=254, help_text='Required. Email address of rooppurnpp.gov.bd domain.')
     phone = forms.CharField(max_length=11, label='Mobile No', help_text='Start with 0 (ex. 01#########)', widget=forms.TextInput(attrs={
                 'placeholder': '01#########'
             }))
     department = forms.ModelChoiceField(required=True, label="Department", queryset=DepartmentShop.objects.all())
     npcbl_designation = forms.CharField(required=False, label='NPCBL Designation')
     section = forms.ModelChoiceField(required=False, queryset=Section.objects.all())
-    subsection = forms.ModelChoiceField(required=False, queryset=SubDepartment.objects.all())
     designation = forms.CharField(required=False, label='Plant Designation')
     employee_id = forms.CharField(required=False, max_length=11, label="Employee ID")
     grade = forms.IntegerField(required=False, label="Grade")
-    is_supervisor = forms.BooleanField(required=False, label='Supervisor')
-    is_executor = forms.BooleanField(required=False, label='Executor')
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'is_supervisor','is_executor', 'department',
-                  'npcbl_designation','designation','section','subsection', 'employee_id', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'department',
+                  'npcbl_designation', 'designation', 'section', 'employee_id', 'grade', 'password1', 'password2')
 
     def clean_email(self):
         data = self.cleaned_data['email']
@@ -102,6 +100,7 @@ class SignUpForm(UserCreationForm):
         return data
 
 class SignUpForm_Visitor(UserCreationForm):
+    username = forms.CharField(max_length=30, help_text='Required. Use your full email address with domain (ex. abc@rooppurnpp.gov.bd)')
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
     last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
     email = forms.EmailField(max_length=254, help_text='Required.')
@@ -109,14 +108,13 @@ class SignUpForm_Visitor(UserCreationForm):
                             widget=forms.TextInput(attrs={
                                 'placeholder': '01#########'
                             }))
-    department = forms.ModelChoiceField(required=True, label="Department", queryset=DepartmentShop.objects.all(), help_text="Select 'Other' for visitor")
     designation = forms.CharField(required=False, label='Designation')
     employee_id = forms.CharField(required=False, max_length=11, label="Employee ID")
     grade = forms.IntegerField(required=False, label="Grade")
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'department', 'designation', 'employee_id', 'grade', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'designation', 'employee_id', 'grade', 'password1', 'password2')
 
     def clean_email(self):
         data = self.cleaned_data['email']
