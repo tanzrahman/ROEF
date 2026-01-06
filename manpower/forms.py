@@ -71,10 +71,10 @@ class UserGroupForm(forms.Form):
         print("UserGroup form init")
 
 class SignUpForm(UserCreationForm):
-    username = forms.CharField(max_length=30, help_text='Required. Use your full email address with domain (ex. abc@rooppurnpp.gov.bd)')
-    first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-    last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-    email = forms.EmailField(max_length=254, help_text='Required. Email address of rooppurnpp.gov.bd domain.')
+    username = forms.CharField(max_length=128, help_text='Required. Use your full email address with domain (ex. abc@rooppurnpp.gov.bd)')
+    first_name = forms.CharField(max_length=128, required=False, help_text='Optional.')
+    last_name = forms.CharField(max_length=128, required=False, help_text='Optional.')
+    email = forms.EmailField(max_length=256, help_text='Required. Email address of rooppurnpp.gov.bd domain.')
     phone = forms.CharField(max_length=11, label='Mobile No', help_text='Start with 0 (ex. 01#########)', widget=forms.TextInput(attrs={
                 'placeholder': '01#########'
             }))
@@ -100,10 +100,10 @@ class SignUpForm(UserCreationForm):
         return data
 
 class SignUpForm_Visitor(UserCreationForm):
-    username = forms.CharField(max_length=30, help_text='Required. Use your full email address with domain (ex. abc@rooppurnpp.gov.bd)')
-    first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-    last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-    email = forms.EmailField(max_length=254, help_text='Required.')
+    username = forms.CharField(max_length=128, help_text='Required. Use your full email address with domain (ex. abc@rooppurnpp.gov.bd)')
+    first_name = forms.CharField(max_length=128, required=False, help_text='Optional.')
+    last_name = forms.CharField(max_length=128, required=False, help_text='Optional.')
+    email = forms.EmailField(max_length=256, help_text='Required.')
     phone = forms.CharField(max_length=11, label='Mobile No', help_text='Required. Start with 0 (ex. 01#########)',
                             widget=forms.TextInput(attrs={
                                 'placeholder': '01#########'
