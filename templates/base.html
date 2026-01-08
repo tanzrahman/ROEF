@@ -339,7 +339,7 @@
                         <!-- for individual event upload table -->
                             <div class="col-md-6">
                                 <div class="box">
-                                    <h4 style="margin-left: 5%; padding-top: 1%">Top Uploaders</h4><br>
+                                    <h4 style="margin-left: 5%; padding-top: 1%">Top Reporters</h4><br>
 
                                     <div>
                                         <table class="table table-hover table-bordered table-warning" style="margin: 0 auto">
@@ -359,7 +359,7 @@
                                                         <td>{{ each.uploaded_by__email }}</td>
                                                         <td>{{ each.uploaded_by__profile__designation }}</td>
                                                         <td>{{ each.uploaded_by__profile__department }}</td>
-                                                        <td>{{ total_counts }}</td>
+                                                        <td>{{ each.total_events }}</td>
                                                     </tr>
                                                 {% endfor %}
                                             {% endif %}
