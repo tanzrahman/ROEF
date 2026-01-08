@@ -23,7 +23,7 @@
 
     {% if success %}
         <script>
-            alert("Event {{ event.id }} has been modified successfully");
+            alert("Event E00000{{ event.id }} has been modified successfully");
             window.opener.location.reload();
             window.close();
         </script>
@@ -43,7 +43,7 @@
             <h3 style="text-align: center; padding-top: 1%">Event Details</h3>
          <div>
              <div style="padding: 1%">
-                <table class="table table-hover table-bordered table-secondary" style="table-layout: fixed; width: 60%; margin: 0 auto; text-align: center">
+                <table class="table table-hover table-bordered table-active" style="table-layout: fixed; width: 60%; margin: 0 auto; text-align: center;">
                     <tr>
                         <th>Event No</th>
                         <td>E00000{{ event.id }}</td>
@@ -178,10 +178,10 @@
                         <th>Documents</th>
                         <td>
                             {% if event.supporting_file_1 %}
-                                <a href="{% url 'event_view' 'view' event.id 1 %}" target="_blank">{{ event.supporting_file_1.name|file_basename }}</a><br>
+                                1. <a href="{% url 'event_view' 'view' event.id 1 %}" target="_blank">{{ event.supporting_file_1.name|file_basename }}</a><br>
                             {% endif %}
                             {% if event.supporting_file_2 %}
-                                <a href="{% url 'event_view' 'view' event.id 2 %}" target="_blank">{{ event.supporting_file_2.name|file_basename }}</a><br>
+                                2. <a href="{% url 'event_view' 'view' event.id 2 %}" target="_blank">{{ event.supporting_file_2.name|file_basename }}</a><br>
                             {% endif %}
                             {% if event.supporting_file_3 %}
                                 <a href="{% url 'event_view' 'view' event.id 3 %}" target="_blank">{{ event.supporting_file_3.name|file_basename }}</a><br>

@@ -27,6 +27,9 @@ def homepage(request):
         return redirect('/login')
     else:
         # for category wise event chart
+        # ..............................
+        # ..............................
+        # ..............................
         total_event = Event.objects.all().count()
 
         a_type_event = Event.objects.filter(event_category='a').count()
@@ -43,6 +46,9 @@ def homepage(request):
         }
 
         # for year wise event chart
+        # ..............................
+        # ..............................
+        # ..............................
         if(request.method == 'GET'):
             form = YearFilterForm()
 
@@ -77,6 +83,32 @@ def homepage(request):
             'labels': labels,
             'data': data,
             'selected_year': selected_year,
+        })
+
+        # responsible department wise event upload
+        # ..............................
+        # ..............................
+        # ..............................
+
+        top_departments = Event.objects.values('responsible_dept__dept_name').annotate(total_events=Count('id')).order_by('-total_events')[:10]
+
+        dept_labels = [d['responsible_dept__dept_name'] for d in top_departments]
+        event_count = [d['total_events'] for d in top_departments]
+
+        context.update({
+            'dept_labels': dept_labels,
+            'event_count': event_count,
+        })
+
+        # Individual wise event upload
+        # ..............................
+        # ..............................
+        # ..............................
+
+        top_uploaders = Event.objects.values('uploaded_by__first_name', 'uploaded_by__last_name', 'uploaded_by__email', 'uploaded_by__profile__department', 'uploaded_by__profile__designation').annotate(total_events=Count('id')).order_by('-total_events')[:10]
+
+        context.update({
+            'top_uploaders': top_uploaders,
         })
 
         return render(request, 'base.html', context)

@@ -62,7 +62,7 @@ class EventForm(ModelForm):
     description = forms.CharField(label='Event Description',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     direct_cause = forms.CharField(label='Direct Cause',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     elimination_suggestion = forms.CharField(label='Elimination Suggestion',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
-    responsible_dept = forms.ModelChoiceField(queryset=Division.objects.all(), label='Responsible Department', required=False)
+    responsible_dept = forms.ModelChoiceField(queryset=DepartmentShop.objects.all(), label='Responsible Department', required=False)
     plant_status = forms.ChoiceField(choices=PLANT_STATUS, label="Plant Status", required=False)
     uploader_shop = forms.ModelChoiceField(queryset=DepartmentShop.objects.all(), label='Reporter Shop/Department', required=False)
     uploader_organization = forms.CharField(label='Reporter Organization',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
@@ -97,7 +97,7 @@ class EventSearchForm(ModelForm):
     event_category = forms.ChoiceField(choices=EVENT_CATEGORY, label="Event Category", required=False)
     facility = forms.ModelChoiceField(queryset=Division.objects.all(), required=False)
     description = forms.CharField(label='Event Description', required=False,
-                                  widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
+                                  widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
 
     class Meta:
         model = Event

@@ -13,7 +13,7 @@
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/SiteScripts/jquery-3.5.1.js' %}"></script>
-    <title>Rooppur Document Management System</title>
+    <title>Rooppur Operating Experience Feedback</title>
 
     <style>
         body {
@@ -66,6 +66,17 @@
             width: 100%;
             z-index: 1030; /* keep footer above everything */
             height: 50px;  /* fixed height for padding calculation */
+        }
+
+        .box
+        {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            min-height: 350px;
+            margin: 2%;
+            height: 500px;
         }
 
     </style>
@@ -177,12 +188,13 @@
             {% if not request.user.is_anonymous %}
                 {% block chart %}
                     {% if request.path == '/' %}
-                        <div class="row">
+                        <div class="row mt-5 mb-4">
 
                         <!-- for category wise event chart -->
-                            <div class="col-6">
-                                <h4 style="margin-left: 5%; padding-top: 1%">Category wise Event</h4><br>
-                                <div id="pie_chart" style="width: 80%">
+                            <div class="col-md-6">
+                                <div class="box">
+                                    <h4 style="margin-left: 5%; padding-top: 1%">Category wise Event</h4><br>
+                                    <div id="pie_chart" style="width: 80%"></div>
                                 </div>
 
                                 <script>
@@ -220,33 +232,35 @@
                             </div>
 
                         <!-- for year-month wise event chart -->
-                            <div class="col-6">
-                                <h4 style="margin-left: 5%; padding-top: 1%">Month wise Event</h4><br>
+                            <div class="col-md-6">
+                                <div class="box">
+                                    <h4 style="margin-left: 5%; padding-top: 1%">Month wise Event</h4><br>
 
-                                <div style="padding-top: 2%">
-                                    <form action="" method="post" id="year_filter_form">
-                                        <table class="table table-hover table-borderless table-sm table-active" style="width: 50%; margin-left: 5%;">
+                                    <div style="padding-top: 2%">
+                                        <form action="" method="post" id="year_filter_form">
+                                            <table class="table table-hover table-borderless table-sm table-active" style="width: 50%; margin-left: 5%;">
 
-                                            <tr style="text-align: center">
-                                                {% csrf_token %}
-                                                {% for field in form %}
-                                                    <td>
-                                                        {{ field.label_tag }}
-                                                    </td>
-                                                    <td>
-                                                        {{ field }}
-                                                    </td>
-                                                    <td>
-                                                        <input class="btn btn-info" type="submit" value="Search">
-                                                    </td>
-                                                {% endfor %}
-                                            </tr>
-                                        </table>
-                                    </form>
+                                                <tr style="text-align: center">
+                                                    {% csrf_token %}
+                                                    {% for field in form %}
+                                                        <td>
+                                                            {{ field.label_tag }}
+                                                        </td>
+                                                        <td>
+                                                            {{ field }}
+                                                        </td>
+                                                        <td>
+                                                            <input class="btn btn-info" type="submit" value="Search">
+                                                        </td>
+                                                    {% endfor %}
+                                                </tr>
+                                            </table>
+                                        </form>
 
-                                </div>
+                                    </div>
 
-                                <div id="line_chart" style="width: 80%">
+                                    <div id="line_chart" style="width: 80%">
+                                    </div>
                                 </div>
 
                                 <script>
@@ -254,7 +268,7 @@
                                   var options = {
                                     chart: {
                                       type: 'line',
-                                      height: 350
+                                      height: 250
                                     },
                                     series: [{
                                       name: 'Events',
@@ -280,6 +294,81 @@
                                 </script>
 
                             </div>
+                        </div>
+
+                        <div class="row mt-5 mb-4">
+
+                        <!-- for top department wise event chart -->
+                            <div class="col-md-6">
+                                <div class="box">
+                                    <h4 style="margin-left: 5%; padding-top: 1%">Top Responsible Department</h4><br>
+                                    <div id="deptBarChart" style="width: 80%"></div>
+                                </div>
+
+                                <script>
+                                    var options = {
+                                      series: [{
+                                          data: {{ event_count|safe }}
+                                    }],
+                                      chart: {
+                                      type: 'bar',
+                                      height: 350
+                                    },
+                                    plotOptions: {
+                                      bar: {
+                                        borderRadius: 4,
+                                        borderRadiusApplication: 'end',
+                                        horizontal: true,
+                                      }
+                                    },
+                                    dataLabels: {
+                                      enabled: false
+                                    },
+                                    xaxis: {
+                                      categories: {{ dept_labels|safe }},
+                                    }
+                                    };
+
+                                    var chart = new ApexCharts(document.querySelector("#deptBarChart"), options);
+                                    chart.render();
+
+                                </script>
+
+                            </div>
+
+                        <!-- for individual event upload table -->
+                            <div class="col-md-6">
+                                <div class="box">
+                                    <h4 style="margin-left: 5%; padding-top: 1%">Top Uploaders</h4><br>
+
+                                    <div>
+                                        <table class="table table-hover table-bordered table-warning" style="margin: 0 auto">
+                                            <tr>
+                                                <th>SL No</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Department</th>
+                                                <th>Designation</th>
+                                                <th>Uploaded Event</th>
+                                            </tr>
+                                            {% if top_uploaders %}
+                                                {% for each in top_uploaders %}
+                                                    <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ each.uploaded_by__first_name }} {{ each.uploaded_by__last_name }}</td>
+                                                        <td>{{ each.uploaded_by__email }}</td>
+                                                        <td>{{ each.uploaded_by__profile__designation }}</td>
+                                                        <td>{{ each.uploaded_by__profile__department }}</td>
+                                                        <td>{{ total_counts }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
                         </div>
 
                     {% endif %}

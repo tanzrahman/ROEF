@@ -41,7 +41,7 @@ class EventLog(models.Model):
     ip = models.CharField(max_length=256, blank=True, null=True)
 
     class Meta:
-        db_table = 'task_log'
+        db_table = 'event_log'
 
 
 class DocumentLog(models.Model):
@@ -130,3 +130,15 @@ class NoticeBoard(models.Model):
 
     class Meta:
         db_table = 'notice_board'
+
+
+class EventEditLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    event = models.ForeignKey(Event, on_delete=models.DO_NOTHING, blank=True, null=True)
+    edited_fields = models.TextField(blank=True, null=True, default='')
+    edited_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    edited_at = models.DateTimeField(blank=True, null=True, default=datetime.datetime.now())
+    ip = models.CharField(max_length=32, blank=True, null=True)
+
+    class Meta:
+        db_table = 'event_edit_log'

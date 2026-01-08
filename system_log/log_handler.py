@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from system_log.models import *
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from event_management.models import SystemParameter, EventEditLog
+from event_management.models import SystemParameter
 
 
 def login_log(request, page_no=None):

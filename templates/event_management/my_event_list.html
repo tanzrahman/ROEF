@@ -68,65 +68,35 @@
          <div>
              <div style="padding: 2%">
                 <table class="table table-hover table-bordered table-active" style="table-layout: fixed; width: 100%">
-                    <tr class="table-success" style="text-align: center;">
-                        <th style="width:3%">Sl. No</th>
-                        <th>Event No</th>
-                        <th>Description</th>
-                        <th>Event Category</th>
-                        <th>Event Date</th>
-                        <th>Registration Date</th>
-                        <th>Responsible Department</th>
-                        <th>Documents</th>
-                        <th>Approval Status</th>
-                        <th>Approved/Rejected by</th>
-                        <th>Approval Date</th>
-                        <th>Resolve Status</th>
-                        <th>Resolved by</th>
-                    </tr>
-
                     {% for event in event_list %}
-                    <tr style="text-align: center">
-                        <td>{{ forloop.counter }}</td>
-                        <td><a href="/event/event_details/{{ event.id }}" class="btn btn-sm btn-outline-primary">E00000{{ event.id }}</a></td>
-                        <td>{{ event.description }}</td>
-                        <td>{{ event.event_category }}</td>
-                        <td>{{ event.event_date }}</td>
-                        <td>{{ event.uploaded_date }}</td>
-                        <td>{{ event.responsible_dept }}</td>
-                        <td>
-                            {% if event.supporting_file_1 %}
-                                <a href="{% url 'event_view' 'view' event.id 1 %}" target="_blank">{{ event.supporting_file_1.name|file_basename }}</a><br>
-                            {% endif %}
-                            {% if event.supporting_file_2 %}
-                                <a href="{% url 'event_view' 'view' event.id 2 %}" target="_blank">{{ event.supporting_file_2.name|file_basename }}</a><br>
-                            {% endif %}
-                            {% if event.supporting_file_3 %}
-                                <a href="{% url 'event_view' 'view' event.id 3 %}" target="_blank">{{ event.supporting_file_3.name|file_basename }}</a><br>
-                            {% endif %}
-                        </td>
-                        {% if event.approval_status == 0 %}
-                            <td style="font-weight: bold">Pending</td>
-                        {% elif event.approval_status == 1 %}
-                            <td style="color: green; font-weight: bold">Approved</td>
+                        {% if event.get_resolution_status_display == 'Resolved' %}
+                        <tr>
+                            <h6>
+                                <span style="color: green">{{ forloop.counter }}. (E00000{{ event.id }}) </span><a href="/event/event_details/{{ event.id }}">{{ event.description }}</a>
+                            </h6>
+                            <span>
+                                <b>Category:</b> {{ event.event_category }} <b>Time:</b> {{ event.event_date }} {{ event.event_time }}
+                                <b>Resolution Status: </b> <span style="color: green">{{ event.get_resolution_status_display }}</span>
+                            </span>
+                        </tr>
+
                         {% else %}
-                            <td  style="color: darkred; font-weight: bold">Rejected</td>
+                        <tr>
+                            <h6>
+                                <span>{{ forloop.counter }}. (E00000{{ event.id }}) </span><a href="/event/event_details/{{ event.id }}">{{ event.description }}</a>
+                            </h6>
+                            <span>
+                                <b>Category:</b> {{ event.event_category }} <b>Time:</b> {{ event.event_date }} {{ event.event_time }}
+                                <b>Resolution Status: </b>{{ event.get_resolution_status_display }}</span>
+                            </span>
+                        </tr>
+
                         {% endif %}
-                        {% if event.approved_by %}
-                            <td>{{ event.approved_by }}</td>
-                            <td>{{ event.approval_date }}</td>
-                        {% else %}
-                            <td>Not yet approved</td>
-                            <td>Not yet approved</td>
-                        {% endif %}
-                        {% if event.resolution_status %}
-                            <td style="color: green; font-weight: bold">{{ event.get_resolution_status_display }}</td>
-                            <td>{{ event.resolved_by }}</td>
-                        {% else %}
-                            <td>Not yet Resolved</td>
-                            <td>Not yet Resolved</td>
-                        {% endif %}
-                    </tr>
+
+                        <br><br>
+
                     {% endfor %}
+
                 </table>
 
              <div id="pagination_div">

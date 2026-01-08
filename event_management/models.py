@@ -147,11 +147,16 @@ class Event(models.Model):
         db_table = 'event'
 
     def __str__(self):
-        return self.description
+        return str(self.id)
     def supervisor_list(self):
         return list(self.supervisor.all())
     def executor_list(self):
         return list(self.executor.all())
+    def expired_pending_event(self):
+        return (
+                    timezone.localdate() - self.uploaded_date >= datetime.timedelta(days=2)
+                    and self.approval_status == 0
+               )
 
 class File(models.Model):
     hash = models.CharField(primary_key=True, max_length=256, null=False, blank=False)
@@ -196,14 +201,3 @@ class MsgInstructionAction(models.Model):
 
     class Meta:
         db_table = 'msg_instruction_action'
-
-class EventEditLog(models.Model):
-    id = models.AutoField(primary_key=True)
-    event = models.ForeignKey(Event, on_delete=models.DO_NOTHING, blank=True, null=True)
-    edited_fields = models.TextField(blank=True, null=True, default='')
-    edited_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
-    edited_at = models.DateTimeField(blank=True, null=True, default=datetime.datetime.now())
-    ip = models.CharField(max_length=32, blank=True, null=True)
-
-    class Meta:
-        db_table = 'event_edit_log'
