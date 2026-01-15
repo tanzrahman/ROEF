@@ -90,7 +90,7 @@
         <div id="page-content-wrapper">
             <nav class="navbar navbar-expand-lg navbar-dark border-bottom py-3" style="background-color: #000033">
                 <img src="{% static '\npcbl.png' %}" alt="npcbl logo" width="50" height="50">
-                <div class="collapse navbar-collapse" style="margin-left: 30%">
+                <div class="collapse navbar-collapse" style="margin-left: 2%">
                     <ul class="navbar-nav mr-auto">
                         {% if not request.user.is_anonymous %}
 
@@ -109,9 +109,128 @@
                                         <a class="dropdown-item" href="/event/my_event">My Uploaded Event</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="/event/add_event">Add Event</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Create New Good Practice</a>
                                     </div>
                                 </li>
                             </div>
+
+                            <div class="dropdown" style="float:left;">
+                                <li class="nav-item">
+                                    <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                        Internal OE
+                                    </button>
+                                    <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
+                                        <a class="dropdown-item" href="#">Dashboard</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Low Level Event</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Extended Low Level Event</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Defect</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Deviation</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Violation</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Corrective Action</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Good Practice & Benchmarking</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Other</a>
+                                    </div>
+                                </li>
+                            </div>
+
+                            <div class="dropdown" style="float:left;">
+                                <li class="nav-item">
+                                    <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                        External OE
+                                    </button>
+                                    <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
+                                        <a class="dropdown-item" href="#">Dashboard</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">IAEA</a>
+                                        <div class="dropdown-divider"></div>
+                                        <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                            WANO
+                                        </button>
+                                            <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #8fd19e">
+                                                <a class="dropdown-item" href="#">ALL</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">JIT</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">SOER</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">SER</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">WER</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Other</a>
+                                            </div>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Other</a>
+                                    </div>
+                                </li>
+                            </div>
+
+                            <div class="dropdown" style="float:left;">
+                                <li class="nav-item">
+                                    <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                        PGOEA
+                                    </button>
+                                    <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
+                                        <a class="dropdown-item" href="#">Dashboard</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Call for Agenda</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">List of Previous Meeting Agenda</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">List of Protocol</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Other</a>
+                                    </div>
+                                </li>
+                            </div>
+
+                            <li class="nav-item">
+                                    <a class="nav-link" href="#" style="color:#ffffff"><b>Events for Screening Meeting</b></a>
+                            </li>
+
+                            <li class="nav-item">
+                                    <a class="nav-link" href="#" style="color:#ffffff"><b>Reports & Analytics</b></a>
+                            </li>
+
+                            <li class="nav-item">
+                                    <a class="nav-link" href="#" style="color:#ffffff"><b>Nuclear News</b></a>
+                            </li>
+
+                            <div class="dropdown" style="float:left;">
+                                <li class="nav-item">
+                                    <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                        Unstructured Data
+                                    </button>
+                                    <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
+                                        <a class="dropdown-item" href="#">Dashboard</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">All Unstructured Data</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Walkdown Schedules</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Walkdown Reports</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Inspection/Audit Reports</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">BAERA/IAEA/WANO Reports</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Miscellaneous</a>
+                                    </div>
+                                </li>
+                            </div>
+
+                            <li class="nav-item">
+                                    <a class="nav-link" href="#" style="color:#ffffff"><b>List of Documents</b></a>
+                            </li>
 
                             <div class="dropdown" style="float:left;">
                                 <li class="nav-item">
@@ -166,7 +285,7 @@
                         <div class="dropdown" style="float:left;">
                             <li class="nav-item">
                                 {% if not request.user.is_anonymous %}
-                                <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                <button type="button" class="btn btn-outline-warning dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                     {{ request.user }}
                                 </button>
                                     <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
