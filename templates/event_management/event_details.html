@@ -10,13 +10,12 @@
         th {
             white-space: normal !important;
             word-wrap: break-word !important;
-            font-size: 12px;
+            font-size: 14px;
             vertical-align: middle;
-            text-align: center;
         }
         td {
             word-wrap: break-word;
-            font-size: 12px;
+            font-size: 14px;
             vertical-align: middle;
         }
     </style>
@@ -42,141 +41,200 @@
         {% if event %}
             <h3 style="text-align: center; padding-top: 1%">Event Details</h3>
          <div>
-             <div style="padding: 1%">
-                <table class="table table-hover table-bordered table-active" style="table-layout: fixed; width: 60%; margin: 0 auto; text-align: center;">
+             <div style="margin: 1%">
+                <table class="table table-hover table-bordered table-light" style="table-layout: fixed; width: 60%; margin: 0 auto;">
                     <tr>
-                        <th>Event No</th>
-                        <td>E00000{{ event.id }}</td>
+                        <td>
+                            <b>Event ID:</b><br>
+                            E00000{{ event.id }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Unit</th>
-                        <td>{{ event.get_unit_display }}</td>
+                        <td>
+                            <b>Unit:</b><br>
+                            {{ event.get_unit_display }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Facility</th>
-                        <td>{{ event.facility }}</td>
+                        <td>
+                            <b>Facility:</b><br>
+                            {{ event.facility }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Elavation</th>
-                        <td>{{ event.elevation }}</td>
+                        <td>
+                            <b>Elevation:</b><br>
+                            {{ event.elevation }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Room No</th></th>
-                        <td>{{ event.room_no }}</td>
+                        <td>
+                            <b>Room No:</b><br>
+                            {{ event.room_no }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Additional Location Info</th>
-                        <td>{{ event.additional_location_info }}</td>
+                        <td>
+                            <b>Additional Location Information:</b><br>
+                            {{ event.additional_location_info }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Event Date</th>
-                        <td>{{ event.event_date }}</td>
-                    </tr>
-                    <tr><th>Event Time</th>
-                        <td>{{ event.event_time }}</td>
-                    </tr>
-                    <tr>
-                        <th>Event Category</th>
-                        <td>{{ event.event_category }}</td>
+                        <td>
+                            <b>Event Date-Time:</b><br>
+                            {{ event.event_date }}, {{ event.event_time }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Description</th>
-                        <td>{{ event.description }}</td>
+                        <td>
+                            <b>Event Category:</b><br>
+                            {{ event.event_category }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Registration Date</th>
-                        <td>{{ event.uploaded_date }}</td>
+                        <td>
+                            <b>Description:</b><br>
+                            {{ event.description }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Regulatory Norms Violation</th>
-                        <td>{{ event.regulatory_norms_violation }}</td>
+                        <td>
+                            <b>Registration Date:</b><br>
+                            {{ event.uploaded_date }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Direct Cause</th>
-                        <td>{{ event.direct_cause }}</td>
+                        <td>
+                            <b>Regulatory Norms Violation:</b><br>
+                            {{ event.regulatory_norms_violation }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Steps to Resolve</th>
-                        <td>{{ event.action_taken }}</td>
+                        <td>
+                            <b>Direct Cause:</b><br>
+                            {{ event.direct_cause }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Action to Prevent Recurrence Event</th>
-                        <td>{{ event.action_to_prevent_recurrence_event }}</td>
+                        <td>
+                            <b>Action Taken:</b><br>
+                            {{ event.action_taken }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Elimination Suggestion</th>
-                        <td>{{ event.elimination_suggestion }}</td>
+                        <td>
+                            <b>Action to Prevent Recurrence Event:</b><br>
+                            {{ event.action_to_prevent_recurrence_event }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Rersponsible Department</th>
-                        <td>{{ event.responsible_dept }}</td>
+                        <td>
+                            <b>Elimination Suggestion:</b><br>
+                            {{ event.elimination_suggestion }}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Plant Status</th>
-                        <td>{{ event.plant_status }}</td>
+                        <td>
+                            <b>Responsible Department:</b><br>
+                            {{ event.responsible_dept }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Plant Status:</b><br>
+                            {{ event.plant_status }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Identity Confidentiality</b><br>
+                            {% if event.keep_identity_confidential %} <span style="color:red">Yes</span> {% else %} No {% endif %}
+                        </td>
                     </tr>
                     {% if event.keep_identity_confidential %}
                         <tr>
-                            <th>Reporter</th>
-                            <td>NA</td>
+                            <td>
+                                <b>Reporter:</b><br>
+                                NA
+                            </td>
                         </tr>
                         <tr>
-                            <th>Reporter Shop</th>
-                            <td>NA</td>
+                            <td>
+                                <b>Reporter Shop:</b><br>
+                                NA
+                            </td>
                         </tr>
                         <tr>
-                            <th>Reporter Organization</th>
-                            <td>NA</td>
+                            <td>
+                                <b>Reporter Organization:</b><br>
+                                NA
+                            </td>
                         </tr>
                         <tr>
-                            <th>Reporter Designation</th>
-                            <td>NA</td>
+                            <td>
+                                <b>Reporter Designation:</b><br>
+                                NA
+                            </td>
                         </tr>
                         <tr>
-                            <th>Reporter Phone</th>
-                            <td>NA</td>
+                            <td>
+                                <b>Reporter Phone:</b><br>
+                                NA
+                            </td>
                         </tr>
                         <tr>
-                            <th>Reporter Bio ID</th>
-                            <td>NA</td>
+                            <td>
+                                <b>Reporter Bio ID:</b><br>
+                                NA
+                            </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <th>Reporter</th>
-                            <td>{{ event.uploaded_by }}</td>
+                            <td>
+                                <b>Reporter:</b><br>
+                                {{ event.uploaded_by }}
+                            </td>
                         </tr>
                         <tr>
-                            <th>Reporter Shop</th>
-                            <td>{{ event.uploader_shop }}</td>
+                            <td>
+                                <b>Reporter Shop:</b><br>
+                                {{ event.uploader_shop }}
+                            </td>
                         </tr>
                         <tr>
-                            <th>Reporter Organization</th>
-                            <td>{{ event.uploader_organization }}</td>
+                            <td>
+                                <b>Reporter Organization</b><br>
+                                {{ event.uploader_organization }}
+                            </td>
                         </tr>
                         <tr>
-                            <th>Reporter Designation</th>
-                            <td>{{ event.uploader_designation }}</td>
+                            <td>
+                                <b>Reporter Designation</b><br>
+                                {{ event.uploader_designation }}
+                            </td>
                         </tr>
                         <tr>
-                            <th>Reporter Phone</th>
-                            <td>{{ event.uploader_phone }}</td>
+                            <td>
+                                <b>Reporter Phone:</b><br>
+                                {{ event.uploader_phone }}
+                            </td>
                         </tr>
                         <tr>
-                            <th>Reporter Bio ID</th>
-                            <td>{{ event.uploader_bioID }}</td>
+                            <td>
+                                <b>Reporter Bio ID:</b><br>
+                                {{ event.uploader_bioID }}
+                            </td>
                         </tr>
                     {% endif %}
                     <tr>
-                        <th>Information Source</th>
-                        <td>{{ event.information_source }}</td>
-                    </tr>
-                    <tr>
-                        <th>Identity Confidentiality</th>
-                        <td>{% if event.keep_identity_confidential %} <span style="color:red">Yes</span> {% else %} No {% endif %}</td>
-                    </tr>
-                    <tr>
-                        <th>Documents</th>
                         <td>
+                            <b>Information Source:</b><br>
+                            {{ event.information_source }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Supporting Files:</b><br>
                             {% if event.supporting_file_1 %}
                                 1. <a href="{% url 'event_view' 'view' event.id 1 %}" target="_blank">{{ event.supporting_file_1.name|file_basename }}</a><br>
                             {% endif %}
@@ -189,8 +247,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Supervisors</th>
                         <td>
+                            <b>Assigned Supervisors:</b><br>
                             {% for each in event.supervisor_list %}
                                 {{ each.first_name }} {{ each.last_name }}
                                 ({{ each.username }})<br>
@@ -198,8 +256,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Executors</th>
                         <td>
+                            <b>Assigned Executors:</b><br>
                             {% for each in event.executor_list %}
                                 {{ each.first_name }} {{ each.last_name }}
                                 ({{ each.username }})<br>
@@ -209,40 +267,44 @@
 
                     {% if event.resolution_status %}
                         <tr>
-                            <th>Resolve Status</th>
-                            <td style="color: green; font-weight: bold">{{ event.get_resolution_status_display }}</td>
+                            <td>
+                                <b>Event Resolution Status:</b><br>
+                                <span style="color: green; font-weight: bold">{{ event.get_resolution_status_display }}</span>
+                            </td>
                         </tr>
                         <tr>
-                            <th>Resolved by</th>
-                            <td>{{ event.resolved_by }}</td>
+                            <td>
+                                <b>Resolved by:</b><br>
+                                {{ event.resolved_by }}
+                            </td>
                         </tr>
                         <tr>
-                            <th>Resolved Date</th>
-                            <td>{{ event.resolved_date }}</td>
+                            <td>
+                                <b>Resolved Date</b>:</b><br>
+                                {{ event.resolved_date }}
+                            </td>
                         </tr>
                         <tr>
-                            <th>Resolver Remarks</th>
-                            <td>{{ event.resolver_remarks }}</td>
+                            <td>
+                                <b>Resolver Remarks:</b><br>
+                                {{ event.resolver_remarks }}
+                            </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <th>Resolve Status</th>
-                            <td>Not yet Approved</td>
+                            <td>
+                                <b>Event Resolution Status:</b><br>
+                                Not yet Approved
+                            </td>
                         </tr>
                     {% endif %}
 
                     <tr>
-                        <th>Event Approval</th>
-                        <td>
-                            <a style="margin-right: 50%" href="/event/approval/{{ event.id }}?action=reject" class="btn btn-outline-danger" target="_blank">Reject</a>
-                            <a href="/event/approval/{{ event.id }}?action=approve" class="btn btn-outline-success" target="_blank">Approve</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Event Action</th>
-                        <td>
-                            <a style="margin-right: 40%" href="/event/edit/{{ event.id }}" class="btn btn-primary" target="_blank">Edit Event</a>
-                            <a href="/event/resolution/{{ event.id }}" class="btn btn-info" target="_blank">Event Resolution</a>
+                        <td style="text-align: center">
+                            <a style="margin: 4%" href="/event/approval/{{ event.id }}?action=reject" class="btn btn-danger" target="_blank">Reject</a>
+                            <a style="margin: 4%" href="/event/approval/{{ event.id }}?action=approve" class="btn btn-success" target="_blank">Approve</a>
+                            <a style="margin: 4%" href="/event/edit/{{ event.id }}" class="btn btn-primary" target="_blank">Edit Event</a>
+                            <a style="margin: 4%" href="/event/resolution/{{ event.id }}" class="btn btn-info" target="_blank">Event Resolution</a>
                         </td>
                     </tr>
 

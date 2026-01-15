@@ -67,15 +67,15 @@
         {% if event_list %}
          <div>
              <div style="padding: 2%">
-                <table class="table table-hover table-bordered table-active" style="table-layout: fixed; width: 100%">
+                <table class="table table-hover table-bordered table-light" style="table-layout: fixed; width: 100%">
                     {% for event in event_list %}
                         {% if event.get_resolution_status_display == 'Resolved' %}
                         <tr>
                             <h6>
-                                <span style="color: green">{{ forloop.counter }}. (E00000{{ event.id }}) </span><a href="/event/event_details/{{ event.id }}">{{ event.description }}</a>
+                                <span title="{{ event.description|escape }}" style="color: green">{{ forloop.counter }}. (E00000{{ event.id }}) </span><a href="/event/event_details/{{ event.id }}">{{ event.description|truncatewords:75 }}</a>
                             </h6>
                             <span>
-                                <b>Category:</b> {{ event.event_category }} <b>Time:</b> {{ event.event_date }} {{ event.event_time }}
+                                <b>Category:</b> {{ event.event_category }} <b>Date-Time:</b> {{ event.event_date }}, {{ event.event_time }}
                                 <b>Resolution Status: </b> <span style="color: green">{{ event.get_resolution_status_display }}</span>
                             </span>
                         </tr>
@@ -123,6 +123,7 @@
         {% endif %}
 
         <br> <br>
+
     </div>
 
 {% endblock %}
