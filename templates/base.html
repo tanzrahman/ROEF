@@ -105,7 +105,7 @@
 
     <main>
         <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-dark border-bottom py-3" style="background-color: #000033">
+            <nav class="navbar navbar-expand-lg navbar-dark border-bottom py-3" style="background-color: #000033; font-size: large">
                 <img src="{% static '\npcbl.png' %}" alt="npcbl logo" width="50" height="50">
                 <div class="collapse navbar-collapse" style="margin-left: 2%">
                     <ul class="navbar-nav mr-auto">
@@ -113,7 +113,7 @@
 
                             <div class="dropdown" style="float:left;">
                                 <li class="nav-item">
-                                    <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                    <button type="button" class="btn btn-sm btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                         Event Management
                                     </button>
                                     <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
@@ -134,7 +134,7 @@
 
                             <div class="dropdown" style="float:left;">
                                 <li class="nav-item">
-                                    <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                    <button type="button" class="btn btn-sm btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                         Internal OE
                                     </button>
                                     <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
@@ -161,7 +161,7 @@
 
                             <div class="dropdown" style="float:left;">
                                 <li class="nav-item">
-                                    <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                    <button type="button" class="btn btn-sm btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                         External OE
                                     </button>
                                     <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
@@ -173,7 +173,7 @@
                                             <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                                 WANO
                                             </button>
-                                            <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #8fd19e">
+                                            <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #bee5eb">
                                                 <a class="dropdown-item" href="#">ALL</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="#">JIT</a>
@@ -195,7 +195,7 @@
 
                             <div class="dropdown" style="float:left;">
                                 <li class="nav-item">
-                                    <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                    <button type="button" class="btn btn-sm btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                         PGOEA
                                     </button>
                                     <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
@@ -213,20 +213,20 @@
                             </div>
 
                             <li class="nav-item">
-                                    <a class="nav-link" href="#" style="color:#ffffff"><b>Events for Screening Meeting</b></a>
+                                    <a type="button" class="btn btn-sm btn-outline-light" style="font-weight: bold" href="#">Screening Meeting</a>
                             </li>
 
                             <li class="nav-item">
-                                    <a class="nav-link" href="#" style="color:#ffffff"><b>Reports & Analytics</b></a>
+                                    <a type="button" class="btn btn-sm btn-outline-light" style="font-weight: bold" href="#">Reports & Analytics</a>
                             </li>
 
                             <li class="nav-item">
-                                    <a class="nav-link" href="#" style="color:#ffffff"><b>Nuclear News</b></a>
+                                    <a type="button" class="btn btn-sm btn-outline-light" style="font-weight: bold" href="#">Nuclear News</a>
                             </li>
 
                             <div class="dropdown" style="float:left;">
                                 <li class="nav-item">
-                                    <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                    <button type="button" class="btn btn-sm btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                         Unstructured Data
                                     </button>
                                     <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
@@ -248,13 +248,13 @@
                             </div>
 
                             <li class="nav-item">
-                                    <a class="nav-link" href="#" style="color:#ffffff"><b>List of Documents</b></a>
+                                    <a type="button" class="btn btn-sm btn-outline-light" style="font-weight: bold" href="#">List of Documents</a>
                             </li>
 
                             <div class="dropdown" style="float:left;">
                                 <li class="nav-item">
                                     {% if request.user.profile.access_level != 50 %}
-                                    <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                    <button type="button" class="btn btn-sm btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                         Assigned Event
                                     </button>
                                         <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
@@ -271,7 +271,7 @@
                                 <div class="dropdown" style="float:left;">
                                     <li class="nav-item">
                                         {% if not request.user.is_anonymous %}
-                                        <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                        <button type="button" class="btn btn-sm btn-outline-light dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                             System Log
                                         </button>
                                             <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">
@@ -290,7 +290,7 @@
                                 </div>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/manpower/user/all" style="color:#ffffff"><b>All Users</b></a>
+                                    <a type="button" class="btn btn-sm btn-outline-light" style="font-weight: bold" href="/manpower/user/all">All Users</a>
                                 </li>
                             {% endif %}
 
@@ -304,7 +304,7 @@
                         <div class="dropdown" style="float:left;">
                             <li class="nav-item">
                                 {% if not request.user.is_anonymous %}
-                                <button type="button" class="btn btn-outline-warning dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
+                                <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown" style="font-weight: bold">
                                     {{ request.user }}
                                 </button>
                                     <div class="dropdown-menu" style="font-size: 14px; text-align: center; background-color: #d3d9df">

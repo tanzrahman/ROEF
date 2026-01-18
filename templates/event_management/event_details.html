@@ -299,12 +299,18 @@
                         </tr>
                     {% endif %}
 
+                <br><br>
+
                     <tr>
                         <td style="text-align: center">
-                            <a style="margin: 4%" href="/event/approval/{{ event.id }}?action=reject" class="btn btn-danger" target="_blank">Reject</a>
-                            <a style="margin: 4%" href="/event/approval/{{ event.id }}?action=approve" class="btn btn-success" target="_blank">Approve</a>
-                            <a style="margin: 4%" href="/event/edit/{{ event.id }}" class="btn btn-primary" target="_blank">Edit Event</a>
-                            <a style="margin: 4%" href="/event/resolution/{{ event.id }}" class="btn btn-info" target="_blank">Event Resolution</a>
+                            <a style="margin: 1%; float: right" href="/event/approval/{{ event.id }}?action=approve" class="btn btn-success" target="_blank">Approve</a>
+                            <a style="margin: 1%; float: right" href="/event/approval/{{ event.id }}?action=reject" class="btn btn-warning" target="_blank">Reject</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center">
+                            <a style="margin: 1%; float: right" href="/event/edit/{{ event.id }}" class="btn btn-primary" target="_blank">Edit Event</a>
+                            <a style="margin: 1%; float: right" href="/event/resolution/{{ event.id }}" class="btn btn-danger" target="_blank">Event Resolution</a>
                         </td>
                     </tr>
 
