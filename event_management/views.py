@@ -125,8 +125,8 @@ def event_request_handler(request, action="", event_id="", file_no=None):
             return my_event_list(request)
         elif(action == 'add_event'):
             return add_event(request)
-        elif(action == 'draft_save'):
-            return event_draft_save(request)
+        elif(action == 'draft_saved'):
+            return event_draft_saved(request)
         elif(action == 'view'):
             return event_file_view(request, event_id, file_no)
         elif(action == 'event_details'):
@@ -292,15 +292,27 @@ def add_event(request):
 
     if request.method == 'POST':
         form = EventForm(request.POST, request.FILES)
+        action = request.POST.get('action')
         if form.is_valid():
-            event_form = form.save(commit=False)
-            event_form.uploaded_by = request.user
-            event_form.uploaded_date = datetime.date.today()
-            event_form.submission_status = 1
-            event_form.save()
+            if(action == 'Submit Event'):
+                event_form = form.save(commit=False)
+                event_form.uploaded_by = request.user
+                event_form.uploaded_date = datetime.date.today()
+                event_form.submission_status = 1
+                event_form.save()
 
-            # notifiyer = threading.Thread(target=send_notification, args=(task_id,))
-            # notifiyer.start()
+                # notifiyer = threading.Thread(target=send_notification, args=(task_id,))
+                # notifiyer.start()
+
+            elif(action == 'Save as Draft'):
+                event_form = form.save(commit=False)
+                event_form.uploaded_by = request.user
+                event_form.uploaded_date = datetime.date.today()
+                event_form.submission_status = 0
+                event_form.save()
+
+            else:
+                pass
 
             context.update({'success': 'Event has been uploaded successfully'})
         else:
@@ -309,30 +321,76 @@ def add_event(request):
 
     return render(request, 'event_management/add_event.html', context)
 
-@require_POST
-def event_draft_save(request):
-    initial = {}
-    form = EventForm()
-    context = {'form': form}
+def event_draft_saved(request):
+    page_no = 1
+    no_of_items = 100
 
-    if request.method == 'POST':
-        form = EventForm(request.POST, request.FILES)
-        if form.is_valid():
-            event_form = form.save(commit=False)
-            event_form.uploaded_by = request.user
-            event_form.uploaded_date = datetime.date.today()
-            event_form.submission_status = 0
-            event_form.save()
+    if (request.GET.get('page_no')):
+        page_no = int(request.GET.get('page_no'))
 
-            # notifiyer = threading.Thread(target=send_notification, args=(task_id,))
-            # notifiyer.start()
+    search_form = EventSearchForm(initial={'user': request.user})
+    filters = []
+    if (request.GET):
+        search_form = EventSearchForm(request.GET, initial={'user': request.user})
+        if (search_form.is_valid()):
+            for each in search_form.changed_data:
+                # if ('date' in each):
+                #     if ('upload_date_from' in each):
+                #         field_name = each.rsplit('_', 1)[0]
+                #         date_filter = field_name + "__gte"
+                #         filters.append(Q(**{date_filter: search_form.cleaned_data[each]}))
+                #         continue
+                #     if ('upload_date_to' in each):
+                #         field_name = each.rsplit('_', 1)[0]
+                #         date_filter = field_name + "__lte"
+                #         filters.append(Q(**{date_filter: search_form.cleaned_data[each]}))
+                #         continue
+                # if (each == 'division'):
+                #     filters.append(Q(**{each: search_form.cleaned_data[each]}))
+                #     continue
+                if (each == 'facility'):
+                    filters.append(Q(**{each: search_form.cleaned_data[each]}))
+                    continue
+                if (each == 'event_category'):
+                    filters.append(Q(**{'event_category__icontains': search_form.cleaned_data[each].upper()}))
+                    continue
+                if ('description' in each):
+                    filters.append(Q(**{'description__icontains': search_form.cleaned_data[each].upper()}))
+                    continue
+                else:
+                    filters.append(Q(**{each: search_form.cleaned_data[each]}))
 
-            context.update({'success': 'Event has been uploaded successfully'})
-        else:
-            context.update({'error': 'Error! Try again with valid data'})
-            print("error: ", form.errors)
+    searched_doc = 0
 
-    return render(request, 'event_management/add_event.html', context)
+    if (len(filters) > 0):
+        event_list = Event.objects.filter(reduce(operator.and_, filters)).filter(uploaded_by=request.user, submission_status=0)
+        total_event_count = event_list.count()
+    else:
+        event_list = Event.objects.filter(uploaded_by=request.user, submission_status=0).order_by('-uploaded_date')
+        total_event_count = event_list.count()
+
+    paginator = Paginator(event_list, no_of_items)
+
+    try:
+        event_list = paginator.page(page_no)
+
+    except PageNotAnInteger:
+        event_list = paginator.page(page_no)
+
+    except EmptyPage:
+        event_list = paginator.page(paginator.num_pages)
+
+    context = {'event_list': event_list, 'total_event_count': total_event_count}
+
+    if (len(filters) > 0):
+        context.update({
+            'event_list': event_list,
+        })
+    context.update({
+        'form': search_form
+    })
+
+    return render(request, 'event_management/my_event_list.html', context)
 
 def event_file_view(request, event_id, file_no):
     event = get_object_or_404(Event, id=event_id)

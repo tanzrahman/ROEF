@@ -72,7 +72,7 @@
                         {% if event.get_resolution_status_display == 'Resolved' %}
                         <tr>
                             <h6>
-                                <span title="{{ event.description|escape }}" style="color: green">{{ forloop.counter }}. (E00000{{ event.id }}) </span><a href="/event/event_details/{{ event.id }}">{{ event.description|truncatewords:75 }}</a>
+                                <span title="{{ event.description|escape }}" style="color: green">{{ forloop.counter }}. (E-00000{{ event.id }}-{{ event.uploaded_date.year }}) </span><a href="/event/event_details/{{ event.id }}">{{ event.description|truncatewords:75 }}</a>
                             </h6>
                             <span>
                                 <b>Category: </b>{{ event.get_event_category_display }} |
@@ -86,7 +86,7 @@
                         {% else %}
                         <tr>
                             <h6>
-                                <span>{{ forloop.counter }}. (E00000{{ event.id }}) </span><a href="/event/event_details/{{ event.id }}">{{ event.description }}</a>
+                                <span>{{ forloop.counter }}. (E-00000{{ event.id }}-{{ event.uploaded_date.year }}) </span><a href="/event/event_details/{{ event.id }}">{{ event.description }}</a>
                             </h6>
                             <span>
                                 <b>Category:</b> {{ event.event_category }} <b>Time:</b> {{ event.event_date }} {{ event.event_time }}

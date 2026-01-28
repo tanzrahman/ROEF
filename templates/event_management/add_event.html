@@ -60,25 +60,15 @@
 
                     <br>
 
-                    <div style="margin-left: 50%">
-                        <form method="post" action="/event/draft_save">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-lg btn-info">
-                                Save as Draft
-                            </button>
-                            <!--<a href="/admin_dms_control/auth/user/{{ each.id }}/change/" target="_blank" class="btn btn-outline-danger">Delete</a>-->
-                        </form>
-                    </div>
-
-                    <br>
-
-                    <input style="margin-left: 50%" class="btn btn-lg btn-danger" type="submit" value="Submit Event">
+                    <input style="margin-left: 50%" class="btn btn-lg btn-info" type="submit" name="action" value="Submit Event">
+                    <input style="margin-left: 50%" class="btn btn-lg btn-info" type="submit" name="action" value="Save as Draft">
 
                     <br><br>
 
                 </div>
             </fieldset>
         </form>
+
         <script>
             $(document).ready(function () {
 
