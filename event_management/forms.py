@@ -91,7 +91,7 @@ class EventForm(ModelForm):
 
     class Meta:
         model = Event
-        exclude = ('uploaded_by', 'uploaded_date', 'action_taken', 'action_to_prevent_recurrence_event', 'approval_status', 'approved_by', 'approval_date', 'updated_by', 'updated_date', 'resolution_status', 'resolved_by', 'resolved_date', 'resolver_remarks',)
+        exclude = ('uploaded_by', 'uploaded_date', 'action_taken', 'action_to_prevent_recurrence_event', 'approval_status', 'approved_by', 'approval_date', 'updated_by', 'updated_date', 'resolution_status', 'resolved_by', 'resolved_date', 'resolver_remarks', 'submission_status')
 
 class EventSearchForm(ModelForm):
     event_category = forms.ChoiceField(choices=EVENT_CATEGORY, label="Event Category", required=False)

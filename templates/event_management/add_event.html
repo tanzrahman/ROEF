@@ -57,8 +57,22 @@
                                 </textarea>
                         </div>
                     </div>
+
                     <br>
-                    <input style="margin-left: 50%" class="btn btn-lg btn-outline-info" type="submit" value="Add Event">
+
+                    <div style="margin-left: 50%">
+                        <form method="post" action="/event/draft_save">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-lg btn-info">
+                                Save as Draft
+                            </button>
+                            <!--<a href="/admin_dms_control/auth/user/{{ each.id }}/change/" target="_blank" class="btn btn-outline-danger">Delete</a>-->
+                        </form>
+                    </div>
+
+                    <br>
+
+                    <input style="margin-left: 50%" class="btn btn-lg btn-danger" type="submit" value="Submit Event">
 
                     <br><br>
 

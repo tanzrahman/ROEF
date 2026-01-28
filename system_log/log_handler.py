@@ -12,7 +12,7 @@ def login_log(request, page_no=None):
 
     # pagination number comes from system parameter model
     paginator_object = SystemParameter.objects.filter(name='pagination_number')
-    no_of_items = 10
+    no_of_items = 100
     if (paginator_object.count() != 0):
         no_of_items = paginator_object[0].value
 
@@ -42,7 +42,7 @@ def password_change_log(request, page_no=None):
 
     # pagination number comes from system parameter model
     paginator_object = SystemParameter.objects.filter(name='pagination_number')
-    no_of_items = 10
+    no_of_items = 100
     if (paginator_object.count() != 0):
         no_of_items = paginator_object[0].value
 
@@ -68,7 +68,7 @@ def file_log(request, page_no=None):
 
     # pagination number comes from system parameter model
     paginator_object = SystemParameter.objects.filter(name='pagination_number')
-    no_of_items = 10
+    no_of_items = 100
     if (paginator_object.count() != 0):
         no_of_items = paginator_object[0].value
 
@@ -94,7 +94,7 @@ def task_log(request, page_no=None):
 
     # pagination number comes from system parameter model
     paginator_object = SystemParameter.objects.filter(name='pagination_number')
-    no_of_items = 10
+    no_of_items = 100
     if (paginator_object.count() != 0):
         no_of_items = paginator_object[0].value
 
@@ -120,7 +120,7 @@ def failed_login_log(request, page_no=None):
 
     # pagination number comes from system parameter model
     paginator_object = SystemParameter.objects.filter(name='pagination_number')
-    no_of_items = 10
+    no_of_items = 100
     if (paginator_object.count() != 0):
         no_of_items = paginator_object[0].value
 
@@ -146,7 +146,7 @@ def deactivated_user_log(request, page_no=None):
 
     # pagination number comes from system parameter model
     paginator_object = SystemParameter.objects.filter(name='pagination_number')
-    no_of_items = 10
+    no_of_items = 100
     if (paginator_object.count() != 0):
         no_of_items = paginator_object[0].value
 
@@ -171,7 +171,7 @@ def event_edit_log(request, page_no=None):
 
     # pagination number comes from system parameter model
     paginator_object = SystemParameter.objects.filter(name='pagination_number')
-    no_of_items = 10
+    no_of_items = 100
     if (paginator_object.count() != 0):
         no_of_items = paginator_object[0].value
 

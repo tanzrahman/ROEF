@@ -7,6 +7,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models.functions import TruncMonth
 from django.http import HttpResponse, JsonResponse, FileResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
+
 from event_management.models import *
 from system_log.models import *
 from event_management.notify_users import send_notification, send_notification_non_departmental
@@ -123,6 +125,8 @@ def event_request_handler(request, action="", event_id="", file_no=None):
             return my_event_list(request)
         elif(action == 'add_event'):
             return add_event(request)
+        elif(action == 'draft_save'):
+            return event_draft_save(request)
         elif(action == 'view'):
             return event_file_view(request, event_id, file_no)
         elif(action == 'event_details'):
@@ -180,10 +184,10 @@ def event_list(request):
     searched_doc = 0
 
     if (len(filters) > 0):
-        event_list = Event.objects.filter(reduce(operator.and_, filters))
+        event_list = Event.objects.filter(reduce(operator.and_, filters)).filter(submission_status=1)
         total_event_count = event_list.count()
     else:
-        event_list = Event.objects.all().order_by('-uploaded_date')
+        event_list = Event.objects.filter(submission_status=1).order_by('-uploaded_date')
         total_event_count = event_list.count()
 
     paginator = Paginator(event_list, no_of_items)
@@ -292,6 +296,32 @@ def add_event(request):
             event_form = form.save(commit=False)
             event_form.uploaded_by = request.user
             event_form.uploaded_date = datetime.date.today()
+            event_form.submission_status = 1
+            event_form.save()
+
+            # notifiyer = threading.Thread(target=send_notification, args=(task_id,))
+            # notifiyer.start()
+
+            context.update({'success': 'Event has been uploaded successfully'})
+        else:
+            context.update({'error': 'Error! Try again with valid data'})
+            print("error: ", form.errors)
+
+    return render(request, 'event_management/add_event.html', context)
+
+@require_POST
+def event_draft_save(request):
+    initial = {}
+    form = EventForm()
+    context = {'form': form}
+
+    if request.method == 'POST':
+        form = EventForm(request.POST, request.FILES)
+        if form.is_valid():
+            event_form = form.save(commit=False)
+            event_form.uploaded_by = request.user
+            event_form.uploaded_date = datetime.date.today()
+            event_form.submission_status = 0
             event_form.save()
 
             # notifiyer = threading.Thread(target=send_notification, args=(task_id,))

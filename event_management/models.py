@@ -17,9 +17,12 @@ UNIT = (
 
 EVENT_CATEGORY = (
     ("", "-------"),
-    ("a", "A"),
-    ("b", "B"),
-    ("c", "C"),
+    ("lle", "Low Level Event"),
+    ("nme", "NME"),
+    ("eae", "Extended Analysis of Event"),
+    ("defect", "Defect"),
+    ("deviation", "Deviation"),
+    ("violation", "Violation"),
 )
 
 INFORMATION_SOURCE = (
@@ -142,6 +145,7 @@ class Event(models.Model):
     resolved_date = models.DateField(blank=True, null=True)
     resolver_remarks = models.CharField(max_length=512, blank=True, null=True)
     is_guest = models.BooleanField(blank=True, null=True, default=False)
+    submission_status = models.IntegerField(max_length=8, blank=True, null=True)
 
     class Meta:
         db_table = 'event'

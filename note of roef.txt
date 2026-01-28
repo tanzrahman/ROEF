@@ -1,0 +1,3 @@
+event submission_status:
+0 = saved as draft, reporter can edit and finally submit. It will not be displayed in event list.
+1 = Finally submitted. Reporter will not be allowed to edit anymore. It will be displayed in event list.
