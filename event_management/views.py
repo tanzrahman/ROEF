@@ -141,6 +141,8 @@ def event_request_handler(request, action="", event_id="", file_no=None):
             return event_assigned(request)
         elif(action == 'resolution'):
             return event_resolution(request, event_id)
+        elif(action == 'lle_list'):
+            return lle_list(request)
         else:
             return HttpResponse("Invalid Access")
 
@@ -715,7 +717,7 @@ def event_assigned(request):
             'form': search_form
         })
 
-        return render(request, 'event_management/event_list_supervisor.html', context)
+        return render(request, 'event_management/event_list.html', context)
 
     elif(role == 'executor'):
         if (len(filters) > 0):
@@ -746,7 +748,7 @@ def event_assigned(request):
             'form': search_form
         })
 
-        return render(request, 'event_management/event_list_executor.html', context)
+        return render(request, 'event_management/event_list.html', context)
 
     else:
         return redirect('/event/event_list')
@@ -771,4 +773,75 @@ def event_resolution(request, event_id):
             # notifiyer.start()
 
     return render(request, 'event_management/event_resolution.html', context)
+
+def lle_list(request):
+    page_no = 1
+    no_of_items = 100
+
+    if (request.GET.get('page_no')):
+        page_no = int(request.GET.get('page_no'))
+
+    search_form = EventSearchForm(initial={'user': request.user})
+    filters = []
+    if (request.GET):
+        search_form = EventSearchForm(request.GET, initial={'user': request.user})
+        if (search_form.is_valid()):
+            for each in search_form.changed_data:
+                # if ('date' in each):
+                #     if ('upload_date_from' in each):
+                #         field_name = each.rsplit('_', 1)[0]
+                #         date_filter = field_name + "__gte"
+                #         filters.append(Q(**{date_filter: search_form.cleaned_data[each]}))
+                #         continue
+                #     if ('upload_date_to' in each):
+                #         field_name = each.rsplit('_', 1)[0]
+                #         date_filter = field_name + "__lte"
+                #         filters.append(Q(**{date_filter: search_form.cleaned_data[each]}))
+                #         continue
+                # if (each == 'division'):
+                #     filters.append(Q(**{each: search_form.cleaned_data[each]}))
+                #     continue
+                if (each == 'facility'):
+                    filters.append(Q(**{each: search_form.cleaned_data[each]}))
+                    continue
+                if (each == 'event_category'):
+                    filters.append(Q(**{'event_category__icontains': search_form.cleaned_data[each].upper()}))
+                    continue
+                if ('description' in each):
+                    filters.append(Q(**{'description__icontains': search_form.cleaned_data[each].upper()}))
+                    continue
+                else:
+                    filters.append(Q(**{each: search_form.cleaned_data[each]}))
+
+    searched_doc = 0
+
+    if (len(filters) > 0):
+        event_list = Event.objects.filter(reduce(operator.and_, filters)).filter(event_category='lle', submission_status=1)
+        total_event_count = event_list.count()
+    else:
+        event_list = Event.objects.filter(event_category='lle', submission_status=1).order_by('-uploaded_date')
+        total_event_count = event_list.count()
+
+    paginator = Paginator(event_list, no_of_items)
+
+    try:
+        event_list = paginator.page(page_no)
+
+    except PageNotAnInteger:
+        event_list = paginator.page(page_no)
+
+    except EmptyPage:
+        event_list = paginator.page(paginator.num_pages)
+
+    context = {'event_list': event_list, 'total_event_count': total_event_count}
+
+    if (len(filters) > 0):
+        context.update({
+            'event_list': event_list,
+        })
+    context.update({
+        'form': search_form
+    })
+
+    return render(request, 'event_management/event_list.html', context)
 

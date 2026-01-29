@@ -69,32 +69,20 @@
              <div style="padding: 2%">
                 <table class="table table-hover table-bordered table-active" style="table-layout: fixed; width: 100%">
                     {% for event in event_list %}
-                        {% if event.get_resolution_status_display == 'Resolved' %}
                         <tr>
                             <h6>
-                                <span title="{{ event.description|escape }}" style="color: green">{{ forloop.counter }}. (E-00000{{ event.id }}-{{ event.uploaded_date.year }}) </span><a href="/event/event_details/{{ event.id }}">{{ event.description|truncatewords:75 }}</a>
+                                <span title="{{ event.description|escape }}">{{ forloop.counter }}. <b>E-0000{{ event.id }}-{{ event.uploaded_date.year }}:</b> </span><a href="/event/event_details/{{ event.id }}">{{ event.description|truncatewords:75 }}</a>
                             </h6>
                             <span>
-                                <b>Category: </b>{{ event.get_event_category_display }} |
-                                <b>Date-Time: </b>{{ event.event_date }}, {{ event.event_time }} |
-                                <b>Direct Cause: </b>{{ event.direct_cause }} |
-                                <b>Reporter: </b>{{ event.uploaded_by }} |
-                                <b>Resolution Status: </b> <span style="color: green">{{ event.get_resolution_status_display }}</span>
+                                <b>Date-Time:</b> {{ event.event_date }} {{ event.event_time }};
+                                <b>Unit:</b> {{ event.get_unit_display }};
+                                <b>Facility:</b> {{ event.facility }};
+                                <b>Room:</b> {{ event.room_no }};
+                                <b>Elevation:</b> {{ event.elevation }}
                             </span>
                         </tr>
 
-                        {% else %}
-                        <tr>
-                            <h6>
-                                <span>{{ forloop.counter }}. (E-00000{{ event.id }}-{{ event.uploaded_date.year }}) </span><a href="/event/event_details/{{ event.id }}">{{ event.description }}</a>
-                            </h6>
-                            <span>
-                                <b>Category:</b> {{ event.event_category }} <b>Time:</b> {{ event.event_date }} {{ event.event_time }}
-                                <b>Resolution Status: </b>{{ event.get_resolution_status_display }}</span>
-                            </span>
-                        </tr>
-
-                        {% endif %}
+                        <br><br>
 
                         <br><br>
 

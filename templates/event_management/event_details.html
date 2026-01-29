@@ -22,7 +22,7 @@
 
     {% if success %}
         <script>
-            alert("Event E-00000{{ event.id }}-{{ event.uploaded_date.year }} has been modified successfully");
+            alert("Event E-0000{{ event.id }}-{{ event.uploaded_date.year }} has been modified successfully");
             window.opener.location.reload();
             window.close();
         </script>
@@ -45,68 +45,28 @@
                 <table class="table table-hover table-bordered table-light" style="table-layout: fixed; width: 60%; margin: 0 auto;">
                     <tr>
                         <td>
-                            <b>Event ID:</b><br>
-                            E-00000{{ event.id }}-{{ event.uploaded_date.year }}
+                            <h6>
+                                <b>E-0000{{ event.id }}-{{ event.uploaded_date.year }}:</b>
+                            </h6>
+                            <span>
+                                <b>Date-Time:</b> {{ event.event_date }} {{ event.event_time }};
+                                <b>Unit:</b> {{ event.get_unit_display }};
+                                <b>Facility:</b> {{ event.facility }};
+                                <b>Room:</b> {{ event.room_no }};
+                                <b>Elevation:</b> {{ event.elevation }}
+                            </span>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <b>Unit:</b><br>
-                            {{ event.get_unit_display }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Facility:</b><br>
-                            {{ event.facility }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Elevation:</b><br>
-                            {{ event.elevation }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Room No:</b><br>
-                            {{ event.room_no }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Additional Location Information:</b><br>
+                            <b>Additional Information for Location:</b><br>
                             {{ event.additional_location_info }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Event Date-Time:</b><br>
-                            {{ event.event_date }}, {{ event.event_time }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Event Category:</b><br>
-                            {{ event.get_event_category_display }}
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <b>Description:</b><br>
                             {{ event.description }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Registration Date:</b><br>
-                            {{ event.uploaded_date }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Regulatory Norms Violation:</b><br>
-                            {{ event.regulatory_norms_violation }}
                         </td>
                     </tr>
                     <tr>
@@ -123,20 +83,14 @@
                     </tr>
                     <tr>
                         <td>
-                            <b>Action to Prevent Recurrence Event:</b><br>
-                            {{ event.action_to_prevent_recurrence_event }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Elimination Suggestion:</b><br>
+                            <b>Corrective Actions:</b><br>
                             {{ event.elimination_suggestion }}
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <b>Responsible Department:</b><br>
-                            {{ event.responsible_dept }}
+                            <b>Preventive Actions:</b><br>
+                            {{ event.action_to_prevent_recurrence_event }}
                         </td>
                     </tr>
                     <tr>
@@ -145,93 +99,8 @@
                             {{ event.plant_status }}
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <b>Identity Confidentiality</b><br>
-                            {% if event.keep_identity_confidential %} <span style="color:red">Yes</span> {% else %} No {% endif %}
-                        </td>
-                    </tr>
-                    {% if event.keep_identity_confidential %}
-                        <tr>
-                            <td>
-                                <b>Reporter:</b><br>
-                                NA
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Reporter Shop:</b><br>
-                                NA
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Reporter Organization:</b><br>
-                                NA
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Reporter Designation:</b><br>
-                                NA
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Reporter Phone:</b><br>
-                                NA
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Reporter Bio ID:</b><br>
-                                NA
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td>
-                                <b>Reporter:</b><br>
-                                {{ event.uploaded_by }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Reporter Shop:</b><br>
-                                {{ event.uploader_shop }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Reporter Organization</b><br>
-                                {{ event.uploader_organization }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Reporter Designation</b><br>
-                                {{ event.uploader_designation }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Reporter Phone:</b><br>
-                                {{ event.uploader_phone }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Reporter Bio ID:</b><br>
-                                {{ event.uploader_bioID }}
-                            </td>
-                        </tr>
-                    {% endif %}
-                    <tr>
-                        <td>
-                            <b>Information Source:</b><br>
-                            {{ event.information_source }}
-                        </td>
-                    </tr>
+
+                <!--
                     <tr>
                         <td>
                             <b>Supporting Files:</b><br>
@@ -263,41 +132,7 @@
                                 ({{ each.username }})<br>
                             {% endfor %}
                         </td>
-                    </tr>
-
-                    {% if event.resolution_status %}
-                        <tr>
-                            <td>
-                                <b>Event Resolution Status:</b><br>
-                                <span style="color: green; font-weight: bold">{{ event.get_resolution_status_display }}</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Resolved by:</b><br>
-                                {{ event.resolved_by }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Resolved Date</b>:</b><br>
-                                {{ event.resolved_date }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Resolver Remarks:</b><br>
-                                {{ event.resolver_remarks }}
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td>
-                                <b>Event Resolution Status:</b><br>
-                                Not yet Approved
-                            </td>
-                        </tr>
-                    {% endif %}
+                    </tr> -->
 
                 <br><br>
 
