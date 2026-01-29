@@ -22,7 +22,7 @@
 
     {% if success %}
         <script>
-            alert("Event E00000{{ event.id }} has been modified successfully");
+            alert("Event E-00000{{ event.id }}-{{ event.uploaded_date.year }} has been modified successfully");
             window.opener.location.reload();
             window.close();
         </script>

@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load document_templatetags %}
+{% block content %}
+
+    <script src="{% static 'js/SiteScripts/search_results.js' %}"></script>
+    <script src="/static/js/task_manager.js"></script>
+
+    <style>
+        th {
+            white-space: normal !important;
+            word-wrap: break-word !important;
+            font-size: 14px;
+            vertical-align: middle;
+            text-align: center;
+        }
+        td {
+            word-wrap: break-word;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+    </style>
+
+    {% if success %}
+        <script>
+            alert("Event E-00000{{ event.id }}-{{ event.uploaded_date.year }} has been modified successfully");
+            window.opener.location.reload();
+            window.close();
+        </script>
+    {% endif %}
+
+    {% if error %}
+        <script>
+            alert("ERROR! Please insert valid data");
+            window.opener.location.reload();
+            window.close();
+        </script>
+    {% endif %}
+
+    <div>
+        <table class="table table-hover table-bordered table-active" style="width: 25%; margin: 0 auto">
+
+            <tr style="text-align: center;">
+                <th>Total Event</th>
+            </tr>
+
+            <tr style="text-align: center; font-weight: bold">
+                <td>{{ total_event_count }}</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div>
+        <div style="padding-top: 2%">
+            <form action="" method="get" id="document_search_form">
+                <table class="table table-hover table-bordered table-sm table-active" style="width: 50%; margin: 0 auto;">
+                    <tr style="text-align: center;" class="table-info">
+                        <th style="width: 5%"></th>
+                        <th style="width: 5%">Event Category</th>
+                        <th style="width: 5%">Facility</th>
+                        <th style="width: 5%">Description</th>
+                    </tr>
+
+                    <tr style="text-align: center">
+                        {% csrf_token %}
+                        <td>
+                            <input class="btn btn-info" type="submit" value="Search">
+                        </td>
+                        {% for field in form %}
+                            <td>
+                                {{ field }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+
+        <br><br>
+
+        {% if event_list %}
+         <div>
+             <div style="padding: 2%">
+                <table class="table table-hover table-bordered table-active" style="table-layout: fixed; width: 100%">
+                    {% for event in event_list %}
+                        <tr>
+                            <h6>
+                                <span>{{ forloop.counter }}. (E-00000{{ event.id }}-{{ event.uploaded_date.year }}) </span><a href="/event/draft_edit/{{ event.id }}">{{ event.description }}</a>
+                            </h6>
+                            <span>
+                                <b>Category:</b> {{ event.event_category }} <b>Time:</b> {{ event.event_date }} {{ event.event_time }}
+                                <b>Resolution Status: </b>{{ event.get_resolution_status_display }}</span>
+                            </span>
+                        </tr>
+
+                        <br><br>
+
+                    {% endfor %}
+
+                </table>
+
+             <div id="pagination_div">
+                            {% if event_list.has_other_pages %}
+                                <ul class="paginator">
+
+                                    <span>Page: </span>
+                                    {% for i in event_list.paginator.page_range %}
+                                        {% if doc_list.number == i %}
+                                            <span class="this-page">{{ i }} <span
+                                                    class="sr-only">(current)</span></span>
+                                        {% else %}
+                                            <a href="javascript:next_page_report('{{ i }}')">{{ i }}</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                 </div>
+             </div>
+         </div>
+
+        {% else %}
+            <h2 style="text-align:center; color:red">No Event Available</h2>
+        {% endif %}
+
+        <br> <br>
+    </div>
+
+{% endblock %}

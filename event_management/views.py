@@ -125,8 +125,8 @@ def event_request_handler(request, action="", event_id="", file_no=None):
             return my_event_list(request)
         elif(action == 'add_event'):
             return add_event(request)
-        elif(action == 'draft_saved'):
-            return event_draft_saved(request)
+        elif(action == 'draft_list'):
+            return event_draft_list(request)
         elif(action == 'view'):
             return event_file_view(request, event_id, file_no)
         elif(action == 'event_details'):
@@ -135,6 +135,8 @@ def event_request_handler(request, action="", event_id="", file_no=None):
             return event_approval(request, event_id)
         elif(action == 'edit'):
             return event_edit(request, event_id)
+        elif(action == 'draft_edit'):
+            return event_draft_edit(request, event_id)
         elif(action == 'assigned'):
             return event_assigned(request)
         elif(action == 'resolution'):
@@ -321,7 +323,7 @@ def add_event(request):
 
     return render(request, 'event_management/add_event.html', context)
 
-def event_draft_saved(request):
+def event_draft_list(request):
     page_no = 1
     no_of_items = 100
 
@@ -390,7 +392,7 @@ def event_draft_saved(request):
         'form': search_form
     })
 
-    return render(request, 'event_management/my_event_list.html', context)
+    return render(request, 'event_management/my_draft_list.html', context)
 
 def event_file_view(request, event_id, file_no):
     event = get_object_or_404(Event, id=event_id)
@@ -569,6 +571,74 @@ def event_edit(request, event_id):
             event_form = EventForm()
             context = {'form': event_form, 'error': 'error', 'event': event}
             return render(request, 'event_management/event_details.html', context)
+
+    else:
+        HttpResponse ("NOT ALLOWED")
+
+def event_draft_edit(request, event_id):
+
+    initial = {}
+
+    if(request.user.profile.access_level > 2):
+        initial.update({
+            'division': request.user.profile.division
+        })
+
+
+    initial.update({
+        'creating_user': request.user
+    })
+
+    event = Event.objects.get(id=event_id)
+
+    if(request.method == 'GET'):
+        edit_event_form = EventForm(initial=initial, instance=event)
+
+        context = {'form': edit_event_form, 'event': event}
+
+        return render(request, 'event_management/event_draft_edit.html', context)
+
+    if request.method == 'POST':
+        event_form = EventForm(request.POST, request.FILES, initial=initial, instance=event)
+
+        action = request.POST.get('action')
+
+        search_form = EventSearchForm(initial={'user': request.user})
+
+        event_list = Event.objects.filter(uploaded_by=request.user, submission_status=0).order_by('-uploaded_date')
+        total_event_count = event_list.count()
+
+        context = {}
+
+        if event_form.is_valid():
+            if (action == 'Submit Event'):
+                event_form = event_form.save(commit=False)
+                event_form.uploaded_by = request.user
+                event_form.uploaded_date = datetime.date.today()
+                event_form.submission_status = 1
+                event_form.save()
+
+                # notifiyer = threading.Thread(target=send_notification, args=(task_id,))
+                # notifiyer.start()
+
+            elif (action == 'Save as Draft'):
+                event_form = event_form.save(commit=False)
+                event_form.uploaded_by = request.user
+                event_form.uploaded_date = datetime.date.today()
+                event_form.submission_status = 0
+                event_form.save()
+
+            else:
+                pass
+
+            context.update({'success': 'success'})
+
+        else:
+            print(event_form.errors)
+            context.update({'error': 'error'})
+
+        context.update({'form': search_form, 'event': event, 'event_list': event_list, 'total_event_count': total_event_count})
+        return render(request, 'event_management/my_draft_list.html', context)
 
     else:
         HttpResponse ("NOT ALLOWED")
