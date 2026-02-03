@@ -17,9 +17,9 @@ UNIT = (
 
 EVENT_CATEGORY = (
     ("", "-------"),
-    ("lle", "Low Level Event"),
+    ("lle", "LLE"),
     ("nme", "NME"),
-    ("eae", "Extended Analysis of Event"),
+    ("eae", "EAE"),
     ("defect", "Defect"),
     ("deviation", "Deviation"),
     ("violation", "Violation"),
@@ -105,6 +105,7 @@ def file_upload_to_folder(instance, filename):
 
 class Event(models.Model):
     id = models.AutoField(primary_key=True)
+    event_code = models.CharField(max_length=64, blank=True, null=True)
     unit = models.CharField(max_length=16, choices=UNIT, blank=True, null=True)
     facility = models.ForeignKey(Facility, on_delete=models.DO_NOTHING, blank=True, null=True)
     elevation = models.CharField(max_length=16, blank=True, null=True)

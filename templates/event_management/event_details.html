@@ -22,7 +22,7 @@
 
     {% if success %}
         <script>
-            alert("Event E-0000{{ event.id }}-{{ event.uploaded_date.year }} has been modified successfully");
+            alert("{{ event.event_code }} has been modified successfully");
             window.opener.location.reload();
             window.close();
         </script>
@@ -46,7 +46,9 @@
                     <tr>
                         <td>
                             <h6>
-                                <b>E-0000{{ event.id }}-{{ event.uploaded_date.year }}:</b>
+                                <b>
+                                    {{ event.event_code }}
+                                </b>
                             </h6>
                             <span>
                                 <b>Date-Time:</b> {{ event.event_date }} {{ event.event_time }};

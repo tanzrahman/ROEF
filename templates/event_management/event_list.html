@@ -73,21 +73,7 @@
                             <h6>
                                 <span title="{{ event.description|escape }}">{{ forloop.counter }}.
                                     <b>
-                                        {% if event.event_category == 'lle' %}
-                                        LLE-0000{{ event.id }}-{{ event.uploaded_date.year }}:
-                                        {% elif event.event_category == 'nme' %}
-                                        NME
-                                        {% elif event.event_category == 'eae' %}
-                                        EAE-0000{{ event.id }}-{{ event.uploaded_date.year }}:
-                                        {% elif event.event_category == 'defect' %}
-                                        DEFECT-0000{{ event.id }}-{{ event.uploaded_date.year }}:
-                                        {% elif event.event_category == 'deviation' %}
-                                        DEVIATION-0000{{ event.id }}-{{ event.uploaded_date.year }}:
-                                        {% elif event.event_category == 'violation' %}
-                                        VIOLATION-0000{{ event.id }}-{{ event.uploaded_date.year }}:
-                                        {% else %}
-                                        E-0000{{ event.id }}-{{ event.uploaded_date.year }}:
-                                        {% endif %}
+                                        {{ event.event_code }}
                                     </b>
                                 </span>
                                 <a href="/event/event_details/{{ event.id }}">{{ event.description|truncatewords:75 }}</a>
