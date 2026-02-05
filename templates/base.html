@@ -144,7 +144,9 @@
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="/event/lle_list">Low Level Event</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Extended Low Level Event</a>
+                                        <a class="dropdown-item" href="#">NME</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/event/eae_list">Extended Low Level Event</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Defect</a>
                                         <div class="dropdown-divider"></div>
@@ -341,11 +343,14 @@
                                 <script>
                                   var options = {
                                     series: [
-                                      {{ a_type_event|default:0 }},
-                                      {{ b_type_event|default:0 }},
-                                      {{ c_type_event|default:0 }}
+                                      {{ lle_type_event|default:0 }},
+                                      {{ nme_type_event|default:0 }},
+                                      {{ eae_type_event|default:0 }},
+                                      {{ defect_type_event|default:0 }},
+                                      {{ deviation_type_event|default:0 }},
+                                      {{ violation_type_event|default:0 }}
                                     ],
-                                    labels: ['A Category', 'B Category', 'C Category'],
+                                    labels: ['LLE Category', 'NME Category', 'EAE Category', 'Defect Category', 'Deviation Category', 'Violation Category'],
                                     chart: {
                                       height: 350,
                                       type: 'donut'
