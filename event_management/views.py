@@ -305,9 +305,14 @@ def add_event(request):
                 event_form.submission_status = 1
                 event_form.save()
                 if(event_form.event_category):
-                    event_form.event_code = f"{event_form.get_event_category_display()}-0000{event_form.id}-{event_form.uploaded_date.year}"
+                    event_form.event_code = f"{event_form.event_category}-0000{event_form.id}-{event_form.uploaded_date.year}"
                 else:
                     event_form.event_code = f"E-0000{event_form.id}-{event_form.uploaded_date.year}"
+                event_form.save()
+
+                if(event_form.event_category == 'EAE'):
+                    event_form.eae_mom_id = f"MoM_{event_form.event_code}"
+                    event_form.eae_mom_date = datetime.date.today()
                 event_form.save()
 
                 # notifiyer = threading.Thread(target=send_notification, args=(task_id,))
@@ -320,9 +325,14 @@ def add_event(request):
                 event_form.submission_status = 0
                 event_form.save()
                 if(event_form.event_category):
-                    event_form.event_code = f"{event_form.get_event_category_display()}-0000{event_form.id}-{event_form.uploaded_date.year}"
+                    event_form.event_code = f"{event_form.event_category}-0000{event_form.id}-{event_form.uploaded_date.year}"
                 else:
                     event_form.event_code = f"E-0000{event_form.id}-{event_form.uploaded_date.year}"
+                    event_form.save()
+
+                if(event_form.event_category == 'EAE'):
+                    event_form.eae_mom_id = f"MoM_{event_form.event_code}"
+                    event_form.eae_mom_date = datetime.date.today()
                 event_form.save()
 
             else:
@@ -558,9 +568,13 @@ def event_edit(request, event_id):
             # If event category is changed then event_code will be changed based on category
             event = Event.objects.get(id=int(event_id))
             if(event.event_category):
-                event.event_code = f"{event.get_event_category_display()}-0000{event_id}-{event.uploaded_date.year}"
+                event.event_code = f"{event.event_category}-0000{event_id}-{event.uploaded_date.year}"
             else:
                 event.event_code = f"E-0000{event_id}-{event.uploaded_date.year}"
+            event.save()
+            if (event.event_category == 'EAE'):
+                event.eae_mom_id = f"MoM_{event.event_code}"
+                event.eae_mom_date = datetime.date.today()
             event.save()
 
             # Changed data will be stored to EventEditLog
@@ -637,9 +651,13 @@ def event_draft_edit(request, event_id):
                 event_form.submission_status = 1
                 event_form.save()
                 if(event_form.event_category):
-                    event_form.event_code = f"{event_form.get_event_category_display()}-0000{event_form.id}-{event_form.uploaded_date.year}"
+                    event_form.event_code = f"{event_form.event_category}-0000{event_form.id}-{event_form.uploaded_date.year}"
                 else:
                     event_form.event_code = f"E-0000{event_form.id}-{event_form.uploaded_date.year}"
+                event_form.save()
+                if (event.event_category == 'EAE'):
+                    event_form.eae_mom_id = f"MoM_{event_form.event_code}"
+                    event_form.eae_mom_date = datetime.date.today()
                 event_form.save()
 
                 # notifiyer = threading.Thread(target=send_notification, args=(task_id,))
@@ -652,9 +670,15 @@ def event_draft_edit(request, event_id):
                 event_form.submission_status = 0
                 event_form.save()
                 if (event_form.event_category):
-                    event_form.event_code = f"{event_form.get_event_category_display()}-0000{event_form.id}-{event_form.uploaded_date.year}"
+                    event_form.event_code = f"{event_form.event_category}-0000{event_form.id}-{event_form.uploaded_date.year}"
                 else:
                     event_form.event_code = f"E-0000{event_form.id}-{event_form.uploaded_date.year}"
+                event_form.save()
+
+                if (event.event_category == 'EAE'):
+                    event_form.eae_mom_id = f"MoM_{event_form.event_code}"
+                    event_form.eae_mom_date = datetime.date.today()
+
                 event_form.save()
 
             else:

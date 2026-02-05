@@ -78,6 +78,7 @@ class EventForm(ModelForm):
                                                 label="Select Supervisor", required=False)
     executor = forms.ModelMultipleChoiceField(queryset=User.objects.filter(profile__is_executor=True),
                                                    label="Select Executor", required=False)
+    eae_mom_file = forms.FileField(label='MoM file', required=False)
 
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
@@ -91,7 +92,7 @@ class EventForm(ModelForm):
 
     class Meta:
         model = Event
-        exclude = ('event_code', 'uploaded_by', 'uploaded_date', 'action_taken', 'action_to_prevent_recurrence_event', 'approval_status', 'approved_by', 'approval_date', 'updated_by', 'updated_date', 'resolution_status', 'resolved_by', 'resolved_date', 'resolver_remarks', 'submission_status')
+        exclude = ('event_code', 'uploaded_by', 'uploaded_date', 'action_taken', 'action_to_prevent_recurrence_event', 'approval_status', 'approved_by', 'approval_date', 'updated_by', 'updated_date', 'resolution_status', 'resolved_by', 'resolved_date', 'resolver_remarks', 'submission_status', 'eae_mom_id', 'eae_mom_date')
 
 class EventSearchForm(ModelForm):
     event_category = forms.ChoiceField(choices=EVENT_CATEGORY, label="Event Category", required=False)

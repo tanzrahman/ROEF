@@ -17,12 +17,12 @@ UNIT = (
 
 EVENT_CATEGORY = (
     ("", "-------"),
-    ("lle", "LLE"),
-    ("nme", "NME"),
-    ("eae", "EAE"),
-    ("defect", "Defect"),
-    ("deviation", "Deviation"),
-    ("violation", "Violation"),
+    ("LLE", "Low Level Event"),
+    ("NME", "NME"),
+    ("EAE", "Extended Analysis of Event"),
+    ("Defect", "Defect"),
+    ("Deviation", "Deviation"),
+    ("Violation", "Violation"),
 )
 
 INFORMATION_SOURCE = (
@@ -94,9 +94,20 @@ class Facility(models.Model):
         return str(self.kks_code)
 
 # to upload files in specific date
-def file_upload_to_folder(instance, filename):
+def supporting_file_upload(instance, filename):
     today = datetime.date.today()
     return os.path.join(
+        'supporting_files',
+        str(today.year),
+        str(today.month),
+        str(today.day),
+        filename
+    )
+
+def mom_upload(instance, filename):
+    today = datetime.date.today()
+    return os.path.join(
+        'MoM',
         str(today.year),
         str(today.month),
         str(today.day),
@@ -131,9 +142,9 @@ class Event(models.Model):
     uploader_bioID = models.CharField(max_length=16, blank=True, null=True)
     information_source = models.CharField(max_length=16, choices=INFORMATION_SOURCE, blank=True, null=True)
     keep_identity_confidential = models.BooleanField(blank=True, null=True, default=False)
-    supporting_file_1 = models.FileField(upload_to=file_upload_to_folder, blank=True, null=True)
-    supporting_file_2 = models.FileField(upload_to=file_upload_to_folder, blank=True, null=True)
-    supporting_file_3 = models.FileField(upload_to=file_upload_to_folder, blank=True, null=True)
+    supporting_file_1 = models.FileField(upload_to=supporting_file_upload, blank=True, null=True)
+    supporting_file_2 = models.FileField(upload_to=supporting_file_upload, blank=True, null=True)
+    supporting_file_3 = models.FileField(upload_to=supporting_file_upload, blank=True, null=True)
     approval_status = models.IntegerField(blank=True, null=True, default=0)
     approved_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='approved_by')
     approval_date = models.DateField(blank=True, null=True)
@@ -147,6 +158,11 @@ class Event(models.Model):
     resolver_remarks = models.CharField(max_length=512, blank=True, null=True)
     is_guest = models.BooleanField(blank=True, null=True, default=False)
     submission_status = models.IntegerField(max_length=8, blank=True, null=True)
+
+    # MoM for Extended Analysis of Event
+    eae_mom_id = models.CharField(max_length=64, blank=True, null=True)
+    eae_mom_file =  models.FileField(upload_to=mom_upload, blank=True, null=True)
+    eae_mom_date = models.DateField(blank=True, null=True)
 
     class Meta:
         db_table = 'event'
