@@ -59,7 +59,7 @@ class EventForm(ModelForm):
     event_time = forms.TimeField(label='Event Time', required= False,  widget=forms.TimeInput(attrs={'type': 'time'}))
     event_category = forms.ChoiceField(choices=EVENT_CATEGORY, label="Event Category", required=False)
     regulatory_norms_violation = forms.BooleanField(label='Violation of regulatory norms and regulations',required=False)
-    description = forms.CharField(label='Event Description',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
+    description = forms.CharField(label='Event Description',required=False, widget=forms.Textarea(attrs={'rows': 5, 'cols': 50}))
     direct_cause = forms.CharField(label='Direct Cause',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     elimination_suggestion = forms.CharField(label='Elimination Suggestion',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     responsible_dept = forms.ModelChoiceField(queryset=DepartmentShop.objects.all(), label='Responsible Department', required=False)
@@ -93,6 +93,40 @@ class EventForm(ModelForm):
     class Meta:
         model = Event
         exclude = ('event_code', 'uploaded_by', 'uploaded_date', 'action_taken', 'action_to_prevent_recurrence_event', 'approval_status', 'approved_by', 'approval_date', 'updated_by', 'updated_date', 'resolution_status', 'resolved_by', 'resolved_date', 'resolver_remarks', 'submission_status', 'eae_mom_id', 'eae_mom_date')
+
+
+class EventGoodPracticeForm(ModelForm):
+    name = forms.CharField(label='Name', required=False,
+                                  widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
+    description = forms.CharField(label='Description',required=False, widget=forms.Textarea(attrs={'rows': 5, 'cols': 50}))
+    uploader_shop = forms.ModelChoiceField(queryset=DepartmentShop.objects.all(), label='Reporter Shop/Department', required=False)
+    uploader_organization = forms.CharField(label='Reporter Organization',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
+    uploader_designation = forms.CharField(label='Reporter Designation',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
+    uploader_phone = forms.CharField(label='Reporter Phone',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
+    uploader_bioID = forms.CharField(label='Reporter Bio ID',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
+    log_book_no = forms.CharField(label='Log Book No', required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
+    keywords = forms.CharField(label='Keywords',required=False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
+    reactor_type = forms.CharField(label='Reactor Type',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
+    general_activities = forms.CharField(label='General Activities', required=False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
+    problem_elimination_specification = forms.CharField(label='Problem Elimination Specification',required=False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
+    gp_applications = forms.CharField(label='Good Practice Applications', required=False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
+    expert_assessment = forms.CharField(label='Expert Assessment', required=False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
+    information_source = forms.ChoiceField(choices=INFORMATION_SOURCE, label='Information Source',required=False)
+    distribution_recommendation = forms.CharField(label='Recommendation for Distribution', required=False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
+
+#     def __init__(self, *args, **kwargs):
+#         super(EventGoodPracticeForm, self).__init__(*args, **kwargs)
+#
+#         if(kwargs.get('instance')):
+#             instance = kwargs.get('instance')
+#             self.fields['supervisor'].initial = instance.supervisor.all()
+#             self.fields['executor'].initial = instance.executor.all()
+#             # self.fields['milestone_id'].widget.attrs['readonly'] = True
+#             # self.fields['milestone_id'].widget.attrs['class'] = 'readonly_field'
+    class Meta:
+        model = EventGoodPractice
+        exclude = ('uploaded_by', 'uploaded_date', 'updated_by', 'updated_date')
+
 
 class EventSearchForm(ModelForm):
     event_category = forms.ChoiceField(choices=EVENT_CATEGORY, label="Event Category", required=False)

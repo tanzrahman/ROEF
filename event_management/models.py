@@ -47,6 +47,76 @@ RESOLUTION_STATUS = (
     ("demo", "Demo"),
 )
 
+GP_NAME = (
+    ("", "-------"),
+    ("1", "Increasing of maintenance & repair quality"),
+    ("2", "Upgrading of floor drain system"),
+    ("3", "Increasing of effectiveness of engineering support"),
+    ("4", "Increasing of effectiveness of floor drain processing by reducing the ammonia content by ozone treatment"),
+    ("5", "Others"),
+)
+
+REACTOR_TYPE = (
+    ("", "-------"),
+    ("1", "VVER-440"),
+    ("2", "VVER-1000/1200"),
+    ("3", "RBMK"),
+    ("4", "EHC"),
+    ("5", "Fast Neutron Reactor"),
+    ("6", "Others"),
+)
+
+NPP_ACTIVITIES = (
+    ("", "-------"),
+    ("1", "Main Activities"),
+    ("2", "General Activities"),
+)
+
+MAIN_ACTIVITIES = (
+    ("", "-------"),
+    ("1", "Management, organisation and administration"),
+    ("2", "Operation"),
+    ("3", "Maintenance and repair"),
+    ("4", "Engineering and technical support"),
+    ("5", "Radiation protection"),
+    ("6", "Application of operational experience"),
+    ("7", "Process chemistry"),
+    ("8", "Personnel trainings and qualification"),
+    ("9", "Fire protection"),
+    ("10", "Emergency planning and preparedness"),
+    ("11", "Commissioning"),
+    ("12", "Safety culture"),
+)
+
+GENERAL_ACTIVITIES = (
+    ("", "-------"),
+    ("1", "Personnel operation"),
+    ("2", "Self-assessment"),
+    ("3", "Occupational safety"),
+    ("4", "Monitoring of the NS state"),
+    ("5", "Production management"),
+    ("6", "Equipment operation and state"),
+    ("7", "Management of severe accidents"),
+    ("8", "Others"),
+)
+
+GP_APPLICATION = (
+    ("", "-------"),
+    ("1", "Prevention of human errors"),
+    ("2", "Improvement of personnel actions"),
+    ("3", "Decreasing of radiation exposure"),
+    ("4", "Inspection/prevention of leakages"),
+    ("5", "Prevention of foreign objects ingress"),
+    ("6", "Inspection/assessment of erosion-corrosion wear"),
+    ("7", "Assessment/prevention of ageing"),
+    ("8", "Risks/ fire prevention/consequences mitigation"),
+    ("9", "Improvement of system/equipment operation"),
+    ("10", "Reducing of radioactive waste"),
+    ("11", "Improvement/management of process chemistry"),
+    ("12", "Prevention/mitigation of probability of electrical equipment failure"),
+    ("13", "Others"),
+)
+
 # Create your models here.
 
 class SystemParameter(models.Model):
@@ -157,7 +227,7 @@ class Event(models.Model):
     resolved_date = models.DateField(blank=True, null=True)
     resolver_remarks = models.CharField(max_length=512, blank=True, null=True)
     is_guest = models.BooleanField(blank=True, null=True, default=False)
-    submission_status = models.IntegerField(max_length=8, blank=True, null=True)
+    submission_status = models.IntegerField(blank=True, null=True)
 
     # MoM for Extended Analysis of Event
     eae_mom_id = models.CharField(max_length=64, blank=True, null=True)
@@ -178,6 +248,35 @@ class Event(models.Model):
                     timezone.localdate() - self.uploaded_date >= datetime.timedelta(days=2)
                     and self.approval_status == 0
                )
+
+class EventGoodPractice(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=256, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    uploaded_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='gp_uploaded_by')
+    uploaded_date = models.DateField(blank=True, null=True)
+    uploader_shop = models.ForeignKey(DepartmentShop, on_delete=models.DO_NOTHING, blank=True, null=True,
+                                      related_name='gp_uploader_dept')
+    uploader_organization = models.CharField(max_length=256, blank=True, null=True)
+    uploader_designation = models.CharField(max_length=256, blank=True, null=True)
+    uploader_phone = models.CharField(max_length=16, blank=True, null=True)
+    uploader_bioID = models.CharField(max_length=16, blank=True, null=True)
+    information_source = models.CharField(max_length=16, choices=INFORMATION_SOURCE, blank=True, null=True)
+    log_book_no = models.CharField(max_length=128, blank=True, null=True)
+    keywords = models.CharField(max_length=128, blank=True, null=True)
+    reactor_type = models.CharField(max_length=64, blank=True, null=True)
+    general_activities = models.CharField(max_length=64, blank=True, null=True)
+    problem_elimination_specification = models.CharField(max_length=64, blank=True, null=True)
+    gp_applications = models.CharField(max_length=64, blank=True, null=True)
+    expert_assessment = models.CharField(max_length=64, blank=True, null=True)
+    distribution_recommendation = models.CharField(max_length=64, blank=True, null=True)
+    updated_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='gp_updated_by')
+    updated_date = models.DateField(blank=True, null=True)
+
+    class Meta:
+        db_table = 'event_good_practice'
+    def __str__(self):
+        return str(self.id)
 
 class File(models.Model):
     hash = models.CharField(primary_key=True, max_length=256, null=False, blank=False)

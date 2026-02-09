@@ -149,6 +149,8 @@ def event_request_handler(request, action="", event_id="", file_no=None):
             return event_assigned(request)
         elif(action == 'resolution'):
             return event_resolution(request, event_id)
+        elif(action == 'good_practice'):
+            return event_good_practice(request)
         elif(action == 'lle_list'):
             return lle_list(request)
         elif(action == 'eae_list'):
@@ -835,6 +837,30 @@ def event_resolution(request, event_id):
             # notifiyer.start()
 
     return render(request, 'event_management/event_resolution.html', context)
+
+def event_good_practice(request):
+    initial = {}
+    form = EventGoodPracticeForm()
+    context = {'form': form}
+
+    if request.method == 'POST':
+        form = EventGoodPracticeForm(request.POST)
+        if form.is_valid():
+            event_form = form.save(commit=False)
+            event_form.uploaded_by = request.user
+            event_form.uploaded_date = datetime.date.today()
+            event_form.save()
+
+            # notifiyer = threading.Thread(target=send_notification, args=(task_id,))
+            # notifiyer.start()
+
+            context.update({'success': 'Good Practice has been uploaded successfully'})
+        else:
+            context.update({'error': 'Error! Try again with valid data'})
+            print("error: ", form.errors)
+
+    return render(request, 'event_management/upload_event_good_practice.html', context)
+
 
 def lle_list(request):
     page_no = 1
