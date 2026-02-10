@@ -100,7 +100,7 @@ GENERAL_ACTIVITIES = (
     ("8", "Others"),
 )
 
-GP_APPLICATION = (
+GP_APPLICATION_FOR_PROBLEM_ELIMINATION = (
     ("", "-------"),
     ("1", "Prevention of human errors"),
     ("2", "Improvement of personnel actions"),
@@ -115,6 +115,47 @@ GP_APPLICATION = (
     ("11", "Improvement/management of process chemistry"),
     ("12", "Prevention/mitigation of probability of electrical equipment failure"),
     ("13", "Others"),
+)
+
+GP_APPLICATION = (
+    ("", "-------"),
+    ("1", "Documentation (instructions, guidelines, check-lists, etc."),
+    ("2", "Software"),
+    ("3", "Database"),
+    ("4", "Training procedures"),
+    ("5", "New systems/equipment"),
+    ("6", "Upgrading of existing systems and equipment, practices"),
+    ("7", "New designs"),
+    ("8", "Others"),
+)
+
+EXPERT_ASSESSMENT_ON_APPLICATION = (
+    ("", "-------"),
+    ("1", "The problem is solved"),
+    ("2", "The problem scale is reduced"),
+    ("3", "Useful information"),
+)
+
+GP_IDENTIFICATION_SOURCE = (
+    ("", "-------"),
+    ("1", "Analysis of operational experience"),
+    ("2", "WANO peer review"),
+    ("3", "OSART mission"),
+    ("4", "Workshop/visit exchange at NPP"),
+    ("5", "NPP inspection/checking"),
+    ("6", "NPP management meeting"),
+    ("7", "Decision (technical decision)"),
+    ("8", "Others"),
+)
+
+GP_DISTRIBUTION_RECOMMENDATION = (
+    ("", "-------"),
+    ("1", "All NPPs"),
+    ("2", "VVER"),
+    ("3", "RBMK"),
+    ("4", "EHC"),
+    ("5", "During designing and engineering"),
+    ("6", "Others"),
 )
 
 # Create your models here.
@@ -251,7 +292,7 @@ class Event(models.Model):
 
 class EventGoodPractice(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=256, blank=True, null=True)
+    name = models.CharField(max_length=128, choices=GP_NAME, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     uploaded_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='gp_uploaded_by')
     uploaded_date = models.DateField(blank=True, null=True)
@@ -264,12 +305,14 @@ class EventGoodPractice(models.Model):
     information_source = models.CharField(max_length=16, choices=INFORMATION_SOURCE, blank=True, null=True)
     log_book_no = models.CharField(max_length=128, blank=True, null=True)
     keywords = models.CharField(max_length=128, blank=True, null=True)
-    reactor_type = models.CharField(max_length=64, blank=True, null=True)
-    general_activities = models.CharField(max_length=64, blank=True, null=True)
-    problem_elimination_specification = models.CharField(max_length=64, blank=True, null=True)
-    gp_applications = models.CharField(max_length=64, blank=True, null=True)
-    expert_assessment = models.CharField(max_length=64, blank=True, null=True)
-    distribution_recommendation = models.CharField(max_length=64, blank=True, null=True)
+    reactor_type = models.CharField(max_length=128, choices=REACTOR_TYPE, blank=True, null=True)
+    npp_activities = models.CharField(max_length=128, choices=NPP_ACTIVITIES, blank=True, null=True)
+    main_activities = models.CharField(max_length=128, choices=MAIN_ACTIVITIES, blank=True, null=True)
+    general_activities = models.CharField(max_length=128, choices=GENERAL_ACTIVITIES, blank=True, null=True)
+    problem_elimination_specification = models.CharField(max_length=128, choices=GP_APPLICATION_FOR_PROBLEM_ELIMINATION, blank=True, null=True)
+    gp_applications = models.CharField(max_length=128, choices=GP_APPLICATION, blank=True, null=True)
+    expert_assessment = models.CharField(max_length=128, choices=EXPERT_ASSESSMENT_ON_APPLICATION, blank=True, null=True)
+    distribution_recommendation = models.CharField(max_length=128, choices=GP_DISTRIBUTION_RECOMMENDATION, blank=True, null=True)
     updated_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='gp_updated_by')
     updated_date = models.DateField(blank=True, null=True)
 
