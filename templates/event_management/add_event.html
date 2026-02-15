@@ -72,12 +72,35 @@
         <script>
             $(document).ready(function () {
 
+                $('#id_facility').selectize({
+                    sortField: 'text'
+                });
+                $('#id_facility')[0].selectize.$control.css('width', '40%');
+
+                $('#id_event_category').selectize({
+                    sortField: 'text'
+                });
+                $('#id_event_category')[0].selectize.$control.css('width', '40%');
+
+                $('#id_responsible_dept').selectize({
+                    sortField: 'text'
+                });
+                $('#id_responsible_dept')[0].selectize.$control.css('width', '40%');
+
+                $('#id_uploader_shop').selectize({
+                    sortField: 'text'
+                });
+                $('#id_uploader_shop')[0].selectize.$control.css('width', '40%');
+
                 $('#id_supervisor').selectize({
                     sortField: 'text'
                 });
+                $('#id_supervisor')[0].selectize.$control.css('width', '40%');
+
                 $('#id_executor').selectize({
                     sortField: 'text'
                 });
+                $('#id_executor')[0].selectize.$control.css('width', '40%');
             });
         </script>
     </div>
