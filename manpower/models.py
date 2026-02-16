@@ -51,6 +51,7 @@ class IPWhitelist(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=15, blank=True, null=True)
+    organization = models.CharField(max_length=128, blank=True, null=True)
     division = models.ForeignKey(Division, on_delete=models.DO_NOTHING, blank=True, null=True)
     department = models.ForeignKey(DepartmentShop, models.DO_NOTHING, blank=True, null=True)
     npcbl_designation = models.CharField(max_length=256, blank=True, null=True)

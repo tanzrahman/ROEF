@@ -324,17 +324,29 @@ def add_event(request):
                 event_form = form.save(commit=False)
                 event_form.uploaded_by = request.user
                 event_form.uploaded_date = datetime.date.today()
+                event_form.uploader_organization = request.user.profile.organization
+                event_form.uploader_shop = request.user.profile.department
+                event_form.uploader_designation = request.user.profile.npcbl_designation
+                event_form.uploader_phone = request.user.profile.phone
                 event_form.submission_status = 1
+                if(request.user.profile.access_level == 50):
+                    event_form.is_guest = True
+                else:
+                    event_form.is_guest = False
+
                 event_form.save()
+
                 if(event_form.event_category):
                     event_form.event_code = f"{event_form.event_category}-0000{event_form.id}-{event_form.uploaded_date.year}"
                 else:
                     event_form.event_code = f"E-0000{event_form.id}-{event_form.uploaded_date.year}"
+
                 event_form.save()
 
                 if(event_form.event_category == 'EAE'):
                     event_form.eae_mom_id = f"MoM_{event_form.event_code}"
                     event_form.eae_mom_date = datetime.date.today()
+
                 event_form.save()
 
                 # notifiyer = threading.Thread(target=send_notification, args=(task_id,))
@@ -344,17 +356,29 @@ def add_event(request):
                 event_form = form.save(commit=False)
                 event_form.uploaded_by = request.user
                 event_form.uploaded_date = datetime.date.today()
+                event_form.uploader_organization = request.user.profile.organization
+                event_form.uploader_shop = request.user.profile.department
+                event_form.uploader_designation = request.user.profile.npcbl_designation
+                event_form.uploader_phone = request.user.profile.phone
                 event_form.submission_status = 0
+                if(request.user.profile.access_level == 50):
+                    event_form.is_guest = True
+                else:
+                    event_form.is_guest = False
+
                 event_form.save()
+
                 if(event_form.event_category):
                     event_form.event_code = f"{event_form.event_category}-0000{event_form.id}-{event_form.uploaded_date.year}"
                 else:
                     event_form.event_code = f"E-0000{event_form.id}-{event_form.uploaded_date.year}"
+
                     event_form.save()
 
                 if(event_form.event_category == 'EAE'):
                     event_form.eae_mom_id = f"MoM_{event_form.event_code}"
                     event_form.eae_mom_date = datetime.date.today()
+
                 event_form.save()
 
             else:

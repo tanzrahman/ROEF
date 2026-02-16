@@ -156,6 +156,7 @@ def signup(request):
             user.profile.validation_expire_date_time = datetime.now() + timedelta(hours=12)
             user.profile.employee_id = user_form.cleaned_data['employee_id']
             user.is_active=True
+            user.profile.organization = user_form.cleaned_data['organization']
             user.profile.department = user_form.cleaned_data['department']
             user.profile.npcbl_designation = user_form.cleaned_data['npcbl_designation']
             user.profile.designation = user_form.cleaned_data['designation']
@@ -186,6 +187,7 @@ def visitor_signup(request):
             user.profile.validation_expire_date_time = datetime.now() + timedelta(hours=12)
             user.profile.employee_id = user_form.cleaned_data['employee_id']
             user.is_active = True
+            user.profile.organization = user_form.cleaned_data['organization']
             user.profile.department = 'Other'
             user.profile.designation = user_form.cleaned_data['designation']
             user.profile.phone = user_form.cleaned_data['phone']

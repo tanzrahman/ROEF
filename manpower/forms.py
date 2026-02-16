@@ -78,16 +78,17 @@ class SignUpForm(UserCreationForm):
     phone = forms.CharField(max_length=11, label='Mobile No', help_text='Start with 0 (ex. 01#########)', widget=forms.TextInput(attrs={
                 'placeholder': '01#########'
             }))
+    organization = forms.CharField(required=True, label="Organization", max_length=128)
     department = forms.ModelChoiceField(required=True, label="Department", queryset=DepartmentShop.objects.all())
-    npcbl_designation = forms.CharField(required=False, label='NPCBL Designation')
+    npcbl_designation = forms.CharField(required=False, label='NPCBL Designation', max_length=128)
     section = forms.ModelChoiceField(required=False, queryset=Section.objects.all())
-    designation = forms.CharField(required=False, label='Plant Designation')
+    designation = forms.CharField(required=False, label='Plant Designation', max_length=128)
     employee_id = forms.CharField(required=False, max_length=11, label="Employee ID")
     grade = forms.IntegerField(required=False, label="Grade")
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'department',
+        fields = ('username', 'first_name', 'last_name', 'email', 'organization', 'phone', 'department',
                   'npcbl_designation', 'designation', 'section', 'employee_id', 'grade', 'password1', 'password2')
 
     def clean_email(self):
@@ -108,13 +109,14 @@ class SignUpForm_Visitor(UserCreationForm):
                             widget=forms.TextInput(attrs={
                                 'placeholder': '01#########'
                             }))
+    organization = forms.CharField(required=True, label="Organization", max_length=128)
     designation = forms.CharField(required=False, label='Designation')
     employee_id = forms.CharField(required=False, max_length=11, label="Employee ID")
     grade = forms.IntegerField(required=False, label="Grade")
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'designation', 'employee_id', 'grade', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'organization', 'designation', 'employee_id', 'grade', 'password1', 'password2')
 
     def clean_email(self):
         data = self.cleaned_data['email']

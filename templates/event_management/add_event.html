@@ -72,6 +72,11 @@
         <script>
             $(document).ready(function () {
 
+                $('#id_unit').selectize({
+                    sortField: 'text'
+                });
+                $('#id_unit')[0].selectize.$control.css('width', '40%');
+
                 $('#id_facility').selectize({
                     sortField: 'text'
                 });
@@ -87,10 +92,15 @@
                 });
                 $('#id_responsible_dept')[0].selectize.$control.css('width', '40%');
 
-                $('#id_uploader_shop').selectize({
+                $('#id_plant_status').selectize({
                     sortField: 'text'
                 });
-                $('#id_uploader_shop')[0].selectize.$control.css('width', '40%');
+                $('#id_plant_status')[0].selectize.$control.css('width', '40%');
+
+                $('#id_information_source').selectize({
+                    sortField: 'text'
+                });
+                $('#id_information_source')[0].selectize.$control.css('width', '40%');
 
                 $('#id_supervisor').selectize({
                     sortField: 'text'

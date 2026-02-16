@@ -64,11 +64,6 @@ class EventForm(ModelForm):
     elimination_suggestion = forms.CharField(label='Elimination Suggestion',required=False, widget=forms.Textarea(attrs={'rows': 5, 'cols': 50}))
     responsible_dept = forms.ModelChoiceField(queryset=DepartmentShop.objects.all(), label='Responsible Department', required=False)
     plant_status = forms.ChoiceField(choices=PLANT_STATUS, label="Plant Status", required=False)
-    uploader_shop = forms.ModelChoiceField(queryset=DepartmentShop.objects.all(), label='Reporter Shop/Department', required=False)
-    uploader_organization = forms.CharField(label='Reporter Organization',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
-    uploader_designation = forms.CharField(label='Reporter Designation',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
-    uploader_phone = forms.CharField(label='Reporter Phone',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
-    uploader_bioID = forms.CharField(label='Reporter Bio ID',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     information_source = forms.ChoiceField(choices=INFORMATION_SOURCE, label='Information Source',required=False)
     keep_identity_confidential = forms.BooleanField(label='Keep Identity Confidential',required=False)
     supporting_file_1 = forms.FileField(label='Select file 1', required=False)
@@ -92,17 +87,12 @@ class EventForm(ModelForm):
 
     class Meta:
         model = Event
-        exclude = ('event_code', 'uploaded_by', 'uploaded_date', 'action_taken', 'action_to_prevent_recurrence_event', 'approval_status', 'approved_by', 'approval_date', 'updated_by', 'updated_date', 'resolution_status', 'resolved_by', 'resolved_date', 'resolver_remarks', 'submission_status', 'eae_mom_id', 'eae_mom_date')
+        exclude = ('uploader_organization','uploader_shop', 'uploader_designation', 'uploader_phone', 'event_code', 'uploaded_by', 'uploaded_date', 'action_taken', 'action_to_prevent_recurrence_event', 'approval_status', 'approved_by', 'approval_date', 'updated_by', 'updated_date', 'resolution_status', 'resolved_by', 'resolved_date', 'resolver_remarks', 'submission_status', 'eae_mom_id', 'eae_mom_date', 'is_guest')
 
 
 class EventGoodPracticeForm(ModelForm):
     name = forms.ChoiceField(choices=GP_NAME, label='Name', required=False)
     description = forms.CharField(label='Description',required=False, widget=forms.Textarea(attrs={'rows': 5, 'cols': 50}))
-    uploader_shop = forms.ModelChoiceField(queryset=DepartmentShop.objects.all(), label='Reporter Shop/Department', required=False)
-    uploader_organization = forms.CharField(label='Reporter Organization',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
-    uploader_designation = forms.CharField(label='Reporter Designation',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
-    uploader_phone = forms.CharField(label='Reporter Phone',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
-    uploader_bioID = forms.CharField(label='Reporter Bio ID',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     log_book_no = forms.CharField(label='Log Book No', required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     keywords = forms.CharField(label='Keywords',required=False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
     reactor_type = forms.ChoiceField(choices=REACTOR_TYPE, label='Reactor Type',required=False)
@@ -126,7 +116,7 @@ class EventGoodPracticeForm(ModelForm):
 #             # self.fields['milestone_id'].widget.attrs['class'] = 'readonly_field'
     class Meta:
         model = EventGoodPractice
-        exclude = ('uploaded_by', 'uploaded_date', 'updated_by', 'updated_date')
+        exclude = ('uploader_organization','uploader_shop', 'uploader_designation', 'uploader_phone', 'uploaded_by', 'uploaded_date', 'updated_by', 'updated_date')
 
 
 class EventSearchForm(ModelForm):
