@@ -32,6 +32,7 @@ urlpatterns = [
     path('event/', include('event_management.urls')),
     path('manpower/', include('manpower.urls')),
     path('system_log/', include('system_log.urls')),
+    path('gp_details/<gp_id>', event_management.views.gp_details, name='gp_details'),
     path('login/',manpower.user_manager.user_login,name='userlogin'),
     path('logout/',manpower.user_manager.logout_user,name='userlogout'),
     path('signup/',manpower.user_manager.signup,name='signup'),

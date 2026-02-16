@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load document_templatetags %}
+{% block content %}
+
+    <script src="{% static 'js/SiteScripts/search_results.js' %}"></script>
+    <script src="/static/js/task_manager.js"></script>
+
+    <style>
+        th {
+            white-space: normal !important;
+            word-wrap: break-word !important;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        td {
+            word-wrap: break-word;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+    </style>
+
+    <!--{% if success %}
+        <script>
+            alert("{{ event.event_code }} has been modified successfully");
+            window.opener.location.reload();
+            window.close();
+        </script>
+    {% endif %}
+
+    {% if error %}
+        <script>
+            alert("ERROR! Please insert valid data");
+            window.opener.location.reload();
+            window.close();
+        </script>
+    {% endif %}-->
+
+    <div>
+
+        {% if gp %}
+            <h3 style="text-align: center; padding-top: 1%">Good Practice Details</h3>
+         <div>
+             <div style="margin: 1%">
+                <table class="table table-hover table-bordered table-light" style="table-layout: fixed; width: 60%; margin: 0 auto;">
+                    <tr>
+                        <td>
+                            <h6>
+                                <b>
+                                    {{ gp.name }}
+                                </b>
+                            </h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Description:</b><br>
+                            {{ gp.description }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Information Source:</b><br>
+                            {{ gp.information_source }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Log Book No:</b><br>
+                            {{ gp.log_book_no }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Keywords:</b><br>
+                            {{ gp.keywords }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Reactor Type:</b><br>
+                            {{ gp.reactor_type }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Expert Assessment:</b><br>
+                            {{ gp.expert_assessment }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Distribution Recommendation:</b><br>
+                            {{ gp.distribution_recommendation }}
+                        </td>
+                    </tr>
+
+                <!--
+                    <tr>
+                        <td>
+                            <b>Supporting Files:</b><br>
+                            {% if event.supporting_file_1 %}
+                                1. <a href="{% url 'event_view' 'view' event.id 1 %}" target="_blank">{{ event.supporting_file_1.name|file_basename }}</a><br>
+                            {% endif %}
+                            {% if event.supporting_file_2 %}
+                                2. <a href="{% url 'event_view' 'view' event.id 2 %}" target="_blank">{{ event.supporting_file_2.name|file_basename }}</a><br>
+                            {% endif %}
+                            {% if event.supporting_file_3 %}
+                                <a href="{% url 'event_view' 'view' event.id 3 %}" target="_blank">{{ event.supporting_file_3.name|file_basename }}</a><br>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Assigned Supervisors:</b><br>
+                            {% for each in event.supervisor_list %}
+                                {{ each.first_name }} {{ each.last_name }}
+                                ({{ each.username }})<br>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Assigned Executors:</b><br>
+                            {% for each in event.executor_list %}
+                                {{ each.first_name }} {{ each.last_name }}
+                                ({{ each.username }})<br>
+                            {% endfor %}
+                        </td>
+                    </tr>
+
+                <br><br>
+
+                    <tr>
+                        <td style="text-align: center">
+                            <a style="margin: 1%; float: right" href="/event/approval/{{ event.id }}?action=approve" class="btn btn-success" target="_blank">Approve</a>
+                            <a style="margin: 1%; float: right" href="/event/approval/{{ event.id }}?action=reject" class="btn btn-warning" target="_blank">Reject</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center">
+                            <a style="margin: 1%; float: right" href="/event/edit/{{ event.id }}" class="btn btn-primary" target="_blank">Edit Event</a>
+                            <a style="margin: 1%; float: right" href="/event/resolution/{{ event.id }}" class="btn btn-danger" target="_blank">Event Resolution</a>
+                        </td>
+                    </tr> -->
+
+                </table>
+
+                <div id="pagination_div">
+                    {% if gp_list.has_other_pages %}
+                        <ul class="paginator">
+
+                            <span>Page: </span>
+                            {% for i in gp_list.paginator.page_range %}
+                                {% if gp_list.number == i %}
+                                    <span class="this-page">{{ i }} <span
+                                            class="sr-only">(current)</span></span>
+                                {% else %}
+                                    <a href="javascript:next_page_report('{{ i }}')">{{ i }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                 </div>
+             </div>
+         </div>
+
+        {% else %}
+            <h2 style="text-align:center; color:red">No Good Practice Available</h2>
+        {% endif %}
+
+        <br> <br>
+    </div>
+
+{% endblock %}

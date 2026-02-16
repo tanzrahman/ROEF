@@ -96,8 +96,7 @@ class EventForm(ModelForm):
 
 
 class EventGoodPracticeForm(ModelForm):
-    name = forms.CharField(label='Name', required=False,
-                                  widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
+    name = forms.ChoiceField(choices=GP_NAME, label='Name', required=False)
     description = forms.CharField(label='Description',required=False, widget=forms.Textarea(attrs={'rows': 5, 'cols': 50}))
     uploader_shop = forms.ModelChoiceField(queryset=DepartmentShop.objects.all(), label='Reporter Shop/Department', required=False)
     uploader_organization = forms.CharField(label='Reporter Organization',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
@@ -106,13 +105,15 @@ class EventGoodPracticeForm(ModelForm):
     uploader_bioID = forms.CharField(label='Reporter Bio ID',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     log_book_no = forms.CharField(label='Log Book No', required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
     keywords = forms.CharField(label='Keywords',required=False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
-    reactor_type = forms.CharField(label='Reactor Type',required=False, widget=forms.Textarea(attrs={'rows': 1, 'cols': 50}))
-    general_activities = forms.CharField(label='General Activities', required=False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
-    problem_elimination_specification = forms.CharField(label='Problem Elimination Specification',required=False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
-    gp_applications = forms.CharField(label='Good Practice Applications', required=False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
-    expert_assessment = forms.CharField(label='Expert Assessment', required=False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
+    reactor_type = forms.ChoiceField(choices=REACTOR_TYPE, label='Reactor Type',required=False)
+    npp_activities = forms.ChoiceField(choices=NPP_ACTIVITIES, label='NPP Activities', required=False)
+    main_activities = forms.ChoiceField(choices=MAIN_ACTIVITIES, label='Main Activities', required=False)
+    general_activities = forms.ChoiceField(choices=GENERAL_ACTIVITIES, label='General Activities', required=False)
+    problem_elimination_specification = forms.ChoiceField(choices=GP_APPLICATION_FOR_PROBLEM_ELIMINATION, label='Problem Elimination Specification',required=False)
+    gp_applications = forms.ChoiceField(choices=GP_APPLICATION, label='Good Practice Applications', required=False)
+    expert_assessment = forms.ChoiceField(choices=EXPERT_ASSESSMENT_ON_APPLICATION, label='Expert Assessment', required=False)
     information_source = forms.ChoiceField(choices=INFORMATION_SOURCE, label='Information Source',required=False)
-    distribution_recommendation = forms.CharField(label='Recommendation for Distribution', required=False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
+    distribution_recommendation = forms.ChoiceField(choices=GP_DISTRIBUTION_RECOMMENDATION, label='Recommendation for Distribution', required=False)
 
 #     def __init__(self, *args, **kwargs):
 #         super(EventGoodPracticeForm, self).__init__(*args, **kwargs)
@@ -137,6 +138,14 @@ class EventSearchForm(ModelForm):
     class Meta:
         model = Event
         fields = ('event_category', 'facility', 'description')
+
+class GPSearchForm(ModelForm):
+    name = forms.ChoiceField(choices=GP_NAME, label='Name', required=False)
+    description = forms.CharField(label='Description', required=False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 50}))
+    reactor_type = forms.ChoiceField(choices=REACTOR_TYPE, label='Reactor Type', required=False)
+    class Meta:
+        model = EventGoodPractice
+        fields = ('name', 'description', 'reactor_type')
 
 class EventResolutionForm(ModelForm):
     action_taken = forms.CharField(label='Action Taken', required=False,

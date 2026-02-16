@@ -151,12 +151,22 @@ def event_request_handler(request, action="", event_id="", file_no=None):
             return event_resolution(request, event_id)
         elif(action == 'good_practice'):
             return event_good_practice(request)
+        elif(action == 'gp_list'):
+            return event_good_practice_list(request)
         elif(action == 'lle_list'):
             return lle_list(request)
         elif(action == 'eae_list'):
             return eae_list(request)
         else:
             return HttpResponse("Invalid Access")
+
+def gp_details(request, gp_id=""):
+    if(request.user.is_anonymous):
+        return redirect('/')
+    else:
+        gp = EventGoodPractice.objects.get(id=gp_id)
+        context = {'gp': gp}
+        return render(request, 'event_management/gp_details.html', context)
 
 def event_list(request):
     page_no = 1
@@ -860,6 +870,77 @@ def event_good_practice(request):
             print("error: ", form.errors)
 
     return render(request, 'event_management/upload_event_good_practice.html', context)
+
+def event_good_practice_list(request):
+    page_no = 1
+    no_of_items = 100
+
+    if (request.GET.get('page_no')):
+        page_no = int(request.GET.get('page_no'))
+
+    search_form = GPSearchForm(initial={'user': request.user})
+    filters = []
+    if (request.GET):
+        search_form = GPSearchForm(request.GET, initial={'user': request.user})
+        if (search_form.is_valid()):
+            for each in search_form.changed_data:
+                # if ('date' in each):
+                #     if ('upload_date_from' in each):
+                #         field_name = each.rsplit('_', 1)[0]
+                #         date_filter = field_name + "__gte"
+                #         filters.append(Q(**{date_filter: search_form.cleaned_data[each]}))
+                #         continue
+                #     if ('upload_date_to' in each):
+                #         field_name = each.rsplit('_', 1)[0]
+                #         date_filter = field_name + "__lte"
+                #         filters.append(Q(**{date_filter: search_form.cleaned_data[each]}))
+                #         continue
+                # if (each == 'division'):
+                #     filters.append(Q(**{each: search_form.cleaned_data[each]}))
+                #     continue
+                if (each == 'name'):
+                    filters.append(Q(**{each: search_form.cleaned_data[each]}))
+                    continue
+                if ('description' in each):
+                    filters.append(Q(**{'description__icontains': search_form.cleaned_data[each].upper()}))
+                    continue
+                if (each == 'reactor_type'):
+                    filters.append(Q(**{each: search_form.cleaned_data[each]}))
+                    continue
+                else:
+                    filters.append(Q(**{each: search_form.cleaned_data[each]}))
+
+    searched_doc = 0
+
+    if (len(filters) > 0):
+        gp_list = EventGoodPractice.objects.filter(reduce(operator.and_, filters))
+        total_gp_count = gp_list.count()
+    else:
+        gp_list = EventGoodPractice.objects.all().order_by('-uploaded_date')
+        total_gp_count = gp_list.count()
+
+    paginator = Paginator(gp_list, no_of_items)
+
+    try:
+        gp_list = paginator.page(page_no)
+
+    except PageNotAnInteger:
+        gp_list = paginator.page(page_no)
+
+    except EmptyPage:
+        gp_list = paginator.page(paginator.num_pages)
+
+    context = {'gp_list': gp_list, 'total_gp_count': total_gp_count}
+
+    if (len(filters) > 0):
+        context.update({
+            'gp_list': gp_list,
+        })
+    context.update({
+        'form': search_form
+    })
+
+    return render(request, 'event_management/gp_list.html', context)
 
 
 def lle_list(request):
