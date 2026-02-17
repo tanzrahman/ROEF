@@ -3,6 +3,8 @@
 {% load document_templatetags %}
 {% block content %}
 
+    <link href="/static/css/selectize.css" rel="stylesheet"/>
+    <script src="/static/js/selectize.js"></script>
     <script src="{% static 'js/SiteScripts/search_results.js' %}"></script>
     <script src="/static/js/task_manager.js"></script>
 
@@ -115,6 +117,19 @@
         {% endif %}
 
         <br> <br>
+
+        <script>
+            $(document).ready(function () {
+
+                $('#id_name').selectize({
+                    sortField: 'text'
+                });
+
+                $('#id_reactor_type').selectize({
+                    sortField: 'text'
+                });
+            });
+        </script>
 
     </div>
 
