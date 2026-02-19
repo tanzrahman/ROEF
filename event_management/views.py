@@ -883,6 +883,10 @@ def event_good_practice(request):
             event_form = form.save(commit=False)
             event_form.uploaded_by = request.user
             event_form.uploaded_date = datetime.date.today()
+            event_form.uploader_shop = request.user.profile.department
+            event_form.uploader_organization = request.user.profile.organization
+            event_form.uploader_designation = request.user.profile.npcbl_designation
+            event_form.uploader_phone = request.user.profile.phone
             event_form.save()
 
             # notifiyer = threading.Thread(target=send_notification, args=(task_id,))

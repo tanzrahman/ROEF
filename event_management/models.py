@@ -300,7 +300,6 @@ class EventGoodPractice(models.Model):
     uploader_organization = models.CharField(max_length=256, blank=True, null=True)
     uploader_designation = models.CharField(max_length=256, blank=True, null=True)
     uploader_phone = models.CharField(max_length=16, blank=True, null=True)
-    uploader_bioID = models.CharField(max_length=16, blank=True, null=True)
     information_source = models.CharField(max_length=16, choices=INFORMATION_SOURCE, blank=True, null=True)
     log_book_no = models.CharField(max_length=128, blank=True, null=True)
     keywords = models.CharField(max_length=128, blank=True, null=True)

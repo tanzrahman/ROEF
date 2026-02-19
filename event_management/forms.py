@@ -116,7 +116,7 @@ class EventGoodPracticeForm(ModelForm):
 #             # self.fields['milestone_id'].widget.attrs['class'] = 'readonly_field'
     class Meta:
         model = EventGoodPractice
-        exclude = ('uploader_organization','uploader_shop', 'uploader_designation', 'uploader_phone', 'uploaded_by', 'uploaded_date', 'updated_by', 'updated_date')
+        exclude = ('uploader_organization','uploader_shop', 'uploader_designation', 'uploader_phone', 'uploader_bioID', 'uploaded_by', 'uploaded_date', 'updated_by', 'updated_date')
 
 
 class EventSearchForm(ModelForm):

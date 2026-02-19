@@ -34,10 +34,10 @@
 
                     <div class="outer-wrapper">
                         <div>
-                            <table class="table table-sm table-bordered" style="width: 60%; margin: 0 auto">
+                            <table class="table table-sm table-bordered table-active" style="width: 60%; margin: 0 auto">
 
                                 {% for field in form %}
-                                    <tr class="table-info table-sm" style="text-align: center; width: 40%">
+                                    <tr class="table-sm" style="text-align: center; width: 40%">
 
                                         <td><b> {{ field.label_tag }} </b></td>
                                         <td> {{ field }} </td>
@@ -70,15 +70,89 @@
 
         <script>
             $(document).ready(function () {
+                $('#id_name').selectize({
+                    sortField: 'text'
+                });
+                $('#id_name')[0].selectize.$control.css('width', '40%');
 
-                $('#id_supervisor').selectize({
+                $('#id_reactor_type').selectize({
                     sortField: 'text'
                 });
-                $('#id_executor').selectize({
+                $('#id_reactor_type')[0].selectize.$control.css('width', '40%');
+
+                $('#id_npp_activities').selectize({
                     sortField: 'text'
                 });
+                $('#id_npp_activities')[0].selectize.$control.css('width', '40%');
+
+                $('#id_main_activities').selectize({
+                    sortField: 'text'
+                });
+                $('#id_main_activities')[0].selectize.$control.css('width', '40%');
+
+                $('#id_general_activities').selectize({
+                    sortField: 'text'
+                });
+                $('#id_general_activities')[0].selectize.$control.css('width', '40%');
+
+                $('#id_problem_elimination_specification').selectize({
+                    sortField: 'text'
+                });
+                $('#id_problem_elimination_specification')[0].selectize.$control.css('width', '40%');
+
+                $('#id_gp_applications').selectize({
+                    sortField: 'text'
+                });
+                $('#id_gp_applications')[0].selectize.$control.css('width', '40%');
+
+                $('#id_expert_assessment').selectize({
+                    sortField: 'text'
+                });
+                $('#id_expert_assessment')[0].selectize.$control.css('width', '40%');
+
+                $('#id_information_source').selectize({
+                    sortField: 'text'
+                });
+                $('#id_information_source')[0].selectize.$control.css('width', '40%');
+
+                $('#id_distribution_recommendation').selectize({
+                    sortField: 'text'
+                });
+                $('#id_distribution_recommendation')[0].selectize.$control.css('width', '40%');
+
+
+                var npp = $('#id_npp_activities')[0].selectize;
+
+                // Get table rows
+                var mainRow = $('#id_main_activities').closest('tr');
+                var generalRow = $('#id_general_activities').closest('tr');
+
+                function toggleDropdowns(value) {
+
+                    // Hide both rows (label + select together)
+                    mainRow.hide();
+                    generalRow.hide();
+
+                    if (value === "1") {
+                        mainRow.show();
+                    }
+
+                    if (value === "2") {
+                        generalRow.show();
+                    }
+                }
+
+                npp.on('change', function (value) {
+                    toggleDropdowns(value);
+                });
+
+                toggleDropdowns(npp.getValue());
+
+
             });
+
         </script>
+
     </div>
 
 {% endblock %}
