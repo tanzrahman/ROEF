@@ -225,6 +225,18 @@ def mom_upload(instance, filename):
         filename
     )
 
+class SafetyType(models.Model):
+    code = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.name}"
+
+class LevelCode(models.Model):
+    code = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.name}"
+
 class Event(models.Model):
     id = models.AutoField(primary_key=True)
     event_code = models.CharField(max_length=64, blank=True, null=True)
@@ -268,6 +280,8 @@ class Event(models.Model):
     resolver_remarks = models.CharField(max_length=512, blank=True, null=True)
     is_guest = models.BooleanField(blank=True, null=True, default=False)
     submission_status = models.IntegerField(blank=True, null=True)
+    type_of_safety = models.ManyToManyField(SafetyType, blank=True)
+    level_code = models.ManyToManyField(LevelCode, blank=True)
 
     # MoM for Extended Analysis of Event
     eae_mom_id = models.CharField(max_length=64, blank=True, null=True)

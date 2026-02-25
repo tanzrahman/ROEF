@@ -74,6 +74,8 @@ class EventForm(ModelForm):
     executor = forms.ModelMultipleChoiceField(queryset=User.objects.filter(profile__is_executor=True),
                                                    label="Select Executor", required=False)
     eae_mom_file = forms.FileField(label='MoM file', required=False)
+    type_of_safety = forms.ModelMultipleChoiceField(queryset=SafetyType.objects.all(), label='Type of Safety', required=False)
+    level_code = forms.ModelMultipleChoiceField(queryset=LevelCode.objects.all(), label='Level Code', required=False)
 
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
@@ -82,6 +84,8 @@ class EventForm(ModelForm):
             instance = kwargs.get('instance')
             self.fields['supervisor'].initial = instance.supervisor.all()
             self.fields['executor'].initial = instance.executor.all()
+            self.fields['type_of_safety'].initial = instance.type_of_safety.all()
+            self.fields['level_code'].initial = instance.level_code.all()
             # self.fields['milestone_id'].widget.attrs['readonly'] = True
             # self.fields['milestone_id'].widget.attrs['class'] = 'readonly_field'
 

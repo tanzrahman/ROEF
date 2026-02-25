@@ -603,6 +603,11 @@ def event_edit(request, event_id):
             f_event.updated_by = request.user
             f_event.updated_date = datetime.datetime.now()
 
+            for each in form.cleaned_data['type_of_safety']:
+                f_event.type_of_safety.add(each)
+            for each in form.cleaned_data['level_code']:
+                f_event.level_code.add(each)
+
             for each in form.cleaned_data['supervisor']:
                 f_event.supervisor.add(each)
             for each in form.cleaned_data['executor']:
@@ -679,7 +684,7 @@ def event_draft_edit(request, event_id):
         return render(request, 'event_management/event_draft_edit.html', context)
 
     if request.method == 'POST':
-        event_form = EventForm(request.POST, request.FILES, initial=initial, instance=event)
+        edit_event_form = EventForm(request.POST, request.FILES, initial=initial, instance=event)
 
         action = request.POST.get('action')
 
@@ -690,9 +695,9 @@ def event_draft_edit(request, event_id):
 
         context = {}
 
-        if event_form.is_valid():
+        if edit_event_form.is_valid():
             if (action == 'Submit Event'):
-                event_form = event_form.save(commit=False)
+                event_form = edit_event_form.save(commit=False)
                 event_form.uploaded_by = request.user
                 event_form.uploaded_date = datetime.date.today()
                 event_form.submission_status = 1
@@ -705,13 +710,24 @@ def event_draft_edit(request, event_id):
                 if (event.event_category == 'EAE'):
                     event_form.eae_mom_id = f"MoM_{event_form.event_code}"
                     event_form.eae_mom_date = datetime.date.today()
+
+                for each in edit_event_form.cleaned_data['type_of_safety']:
+                    event_form.type_of_safety.add(each)
+                for each in edit_event_form.cleaned_data['level_code']:
+                    event_form.level_code.add(each)
+
+                for each in edit_event_form.cleaned_data['supervisor']:
+                    event_form.supervisor.add(each)
+                for each in edit_event_form.cleaned_data['executor']:
+                    event_form.executor.add(each)
+
                 event_form.save()
 
                 # notifiyer = threading.Thread(target=send_notification, args=(task_id,))
                 # notifiyer.start()
 
             elif (action == 'Save as Draft'):
-                event_form = event_form.save(commit=False)
+                event_form = edit_event_form.save(commit=False)
                 event_form.uploaded_by = request.user
                 event_form.uploaded_date = datetime.date.today()
                 event_form.submission_status = 0
@@ -726,6 +742,16 @@ def event_draft_edit(request, event_id):
                     event_form.eae_mom_id = f"MoM_{event_form.event_code}"
                     event_form.eae_mom_date = datetime.date.today()
 
+                for each in edit_event_form.cleaned_data['type_of_safety']:
+                    event_form.type_of_safety.add(each)
+                for each in edit_event_form.cleaned_data['level_code']:
+                    event_form.level_code.add(each)
+
+                for each in edit_event_form.cleaned_data['supervisor']:
+                    event_form.supervisor.add(each)
+                for each in edit_event_form.cleaned_data['executor']:
+                    event_form.executor.add(each)
+
                 event_form.save()
 
             else:
@@ -734,7 +760,7 @@ def event_draft_edit(request, event_id):
             context.update({'success': 'success'})
 
         else:
-            print(event_form.errors)
+            print(edit_event_form.errors)
             context.update({'error': 'error'})
 
         context.update({'form': search_form, 'event': event, 'event_list': event_list, 'total_event_count': total_event_count})

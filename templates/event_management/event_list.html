@@ -85,7 +85,13 @@
                                 <b>Unit:</b> {{ event.get_unit_display }};
                                 <b>Facility:</b> {{ event.facility }};
                                 <b>Room:</b> {{ event.room_no }};
-                                <b>Elevation:</b> {{ event.elevation }}
+                                <b>Elevation:</b> {{ event.elevation }};
+                                {% for each in event.type_of_safety.all %}
+                                    {{ each }},
+                                {% endfor %};
+                                {% for each in event.level_code.all %}
+                                    {{ each }},
+                                {% endfor %}
                             </span>
                         </tr>
 
