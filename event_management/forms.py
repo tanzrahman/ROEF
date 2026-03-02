@@ -59,9 +59,9 @@ class EventForm(ModelForm):
     event_time = forms.TimeField(label='Event Time', required= False,  widget=forms.TimeInput(attrs={'type': 'time'}))
     event_category = forms.ChoiceField(choices=EVENT_CATEGORY, label="Event Category", required=False)
     regulatory_norms_violation = forms.BooleanField(label='Violation of regulatory norms and regulations',required=False)
-    description = forms.CharField(label='Event Description',required=False, widget=forms.Textarea(attrs={'rows': 5, 'cols': 50}))
-    direct_cause = forms.CharField(label='Direct Cause',required=False, widget=forms.Textarea(attrs={'rows': 5, 'cols': 50}))
-    elimination_suggestion = forms.CharField(label='Elimination Suggestion',required=False, widget=forms.Textarea(attrs={'rows': 5, 'cols': 50}))
+    description = forms.CharField(label='Event Description',required=False, widget=forms.Textarea(attrs={'rows': 5, 'cols': 60}))
+    direct_cause = forms.CharField(label='Direct Cause',required=False, widget=forms.Textarea(attrs={'rows': 5, 'cols': 60}))
+    elimination_suggestion = forms.CharField(label='Elimination Suggestion',required=False, widget=forms.Textarea(attrs={'rows': 5, 'cols': 60}))
     responsible_dept = forms.ModelChoiceField(queryset=DepartmentShop.objects.all(), label='Responsible Department', required=False)
     plant_status = forms.ChoiceField(choices=PLANT_STATUS, label="Plant Status", required=False)
     information_source = forms.ChoiceField(choices=INFORMATION_SOURCE, label='Information Source',required=False)
@@ -91,7 +91,7 @@ class EventForm(ModelForm):
 
     class Meta:
         model = Event
-        exclude = ('uploader_organization','uploader_shop', 'uploader_designation', 'uploader_phone', 'event_code', 'uploaded_by', 'uploaded_date', 'action_taken', 'action_to_prevent_recurrence_event', 'approval_status', 'approved_by', 'approval_date', 'updated_by', 'updated_date', 'resolution_status', 'resolved_by', 'resolved_date', 'resolver_remarks', 'submission_status', 'eae_mom_id', 'eae_mom_date', 'is_guest')
+        exclude = ('categorical_event_code', 'uploader_organization','uploader_shop', 'uploader_designation', 'uploader_phone', 'event_code', 'uploaded_by', 'uploaded_date', 'action_taken', 'action_to_prevent_recurrence_event', 'approval_status', 'approved_by', 'approval_date', 'updated_by', 'updated_date', 'resolution_status', 'resolved_by', 'resolved_date', 'resolver_remarks', 'submission_status', 'eae_mom_id', 'eae_mom_date', 'is_guest')
 
 
 class EventGoodPracticeForm(ModelForm):

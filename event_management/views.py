@@ -329,6 +329,7 @@ def add_event(request):
                 event_form.uploader_designation = request.user.profile.npcbl_designation
                 event_form.uploader_phone = request.user.profile.phone
                 event_form.submission_status = 1
+
                 if(request.user.profile.access_level == 50):
                     event_form.is_guest = True
                 else:
@@ -336,10 +337,11 @@ def add_event(request):
 
                 event_form.save()
 
+                event_form.event_code = f"E-{event_form.id:05}-{event_form.uploaded_date.year}"
+
                 if(event_form.event_category):
-                    event_form.event_code = f"{event_form.event_category}-0000{event_form.id}-{event_form.uploaded_date.year}"
-                else:
-                    event_form.event_code = f"E-0000{event_form.id}-{event_form.uploaded_date.year}"
+                    category_count = Event.objects.filter(event_category=event_form.event_category).count()
+                    event_form.categorical_event_code = f"{event_form.event_category}-{category_count:05}-{event_form.uploaded_date.year}"
 
                 event_form.save()
 
@@ -368,10 +370,11 @@ def add_event(request):
 
                 event_form.save()
 
+                event_form.event_code = f"E-{event_form.id:05}-{event_form.uploaded_date.year}"
+
                 if(event_form.event_category):
-                    event_form.event_code = f"{event_form.event_category}-0000{event_form.id}-{event_form.uploaded_date.year}"
-                else:
-                    event_form.event_code = f"E-0000{event_form.id}-{event_form.uploaded_date.year}"
+                    category_count = Event.objects.filter(event_category=event_form.event_category).count()
+                    event_form.categorical_event_code = f"{event_form.event_category}-{category_count:05}-{event_form.uploaded_date.year}"
 
                     event_form.save()
 
@@ -617,13 +620,15 @@ def event_edit(request, event_id):
             # notifiyer = threading.Thread(target=send_notification, args=(task_id,))
             # notifiyer.start()
 
-            # If event category is changed then event_code will be changed based on category
+            # If event category is changed then categorical_event_code will be changed based on category
             event = Event.objects.get(id=int(event_id))
-            if(event.event_category):
-                event.event_code = f"{event.event_category}-0000{event_id}-{event.uploaded_date.year}"
-            else:
-                event.event_code = f"E-0000{event_id}-{event.uploaded_date.year}"
+
+            if (event.event_category):
+                category_count = Event.objects.filter(event_category=event.event_category).count()
+                event.categorical_event_code = f"{event.event_category}-{category_count:05}-{event.uploaded_date.year}"
+
             event.save()
+
             if (event.event_category == 'EAE'):
                 event.eae_mom_id = f"MoM_{event.event_code}"
                 event.eae_mom_date = datetime.date.today()
@@ -702,14 +707,6 @@ def event_draft_edit(request, event_id):
                 event_form.uploaded_date = datetime.date.today()
                 event_form.submission_status = 1
                 event_form.save()
-                if(event_form.event_category):
-                    event_form.event_code = f"{event_form.event_category}-0000{event_form.id}-{event_form.uploaded_date.year}"
-                else:
-                    event_form.event_code = f"E-0000{event_form.id}-{event_form.uploaded_date.year}"
-                event_form.save()
-                if (event.event_category == 'EAE'):
-                    event_form.eae_mom_id = f"MoM_{event_form.event_code}"
-                    event_form.eae_mom_date = datetime.date.today()
 
                 for each in edit_event_form.cleaned_data['type_of_safety']:
                     event_form.type_of_safety.add(each)
@@ -720,8 +717,19 @@ def event_draft_edit(request, event_id):
                     event_form.supervisor.add(each)
                 for each in edit_event_form.cleaned_data['executor']:
                     event_form.executor.add(each)
-
                 event_form.save()
+
+                # If event category is changed then categorical_event_code will be changed based on category
+                event = Event.objects.get(id=int(event_id))
+
+                if (event.event_category):
+                    category_count = Event.objects.filter(event_category=event.event_category).count()
+                    event.categorical_event_code = f"{event.event_category}-{category_count:05}-{event.uploaded_date.year}"
+                event.save()
+
+                if (event.event_category == 'EAE'):
+                    event.eae_mom_id = f"MoM_{event.event_code}"
+                    event.eae_mom_date = datetime.date.today()
 
                 # notifiyer = threading.Thread(target=send_notification, args=(task_id,))
                 # notifiyer.start()
@@ -732,15 +740,6 @@ def event_draft_edit(request, event_id):
                 event_form.uploaded_date = datetime.date.today()
                 event_form.submission_status = 0
                 event_form.save()
-                if (event_form.event_category):
-                    event_form.event_code = f"{event_form.event_category}-0000{event_form.id}-{event_form.uploaded_date.year}"
-                else:
-                    event_form.event_code = f"E-0000{event_form.id}-{event_form.uploaded_date.year}"
-                event_form.save()
-
-                if (event.event_category == 'EAE'):
-                    event_form.eae_mom_id = f"MoM_{event_form.event_code}"
-                    event_form.eae_mom_date = datetime.date.today()
 
                 for each in edit_event_form.cleaned_data['type_of_safety']:
                     event_form.type_of_safety.add(each)
@@ -751,8 +750,19 @@ def event_draft_edit(request, event_id):
                     event_form.supervisor.add(each)
                 for each in edit_event_form.cleaned_data['executor']:
                     event_form.executor.add(each)
-
                 event_form.save()
+
+                # If event category is changed then categorical_event_code will be changed based on category
+                event = Event.objects.get(id=int(event_id))
+
+                if (event.event_category):
+                    category_count = Event.objects.filter(event_category=event.event_category).count()
+                    event.categorical_event_code = f"{event.event_category}-{category_count:05}-{event.uploaded_date.year}"
+
+                    if (event.event_category == 'EAE'):
+                        event.eae_mom_id = f"MoM_{event.event_code}"
+                        event.eae_mom_date = datetime.date.today()
+                event.save()
 
             else:
                 pass
@@ -760,7 +770,6 @@ def event_draft_edit(request, event_id):
             context.update({'success': 'success'})
 
         else:
-            print(edit_event_form.errors)
             context.update({'error': 'error'})
 
         context.update({'form': search_form, 'event': event, 'event_list': event_list, 'total_event_count': total_event_count})
@@ -1066,7 +1075,7 @@ def lle_list(request):
         'form': search_form
     })
 
-    return render(request, 'event_management/event_list.html', context)
+    return render(request, 'event_management/categorical_event_list.html', context)
 
 def eae_list(request):
     page_no = 1
@@ -1137,5 +1146,5 @@ def eae_list(request):
         'form': search_form
     })
 
-    return render(request, 'event_management/eae_list.html', context)
+    return render(request, 'event_management/categorical_event_list.html', context)
 

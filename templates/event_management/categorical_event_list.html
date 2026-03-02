@@ -3,6 +3,8 @@
 {% load document_templatetags %}
 {% block content %}
 
+    <link href="/static/css/selectize.css" rel="stylesheet"/>
+    <script src="/static/js/selectize.js"></script>
     <script src="{% static 'js/SiteScripts/search_results.js' %}"></script>
     <script src="/static/js/task_manager.js"></script>
 
@@ -10,13 +12,13 @@
         th {
             white-space: normal !important;
             word-wrap: break-word !important;
-            font-size: 12px;
+            font-size: 14px;
             vertical-align: middle;
             text-align: center;
         }
         td {
             word-wrap: break-word;
-            font-size: 12px;
+            font-size: 14px;
             vertical-align: middle;
         }
     </style>
@@ -67,27 +69,41 @@
         {% if event_list %}
          <div>
              <div style="padding: 2%">
-                <table class="table table-hover table-bordered table-active" style="table-layout: fixed; width: 100%">
+                <table class="table table-hover table-bordered table-light" style="table-layout: fixed; width: 100%">
                     {% for event in event_list %}
                         <tr>
                             <h6>
                                 <span title="{{ event.description|escape }}">{{ forloop.counter }}.
                                     <b>
-                                        {{ event.event_code }}
+                                        {{ event.categorical_event_code }}; {{ event.event_code }}
                                     </b>
                                 </span>
                                 <a href="/event/event_details/{{ event.id }}">{{ event.description|truncatewords:75 }}</a>
                             </h6>
-                            <span>
-                                <b>Date-Time:</b> {{ event.event_date }} {{ event.event_time }};
-                                <b>Unit:</b> {{ event.get_unit_display }};
-                                <b>Facility:</b> {{ event.facility }};
-                                <b>Room:</b> {{ event.room_no }};
-                                <b>Elevation:</b> {{ event.elevation }}
-                            </span>
-                        </tr>
 
-                        <br><br>
+                            {% if event.event_category == 'EAE' %}
+                                <span>
+                                    <b>Date-Time:</b> {{ event.event_date }} {{ event.event_time }};
+                                    <b>MoM:</b> {{ event.eae_mom_id }} (<a href="{% url 'event_view' 'view' event.id 4 %}" target="_blank">{{ event.eae_mom_file.name|file_basename }}</a>);
+                                    <b>Dated:</b> {{ event.eae_mom_date }};
+                                </span>
+                            {% else %}
+                                <span>
+                                    <b>Date-Time:</b> {{ event.event_date }} {{ event.event_time }};
+                                    <b>Unit:</b> {{ event.get_unit_display }};
+                                    <b>Facility:</b> {{ event.facility }};
+                                    <b>Room:</b> {{ event.room_no }};
+                                    <b>Elevation:</b> {{ event.elevation }};
+                                    {% for each in event.type_of_safety.all %}
+                                        {{ each }},
+                                    {% endfor %};
+                                    {% for each in event.level_code.all %}
+                                        {{ each }},
+                                    {% endfor %}
+                                </span>
+                            {% endif %}
+
+                        </tr>
 
                         <br><br>
 
@@ -95,7 +111,7 @@
 
                 </table>
 
-             <div id="pagination_div">
+                <div id="pagination_div">
                             {% if event_list.has_other_pages %}
                                 <ul class="paginator">
 
@@ -119,6 +135,20 @@
         {% endif %}
 
         <br> <br>
+
+        <script>
+            $(document).ready(function () {
+
+                $('#id_event_category').selectize({
+                    sortField: 'text'
+                });
+
+                $('#id_facility').selectize({
+                    sortField: 'text'
+                });
+            });
+        </script>
+
     </div>
 
 {% endblock %}

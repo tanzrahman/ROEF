@@ -75,7 +75,7 @@
                             <h6>
                                 <span title="{{ event.description|escape }}">{{ forloop.counter }}.
                                     <b>
-                                        {{ event.event_code }}
+                                        {{ event.event_code }}; {{ event.categorical_event_code }}
                                     </b>
                                 </span>
                                 <a href="/event/event_details/{{ event.id }}">{{ event.description|truncatewords:75 }}</a>

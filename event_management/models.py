@@ -248,6 +248,7 @@ class Event(models.Model):
     event_date = models.DateField(blank=True, null=True)
     event_time = models.TimeField(blank=True, null=True)
     event_category = models.CharField(max_length=16, choices=EVENT_CATEGORY, blank=True, null=True)
+    categorical_event_code = models.CharField(max_length=64, blank=True, null=True)
     regulatory_norms_violation = models.BooleanField(blank=True, null=True, default=False)
     description = models.TextField(blank=True, null=True)
     direct_cause = models.CharField(max_length=256, blank=True, null=True)
