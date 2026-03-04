@@ -34,14 +34,14 @@ def homepage(request):
         # ..............................
         # ..............................
         # ..............................
-        total_event = Event.objects.all().count()
+        total_event = Event.objects.filter(submission_status=1).count()
 
-        lle_type_event = Event.objects.filter(event_category='LLE').count()
-        nme_type_event = Event.objects.filter(event_category='NME').count()
-        eae_type_event = Event.objects.filter(event_category='EAE').count()
-        defect_type_event = Event.objects.filter(event_category='Defect').count()
-        deviation_type_event = Event.objects.filter(event_category='Deviation').count()
-        violation_type_event = Event.objects.filter(event_category='Violation').count()
+        lle_type_event = Event.objects.filter(event_category='LLE', submission_status=1).count()
+        nme_type_event = Event.objects.filter(event_category='NME', submission_status=1).count()
+        eae_type_event = Event.objects.filter(event_category='EAE', submission_status=1).count()
+        defect_type_event = Event.objects.filter(event_category='Defect', submission_status=1).count()
+        deviation_type_event = Event.objects.filter(event_category='Deviation', submission_status=1).count()
+        violation_type_event = Event.objects.filter(event_category='Violation', submission_status=1).count()
 
         total_categorized_event = lle_type_event + nme_type_event + eae_type_event + defect_type_event + deviation_type_event + violation_type_event
 
@@ -74,7 +74,7 @@ def homepage(request):
         # Aggregate events per month
         monthly_data = (
             Event.objects
-            .filter(uploaded_date__year=selected_year)
+            .filter(uploaded_date__year=selected_year, submission_status=1)
             .annotate(month=TruncMonth('uploaded_date'))
             .values('month')
             .annotate(count=Count('id'))
@@ -100,7 +100,7 @@ def homepage(request):
         # ..............................
         # ..............................
 
-        top_departments = Event.objects.exclude(responsible_dept__dept_name__isnull=True).values('responsible_dept__dept_name').annotate(total_events=Count('id')).order_by('-total_events')[:10]
+        top_departments = Event.objects.exclude(responsible_dept__dept_name__isnull=True).values('responsible_dept__dept_name').filter(submission_status=1).annotate(total_events=Count('id')).order_by('-total_events')[:10]
 
         dept_labels = [d['responsible_dept__dept_name'] for d in top_departments]
         event_count = [d['total_events'] for d in top_departments]
@@ -115,7 +115,7 @@ def homepage(request):
         # ..............................
         # ..............................
 
-        top_uploaders = Event.objects.values('uploaded_by__first_name', 'uploaded_by__last_name', 'uploaded_by__email', 'uploaded_by__profile__department', 'uploaded_by__profile__designation').annotate(total_events=Count('id')).order_by('-total_events')[:10]
+        top_uploaders = Event.objects.values('uploaded_by__first_name', 'uploaded_by__last_name', 'uploaded_by__email', 'uploaded_by__profile__department', 'uploaded_by__profile__designation').filter(submission_status=1).annotate(total_events=Count('id')).order_by('-total_events')[:10]
 
         context.update({
             'top_uploaders': top_uploaders,

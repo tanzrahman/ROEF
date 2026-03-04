@@ -91,7 +91,7 @@
                             <h6>
                                 <span title="{{ event.description|escape }}">{{ forloop.counter }}.
                                     <b>
-                                        {{ event.event_code }}; {{ event.categorical_event_code }}
+                                        {{ event.event_code }} {% if event.categorical_event_code %}; {{ event.categorical_event_code }} {% endif %}
                                     </b>
                                 </span>
                                 <a href="/event/draft_edit/{{ event.id }}">{{ event.description|truncatewords:75 }}</a>

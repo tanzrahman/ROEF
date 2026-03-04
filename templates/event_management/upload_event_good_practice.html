@@ -68,6 +68,7 @@
             </fieldset>
         </form>
 
+        <!-- to use selectize and to define width of selected fields -->>
         <script>
             $(document).ready(function () {
                 $('#id_name').selectize({
@@ -120,6 +121,13 @@
                 });
                 $('#id_distribution_recommendation')[0].selectize.$control.css('width', '40%');
 
+            });
+
+        </script>
+
+        <!-- to implement dropdown dependency -->
+        <script>
+            $(document).ready(function () {
 
                 var npp = $('#id_npp_activities')[0].selectize;
 
@@ -147,7 +155,6 @@
                 });
 
                 toggleDropdowns(npp.getValue());
-
 
             });
 

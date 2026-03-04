@@ -237,6 +237,18 @@ class LevelCode(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+class RiskAssessment(models.Model):
+    code = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.name}"
+
+class ReasonForEAE(models.Model):
+    code = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.name}"
+
 class Event(models.Model):
     id = models.AutoField(primary_key=True)
     event_code = models.CharField(max_length=64, blank=True, null=True)
@@ -285,6 +297,9 @@ class Event(models.Model):
     level_code = models.ManyToManyField(LevelCode, blank=True)
 
     # MoM for Extended Analysis of Event
+    risk_assessment = models.ManyToManyField(RiskAssessment, blank=True)
+    other_risk = models.CharField(max_length=256, blank=True, null=True)
+    eae_reason = models.ManyToManyField(ReasonForEAE, blank=True)
     eae_mom_id = models.CharField(max_length=64, blank=True, null=True)
     eae_mom_file =  models.FileField(upload_to=mom_upload, blank=True, null=True)
     eae_mom_date = models.DateField(blank=True, null=True)

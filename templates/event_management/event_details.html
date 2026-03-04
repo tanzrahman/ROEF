@@ -47,7 +47,7 @@
                         <td>
                             <h6>
                                 <b>
-                                    {{ event.event_code }}; {{ event.categorical_event_code }}
+                                    {{ event.event_code }} {% if event.categorical_event_code %}; {{ event.categorical_event_code }} {% endif %}
                                 </b>
                             </h6>
                             <span>

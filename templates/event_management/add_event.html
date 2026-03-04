@@ -8,6 +8,13 @@
         <script src="/static/js/task_manager.js"></script>
         <script src="/static/js/selectize.js"></script>
 
+        <style>
+            .middle-placeholder::placeholder {
+                font-style: italic;   /* italic text */
+                text-align: center;   /* center placeholder text */
+            }
+        </style>
+
         {% if success %}
             <script>
                 alert("{{ success }}");
@@ -30,7 +37,7 @@
             <fieldset>
 
                 <div>
-                    <h3 style="text-align: center; padding-top: 1%; padding-bottom: 1%">Upload Event</h3>
+                    <h3 class="middle-placeholder" style="text-align: center; padding-top: 1%; padding-bottom: 1%">Upload Event</h3>
 
                     <div class="outer-wrapper">
                         <div>
@@ -69,6 +76,7 @@
             </fieldset>
         </form>
 
+        <!-- to use selectize and to define width of selected fields -->>
         <script>
             $(document).ready(function () {
 
@@ -121,8 +129,58 @@
                     sortField: 'text'
                 });
                 $('#id_level_code')[0].selectize.$control.css('width', '40%');
+
+                $('#id_risk_assessment').selectize({
+                    sortField: 'text'
+                });
+                $('#id_risk_assessment')[0].selectize.$control.css('width', '40%');
+
+                $('#id_eae_reason').selectize({
+                    sortField: 'text'
+                });
+                $('#id_eae_reason')[0].selectize.$control.css('width', '40%');
+
             });
         </script>
+
+        <!-- to implement dropdown dependency -->>
+    `   <script>
+            $(document).ready(function () {
+
+                var event_category = $('#id_event_category')[0].selectize;
+
+                // Get table rows
+                var eae_mom_file = $('#id_eae_mom_file').closest('tr');
+                var risk_assessment = $('#id_risk_assessment').closest('tr');
+                var other_risk = $('#id_other_risk').closest('tr');
+                var eae_reason = $('#id_eae_reason').closest('tr');
+
+                function toggleDropdowns(value) {
+
+                    // Hide both rows (label + select together)
+                    eae_mom_file.hide();
+                    risk_assessment.hide();
+                    other_risk.hide()
+                    eae_reason.hide()
+
+                    if (value === "EAE") {
+                        eae_mom_file.show();
+                        risk_assessment.show();
+                        other_risk.show();
+                        eae_reason.show();
+                    }
+                }
+
+                event_category.on('change', function (value) {
+                    toggleDropdowns(value);
+                });
+
+                toggleDropdowns(event_category.getValue());
+
+            });
+
+        </script>
+
     </div>
 
 {% endblock %}

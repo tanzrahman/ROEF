@@ -76,6 +76,10 @@ class EventForm(ModelForm):
     eae_mom_file = forms.FileField(label='MoM file', required=False)
     type_of_safety = forms.ModelMultipleChoiceField(queryset=SafetyType.objects.all(), label='Type of Safety', required=False)
     level_code = forms.ModelMultipleChoiceField(queryset=LevelCode.objects.all(), label='Level Code', required=False)
+    risk_assessment = forms.ModelMultipleChoiceField(queryset=RiskAssessment.objects.all(), label='Risk Assessment', required=False)
+    other_risk = forms.CharField(label='Mention the other risk', required=False,
+                                             widget=forms.Textarea(attrs={'rows': 2, 'cols': 50, 'placeholder': "Mention the other risk if risk assessment is 'Other'", 'class': 'middle-placeholder'}))
+    eae_reason = forms.ModelMultipleChoiceField(queryset=ReasonForEAE.objects.all(), label='Reason for EAE', required=False)
 
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
@@ -86,6 +90,8 @@ class EventForm(ModelForm):
             self.fields['executor'].initial = instance.executor.all()
             self.fields['type_of_safety'].initial = instance.type_of_safety.all()
             self.fields['level_code'].initial = instance.level_code.all()
+            self.fields['risk_assessment'].initial = instance.risk_assessment.all()
+            self.fields['eae_reason'].initial = instance.eae_reason.all()
             # self.fields['milestone_id'].widget.attrs['readonly'] = True
             # self.fields['milestone_id'].widget.attrs['class'] = 'readonly_field'
 
